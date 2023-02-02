@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { TYPOGRAPHY } from "@/assets/styles/typography";
+import { TYPOGRAPHY } from "@/assets/styles/constants/typography";
 
 export const Typography = () => {
   return (

@@ -1,0 +1,73 @@
+@font-face {
+    font-family: "Inter";
+    src: local("Inter_Medium"), local("Inter_Medium"),
+        url("../../../../public/fonts/Inter-Medium.woff2") format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Inter";
+    src: local("Inter SemiBold"), local("Inter-SemiBold"),
+        url("../../../../public/fonts/Inter-SemiBold.woff2") format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Inter";
+    src: local("Inter Bold"), local("Inter-Bold"),
+        url("../../../../public/fonts/Inter-Bold.woff2") format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "THICCCBOI";
+    src: local("THICCCBOI Medium"), local("THICCCBOI-Medium"),
+        url("../../../../public/fonts/THICCCBOI-Medium.woff2") format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "THICCCBOI";
+    src: local("THICCCBOI SemiBold"), local("THICCCBOI-SemiBold"),
+        url("../../../../public/fonts/THICCCBOI-SemiBold.woff2") format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "THICCCBOI";
+    src: local("THICCCBOI Bold"), local("THICCCBOI-Bold"),
+        url("../../../../public/fonts/THICCCBOI-Bold.woff2") format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+
+  
+  @font-face {
+    font-family: "DM_Sans";
+    src: local("DM Sans Bold"), local("DM-Sans-Bold"),
+        url("../../../../public/fonts/DMSans-Bold.woff2") format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: "DM Sans";
+    src: local("DM Sans Regular"), local("DM-Sans-Regular"),
+        url("../../../../public/fonts/DMSans-Regular.woff2") format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
