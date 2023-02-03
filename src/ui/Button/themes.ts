@@ -6,6 +6,7 @@ export const THEMES = {
   primary: css`
     color: ${COLORS.color_100};
     background-color: ${COLORS.primary_01};
+    stroke: ${COLORS.color_100};
     &:hover {
       background-color: ${COLORS.red_400};
     }
@@ -13,30 +14,13 @@ export const THEMES = {
       background-color: ${COLORS.primary_01};
     }
     &:focus {
-      background-color: ${COLORS.primary_01};
-      outline: 4px solid rgba(252, 88, 66, 0.3);
-    }
-    &:disabled {
-      background-color: ${COLORS.primary_01};
-      opacity: 0.6;
+      box-shadow: 0 0 0 4px ${COLORS.btn_border_primary};
     }
   `,
-  primary_active: css`
-    color: ${COLORS.color_100};
-    background-color: ${COLORS.primary_01};
-  `,
-  primary_loading: css`
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    background-color: ${COLORS.primary_01};
-    fill: none;
-    stroke: ${COLORS.color_100};
-  `,
-
   secondary: css`
     color: ${COLORS.primary_01};
     background-color: ${COLORS.color_100};
+    stroke: ${COLORS.primary_01};
     &:hover {
       color: ${COLORS.red_400};
       background-color: ${COLORS.color_200};
@@ -45,23 +29,7 @@ export const THEMES = {
       color: ${COLORS.primary_01};
     }
     &:focus {
-      outline: 4px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 0 4px ${COLORS.btn_border_secondary};
     }
-    &:disabled {
-      color: ${COLORS.primary_01};
-      opacity: 0.6;
-    }
-  `,
-  secondary_active: css`
-    color: ${COLORS.primary_01};
-    background-color: ${COLORS.color_100};
-  `,
-  secondary_loading: css`
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    background-color: ${COLORS.color_100};
-    fill: none;
-    stroke: ${COLORS.primary_01};
   `,
 };

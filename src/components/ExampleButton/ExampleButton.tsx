@@ -1,44 +1,24 @@
 import styled from "styled-components";
 
 import { COLORS } from "@/assets/styles/constants/colors";
-import { SvgLoadingRing } from "@/assets/svg/SvgLoadingRing/SvgLoadingRing";
+import { TYPOGRAPHY } from "@/assets/styles/constants/typography";
 import { Button } from "@/ui";
 
 export const ExampleButton = () => {
   return (
     <Root>
+      <Title>Buttons</Title>
       <WrapButton>
-        <InitialPrimaryButton text="Default" variant="primary" />
-        <InitialPrimaryButton
-          text="Some too long text entered"
-          variant="primary_active"
-        />
-        <InitialPrimaryButton
-          variant="primary_loading"
-          isLoading={true}
-          icon={<SvgLoadingRing width={18} height={18} />}
-        />
-        <InitialPrimaryButton
-          text="Default"
-          variant="primary"
-          disabled={true}
-        />
+        <Button text="Default" variant="primary" />
+        <Button text="Some too long text entered" variant="primary" />
+        <Button variant="primary" isLoading />
+        <Button text="Default" variant="primary" isDisabled />
       </WrapButton>
       <WrapButton>
-        <InitialPrimaryButton text="Default" variant="secondary" />
-        <InitialPrimaryButton
-          text="Some too long text entered"
-          variant="secondary_active"
-        />
-        <InitialPrimaryButton
-          variant="secondary_loading"
-          icon={<SvgLoadingRing width={18} height={18} />}
-        />
-        <InitialPrimaryButton
-          text="Default"
-          variant="secondary"
-          disabled={true}
-        />
+        <Button text="Default" variant="secondary" />
+        <Button text="Some too long text entered" variant="secondary" />
+        <Button variant="secondary" isLoading />
+        <Button text="Default" variant="secondary" isDisabled />
       </WrapButton>
     </Root>
   );
@@ -52,12 +32,13 @@ const Root = styled.div`
   background-color: ${COLORS.color_800};
 `;
 
+const Title = styled.h2`
+  color: ${COLORS.color_100};
+  ${TYPOGRAPHY.Inter_Semi_Bold_24px}
+`;
+
 const WrapButton = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 20px;
-`;
-
-const InitialPrimaryButton = styled(Button)`
-  width: 105px;
 `;
