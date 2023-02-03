@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { DefaultTheme } from "styled-components";
 
 import { COLORS } from "@/assets/styles/constants/colors";
 
