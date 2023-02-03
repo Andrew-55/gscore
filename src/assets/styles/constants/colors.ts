@@ -16,4 +16,7 @@ export const COLORS = {
   red_300: "#FF5A65",
   red_400: "#DC2B2B",
   orange_300: "#FF9E2C",
+  btn_box_shadow: "rgba(252, 88, 66, 0.2)",
+  btn_border_primary: "rgba(252, 88, 66, 0.3)",
+  btn_border_secondary: "rgba(255, 255, 255, 0.3)",
 };

@@ -4,7 +4,7 @@ import { TYPOGRAPHY } from "@/assets/styles/constants/typography";
 
 export const Typography = () => {
   return (
-    <>
+    <Root>
       <Inter78>Inter Bold 78px</Inter78>
       <Inter54>Inter Bold 54px</Inter54>
       <Inter24>Inter Semi Bold_24px</Inter24>
@@ -18,9 +18,13 @@ export const Typography = () => {
       <Thicccboi16m>THICCCBOI Medium 16px</Thicccboi16m>
       <Dmsans54b>DM Sans Bold 54px</Dmsans54b>
       <Dmsans16r>DM Sans Regular 16px</Dmsans16r>
-    </>
+    </Root>
   );
 };
+
+const Root = styled.div`
+  margin-bottom: 30px;
+`;
 
 const Inter18 = styled.p`
   ${TYPOGRAPHY.Inter_Medium_18px};
