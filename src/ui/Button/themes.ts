@@ -1,6 +1,6 @@
-import styled, { css } from "styled-components";
+import { css } from "styled-components";
 
-import { COLORS } from "@/assets/styles/constants/colors";
+import { COLORS } from "@/assets/styles";
 
 export const THEMES = {
   primary: css`

@@ -1,9 +1,8 @@
 import React, { ButtonHTMLAttributes, FC } from "react";
 import styled, { css } from "styled-components";
 
-import { COLORS } from "@/assets/styles/constants/colors";
-import { TYPOGRAPHY } from "@/assets/styles/constants/typography";
-import { SvgLoadingRing } from "@/assets/svg/SvgLoadingRing/SvgLoadingRing";
+import { ROTATE, COLORS, TYPOGRAPHY } from "@/assets/styles";
+import { SvgLoadingRing } from "@/assets/svg";
 
 import { THEMES } from "./themes";
 
@@ -71,23 +70,5 @@ const Root = styled.button<{
 `;
 
 const StyledLoadingRing = styled(SvgLoadingRing)`
-  animation: revolve 1s infinite linear;
-
-  @keyframes revolve {
-    0% {
-      transform: rotate(0deg);
-    }
-    25% {
-      transform: rotate(90deg);
-    }
-    50% {
-      transform: rotate(180deg);
-    }
-    75% {
-      transform: rotate(270deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
+  animation: ${ROTATE} 1s infinite linear;
 `;

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
-import { COLORS } from "@/assets/styles/constants/colors";
-import { TYPOGRAPHY } from "@/assets/styles/constants/typography";
+import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Button } from "@/ui";
 
 export const ExampleButton = () => {
