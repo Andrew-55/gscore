@@ -3,45 +3,37 @@ import styled from "styled-components";
 import { COLORS } from "@/assets/styles/constants/colors";
 import { SvgLoadingRing } from "@/assets/svg/SvgLoadingRing/SvgLoadingRing";
 import { Button } from "@/ui";
-import { VARIANT } from "@/ui/Button/Button";
+import { THEMES } from "@/ui/Button/themes";
 
 export const ExampleButton = () => {
   return (
     <Root>
       <WrapButton>
-        <InitialPrimaryButton text="Default" variant={VARIANT.PRIMARY} />
+        <InitialPrimaryButton text="Default" theme={THEMES.primary} />
         <InitialPrimaryButton
-          text="Some too long text entered"
-          variant={VARIANT.PRIMARY}
-          isActive={true}
+          text="Some too long text"
+          theme={THEMES.primary}
         />
         <InitialPrimaryButton
-          variant={VARIANT.PRIMARY}
-          isLoading={true}
+          theme={THEMES.primary}
           icon={<SvgLoadingRing width={18} height={18} />}
         />
-        <InitialPrimaryButton
-          text="Default"
-          variant={VARIANT.PRIMARY}
-          disabled={true}
-        />
+        <InitialPrimaryButton text="Default" theme={THEMES.primary} disabled />
       </WrapButton>
       <WrapButton>
-        <InitialPrimaryButton text="Default" variant={VARIANT.SECONDARY} />
+        <InitialPrimaryButton text="Default" theme={THEMES.secondary} />
         <InitialPrimaryButton
-          text="Some too long text entered"
-          variant={VARIANT.SECONDARY}
-          isActive={true}
+          text="Some too long text"
+          theme={THEMES.secondary}
         />
         <InitialPrimaryButton
-          variant={VARIANT.SECONDARY}
-          isLoading={true}
+          theme={THEMES.secondary}
           icon={<SvgLoadingRing width={18} height={18} />}
         />
         <InitialPrimaryButton
           text="Default"
-          variant={VARIANT.SECONDARY}
-          disabled={true}
+          theme={THEMES.secondary}
+          disabled
         />
       </WrapButton>
     </Root>
