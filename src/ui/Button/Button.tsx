@@ -6,11 +6,13 @@ import { SvgLoadingRing } from "@/assets/svg";
 
 import { THEMES } from "./themes";
 
+type Variants = keyof typeof THEMES;
+
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   text?: string;
   isDisabled?: boolean;
-  variant: keyof typeof THEMES;
+  variant: Variants;
   isLoading?: boolean;
 }
 
@@ -37,7 +39,7 @@ export const Button: FC<Props> = ({
 };
 
 const Root = styled.button<{
-  $variant: keyof typeof THEMES;
+  $variant: Variants;
   $isLoading?: boolean;
   $isDisabled?: boolean;
 }>`
