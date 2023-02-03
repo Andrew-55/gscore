@@ -1,0 +1,1 @@
+export { SvgPassword } from "./SvgPassword";

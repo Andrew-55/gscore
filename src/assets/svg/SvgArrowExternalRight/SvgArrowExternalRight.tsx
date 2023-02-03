@@ -1,10 +1,10 @@
 import * as React from "react";
 import { SVGProps } from "react";
 
-export const SvgLoadingRing = (props: SVGProps<SVGSVGElement>) => (
+export const SvgArrowExternalRight = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width={props.width || 18}
-    height={props.height || 18}
+    width={props.width || 16}
+    height={props.height || 16}
     viewBox="0 0 18 18"
     fill="none"
     transform={props.transform}
@@ -12,10 +12,11 @@ export const SvgLoadingRing = (props: SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <path
-      d="M17 9a8 8 0 1 1-2.343-5.657"
+      d="M1 17 17 1M17 16.085V1H1.915"
       stroke={props.stroke}
       strokeWidth={2}
       strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

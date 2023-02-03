@@ -1,0 +1,1 @@
+export { SvgAdd } from "./SvgAdd";

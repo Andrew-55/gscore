@@ -1,1 +1,14 @@
 export { SvgLoadingRing } from "./SvgLoadingRing";
+export { SvgArrowRight } from "./SvgArrowRight";
+export { SvgChevronRight } from "./SvgChevronRight";
+export { SvgArrowExternalRight } from "./SvgArrowExternalRight";
+export { SvgClose } from "./SvgClose";
+export { SvgAdd } from "./SvgAdd";
+export { SvgLess } from "./SvgLess";
+export { SvgSearch } from "./SvgSearch";
+export { SvgPassword } from "./SvgPassword";
+export { SvgEmail } from "./SvgEmail";
+export { SvgPhone } from "./SvgPhone";
+export { SvgMark } from "./SvgMark";
+export { SvgWebIcon } from "./SvgWebIcon";
+export { SvgCheck } from "./SvgCheck";

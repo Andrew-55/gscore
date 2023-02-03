@@ -1,21 +1,21 @@
 import * as React from "react";
 import { SVGProps } from "react";
 
-export const SvgLoadingRing = (props: SVGProps<SVGSVGElement>) => (
+export const SvgAdd = (props: SVGProps<SVGSVGElement>) => (
   <svg
     width={props.width || 18}
     height={props.height || 18}
-    viewBox="0 0 18 18"
+    viewBox="0 0 20 21"
     fill="none"
-    transform={props.transform}
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
-      d="M17 9a8 8 0 1 1-2.343-5.657"
+      d="M10 1.64v18M1 10.64h18"
       stroke={props.stroke}
       strokeWidth={2}
       strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
