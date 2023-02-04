@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+import { COLORS } from "@/assets/styles";
 import { TYPOGRAPHY } from "@/assets/styles/constants/typography";
 
 export const Typography = () => {
@@ -24,6 +25,7 @@ export const Typography = () => {
 
 const Root = styled.div`
   margin-bottom: 30px;
+  color: ${COLORS.color_300};
 `;
 
 const Inter18 = styled.p`

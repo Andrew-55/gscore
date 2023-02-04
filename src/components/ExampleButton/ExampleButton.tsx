@@ -28,7 +28,6 @@ const Root = styled.div`
   display: flex;
   column-gap: 30px;
   padding: 20px;
-  background-color: ${COLORS.color_800};
 `;
 
 const Title = styled.h2`
