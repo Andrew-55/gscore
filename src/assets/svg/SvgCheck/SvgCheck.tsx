@@ -14,7 +14,7 @@ export const SvgCheck = (props: SVGProps<SVGSVGElement>) => (
     <path
       d="m1.16 10.406 5.623 5.623L20.84 1.97"
       stroke={props.stroke}
-      strokeWidth={2}
+      strokeWidth={props.strokeWidth || 2}
       strokeLinecap="round"
       strokeLinejoin="round"
     />

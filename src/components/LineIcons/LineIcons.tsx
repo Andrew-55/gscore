@@ -62,7 +62,9 @@ const Title = styled.h2`
 
 const WrapIcon = styled.div`
   display: flex;
+  flex-wrap: wrap;
   column-gap: 40px;
+  row-gap: 20px;
   align-items: center;
   stroke: ${COLORS.color_100};
 `;
