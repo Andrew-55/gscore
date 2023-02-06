@@ -45,6 +45,12 @@ export const TYPOGRAPHY = {
     font-size: 16px;
     line-height: 18px;
   `,
+  THICCCBOI_Medium_18px: `
+  font-family: "THICCCBOI", sans serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+`,
   THICCCBOI_Medium_20px: `
     font-family: "THICCCBOI", sans serif;
     font-weight: 500;

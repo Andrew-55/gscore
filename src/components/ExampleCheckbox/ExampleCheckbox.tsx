@@ -8,14 +8,14 @@ export const ExampleCheckbox = () => {
     <Root>
       <Title>Checkboxes</Title>
       <WrapCheckbox>
-        <StyledCheckbox />
-        <StyledCheckbox />
-        <StyledCheckbox isChecked isDisabled />
+        <Checkbox text="First" />
+        <Checkbox text="Second" />
+        <Checkbox text="Text" isChecked isDisabled />
       </WrapCheckbox>
       <WrapCheckbox>
-        <StyledCheckbox />
-        <StyledCheckbox />
-        <StyledCheckbox isDisabled />
+        <Checkbox text="Some text" />
+        <Checkbox />
+        <Checkbox text="Some text" isDisabled />
       </WrapCheckbox>
     </Root>
   );
@@ -35,12 +35,7 @@ const Title = styled.h2`
 const WrapCheckbox = styled.div`
   display: flex;
   row-gap: 15px;
-  align-items: center;
+  align-items: start;
   justify-items: center;
   flex-direction: column;
-`;
-
-const StyledCheckbox = styled(Checkbox)`
-  min-width: 28px;
-  min-height: 28px;
 `;
