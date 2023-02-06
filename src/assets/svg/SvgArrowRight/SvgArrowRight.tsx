@@ -1,7 +1,7 @@
 import * as React from "react";
 import { SVGProps } from "react";
 
-export const SvgLoadingRing = ({
+export const SvgArrowRight = ({
   width = 18,
   height = 18,
   stroke = "#fff",
@@ -10,16 +10,17 @@ export const SvgLoadingRing = ({
   <svg
     width={width}
     height={height}
-    viewBox="0 0 18 18"
+    viewBox="0 0 20 20"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
-      d="M17 9a8 8 0 1 1-2.343-5.657"
+      d="M10.54 1.54 19 10l-8.46 8.46M19 10H1"
       stroke={stroke}
       strokeWidth={2}
       strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

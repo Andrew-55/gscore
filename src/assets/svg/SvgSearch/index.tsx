@@ -1,0 +1,1 @@
+export { SvgSearch } from "./SvgSearch";

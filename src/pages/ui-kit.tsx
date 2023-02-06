@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-import { Typography } from "@/components";
-import { ExampleButton } from "@/components/ExampleButton/ExampleButton";
+import { Typography, ExampleButton, LineIcons } from "@/components";
 
 export default function UiKit() {
   return (
     <Main>
       <Typography />
       <ExampleButton />
+      <LineIcons />
     </Main>
   );
 }

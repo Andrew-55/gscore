@@ -1,9 +1,9 @@
 import * as React from "react";
 import { SVGProps } from "react";
 
-export const SvgLoadingRing = ({
-  width = 18,
-  height = 18,
+export const SvgArrowExternalRight = ({
+  width = 16,
+  height = 16,
   stroke = "#fff",
   ...props
 }: SVGProps<SVGSVGElement>) => (
@@ -16,10 +16,11 @@ export const SvgLoadingRing = ({
     {...props}
   >
     <path
-      d="M17 9a8 8 0 1 1-2.343-5.657"
+      d="M1 17 17 1M17 16.085V1H1.915"
       stroke={stroke}
       strokeWidth={2}
       strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

@@ -1,0 +1,1 @@
+export { SvgArrowRight } from "./SvgArrowRight";
