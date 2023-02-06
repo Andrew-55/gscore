@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { COLORS, TYPOGRAPHY, TRANSFORM } from "@/assets/styles";
+import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import {
   SvgAdd,
   SvgArrowExternalRight,
@@ -24,16 +24,12 @@ export const LineIcons = () => {
       <Title>Line Icons</Title>
       <WrapIcon>
         <SvgArrowRight />
-        <SvgArrowRight transform={TRANSFORM.mirror_left} />
+        <SvgArrowLeft />
         <SvgArrowExternalRight />
-        <SvgArrowExternalRight transform={TRANSFORM.mirror_left} />
-        <SvgChevronRight transform={TRANSFORM.mirror_left} />
+        <SvgArrowExternalLeft />
+        <SvgChevronLeft />
         <SvgChevronRight />
-        <SvgChevronRight
-          width={10}
-          height={16}
-          transform={TRANSFORM.rotate90deg}
-        />
+        <SvgChevronDown />
         <SvgClose />
         <SvgAdd />
         <SvgLess />
@@ -64,5 +60,22 @@ const WrapIcon = styled.div`
   display: flex;
   column-gap: 40px;
   align-items: center;
-  stroke: ${COLORS.color_100};
+`;
+
+const SvgArrowLeft = styled(SvgArrowRight)`
+  transform: scale(-1, 1);
+`;
+
+const SvgArrowExternalLeft = styled(SvgArrowExternalRight)`
+  transform: scale(-1, 1);
+`;
+
+const SvgChevronLeft = styled(SvgChevronRight)`
+  transform: scale(-1, 1);
+`;
+
+const SvgChevronDown = styled(SvgChevronRight)`
+  width: 10px;
+  height: 16px;
+  transform: rotate(90deg);
 `;
