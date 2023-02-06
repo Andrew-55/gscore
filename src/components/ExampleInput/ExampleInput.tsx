@@ -11,12 +11,23 @@ export const ExampleInput = () => {
         <Input placeholder="Placeholder" />
         <Input placeholder="Placeholder" defaultValue="Some text" />
         <Input placeholder="Placeholder" defaultValue="Some text" isDisabled />
-        <Input placeholder="Placeholder" defaultValue="Some text" isSusccess />
+        <Input placeholder="Placeholder" defaultValue="Some text" isSuccess />
+        <StyledInput
+          placeholder="Placeholder"
+          defaultValue="Some text"
+          isSuccess
+        />
         <Input
           placeholder="Placeholder"
           defaultValue="Some text"
           isError
-          errorMessage="Erron text"
+          errorMessage="Error text"
+        />
+        <StyledInput
+          placeholder="Placeholder"
+          defaultValue="Some text"
+          isError
+          errorMessage="Error text"
         />
       </WrapInput>
     </Root>
@@ -40,4 +51,8 @@ const WrapInput = styled.div`
   flex-direction: column;
   row-gap: 20px;
   width: 40%;
+`;
+
+const StyledInput = styled(Input)`
+  font-size: 40px;
 `;

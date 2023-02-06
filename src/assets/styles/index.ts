@@ -1,2 +1,2 @@
 export { ROTATE } from "./common";
-export { COLORS, TYPOGRAPHY, TRANSFORM } from "./constants";
+export { COLORS, TYPOGRAPHY } from "./constants";

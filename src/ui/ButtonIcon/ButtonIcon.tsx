@@ -21,7 +21,6 @@ export const ButtonIcon: FC<Props> = ({
 };
 
 const Root = styled.button`
-  background-color: initial;
   display: flex;
   align-items: center;
   justify-content: center;

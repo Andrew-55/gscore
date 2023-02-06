@@ -3,23 +3,20 @@ import styled, { css } from "styled-components";
 
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgCheck, SvgClose } from "@/assets/svg";
-import { ButtonIcon } from "@/ui/ButtonIcon";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   isDisabled?: boolean;
-  isSusccess?: boolean;
+  isSuccess?: boolean;
   isError?: boolean;
   errorMessage?: string;
-  onClick?: () => void;
 }
 
 export const Input: FC<Props> = ({
   className,
   isDisabled,
-  isSusccess,
+  isSuccess,
   isError,
-  onClick,
   errorMessage,
   ...props
 }) => {
@@ -29,24 +26,14 @@ export const Input: FC<Props> = ({
         <StyledInput
           className={className}
           disabled={isDisabled}
-          $isSusccess={isSusccess}
+          $isSuccess={isSuccess}
           $isError={isError}
           {...props}
         />
 
-        {isSusccess && (
-          <StyledButtonIcon
-            onClick={onClick}
-            icon={<SvgCheck stroke={COLORS.gren_300} />}
-          />
-        )}
+        {isSuccess && <StyledSvgCheck stroke={COLORS.gren_300} />}
 
-        {isError && (
-          <StyledButtonIcon
-            onClick={onClick}
-            icon={<SvgClose stroke={COLORS.red_300} />}
-          />
-        )}
+        {isError && <StyledSvgClose stroke={COLORS.red_300} />}
       </Root>
       {!!errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </div>
@@ -59,7 +46,7 @@ const Root = styled.div`
   min-width: 100px;
 `;
 
-const StyledInput = styled.input<{ $isSusccess?: boolean; $isError?: boolean }>`
+const StyledInput = styled.input<{ $isSuccess?: boolean; $isError?: boolean }>`
   ${TYPOGRAPHY.THICCCBOI_Regular_16px}
   color: ${COLORS.color_700};
   width: 100%;
@@ -71,17 +58,19 @@ const StyledInput = styled.input<{ $isSusccess?: boolean; $isError?: boolean }>`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+
   &::placeholder {
     color: ${COLORS.color_500};
   }
+
   &:disabled {
     border: 1px solid ${COLORS.color_300};
     opacity: 0.6;
     box-shadow: 0px 2px 12px ${COLORS.input_box_shadow_disabled};
   }
 
-  ${({ $isSusccess }) =>
-    $isSusccess &&
+  ${({ $isSuccess }) =>
+    $isSuccess &&
     css`
       border: 1px solid ${COLORS.gren_300};
       padding-right: calc(23px + 1.5em);
@@ -95,16 +84,24 @@ const StyledInput = styled.input<{ $isSusccess?: boolean; $isError?: boolean }>`
     `}
 `;
 
-const StyledButtonIcon = styled(ButtonIcon)`
+const StyledSvgCheck = styled(SvgCheck)`
   position: absolute;
-  height: 1em;
-  top: 50%;
-  margin-top: -0.5em;
+  width: auto;
+  height: 25%;
+  top: 37.5%;
+  right: 22px;
+`;
+
+const StyledSvgClose = styled(SvgClose)`
+  position: absolute;
+  width: auto;
+  height: 27%;
+  top: 36.5%;
   right: 22px;
 `;
 
 const ErrorMessage = styled.p`
+  ${TYPOGRAPHY.THICCCBOI_Regular_14px}
   color: ${COLORS.red_300};
-  font-size: 0.875em;
   margin-top: 2px;
 `;
