@@ -73,30 +73,32 @@ const StyledInput = styled.input<{ $isSuccess?: boolean; $isError?: boolean }>`
     $isSuccess &&
     css`
       border: 1px solid ${COLORS.gren_300};
-      padding-right: calc(23px + 1.5em);
+      padding-right: 66px;
     `}
 
   ${({ $isError }) =>
     $isError &&
     css`
       border: 1px solid ${COLORS.red_300};
-      padding-right: calc(23px + 1.5em);
+      padding-right: 64px;
     `}
 `;
 
 const StyledSvgCheck = styled(SvgCheck)`
   position: absolute;
-  width: auto;
-  height: 25%;
-  top: 37.5%;
+  width: 20px;
+  height: 14px;
+  top: 50%;
+  transform: translateY(-50%);
   right: 22px;
 `;
 
 const StyledSvgClose = styled(SvgClose)`
   position: absolute;
-  width: auto;
-  height: 27%;
-  top: 36.5%;
+  width: 18px;
+  height: 18px;
+  top: 50%;
+  transform: translateY(-50%);
   right: 22px;
 `;
 
