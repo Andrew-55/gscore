@@ -48,7 +48,6 @@ export const LineIcons = () => {
 
 const Root = styled.div`
   padding: 20px;
-  background-color: ${COLORS.color_800};
 `;
 
 const Title = styled.h2`

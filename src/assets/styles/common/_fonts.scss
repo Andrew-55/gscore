@@ -27,6 +27,15 @@
 
   @font-face {
     font-family: "THICCCBOI";
+    src: local("THICCCBOI Regular"), local("THICCCBOI-Regular"),
+        url("../../../../public/fonts/THICCCBOI-Regular.woff2") format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "THICCCBOI";
     src: local("THICCCBOI Medium"), local("THICCCBOI-Medium"),
         url("../../../../public/fonts/THICCCBOI-Medium.woff2") format('woff2');
     font-weight: 500;

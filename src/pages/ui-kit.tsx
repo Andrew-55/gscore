@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
-import { Typography, ExampleButton, LineIcons } from "@/components";
+import { COLORS } from "@/assets/styles";
+import {
+  Typography,
+  ExampleButton,
+  LineIcons,
+  ExampleInput,
+} from "@/components";
 
 export default function UiKit() {
   return (
@@ -8,10 +14,12 @@ export default function UiKit() {
       <Typography />
       <ExampleButton />
       <LineIcons />
+      <ExampleInput />
     </Main>
   );
 }
 
 const Main = styled.main`
   padding: 20px;
+  background-color: ${COLORS.color_800};
 `;
