@@ -9,6 +9,7 @@ import {
   ExampleCheckbox,
   TestForm,
   Header,
+  Footer,
 } from "@/components";
 
 export default function UiKit() {
@@ -16,6 +17,7 @@ export default function UiKit() {
     <Main>
       <Header username="Alex" />
       <Header />
+      <Footer />
       <Typography />
       <ExampleButton />
       <LineIcons />
