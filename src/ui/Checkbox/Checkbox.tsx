@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import styled, { css } from "styled-components";
 
-import { COLORS, TYPOGRAPHY } from "@/assets/styles";
+import { COLORS, TYPOGRAPHY, VISUALLY_HIDDEN } from "@/assets/styles";
 import { SvgCheck } from "@/assets/svg";
 
 interface Props {
@@ -9,31 +9,33 @@ interface Props {
   isDisabled?: boolean;
   isChecked?: boolean;
   text?: string;
+  value: string;
 }
 
-export const Checkbox: FC<Props> = ({
-  className,
-  text,
-  isDisabled,
-  isChecked,
-  ...props
-}) => {
-  return (
-    <Root>
-      <Input
-        type="checkbox"
-        className={className}
-        disabled={isDisabled}
-        checked={isChecked}
-        {...props}
-      />
-      <CheckboxDisplay>
-        <StyledSvgCheck strokeWidth={3} />
-      </CheckboxDisplay>
-      {text}
-    </Root>
-  );
-};
+const Checkbox = React.forwardRef<HTMLInputElement, Props>(
+  ({ className, text, isDisabled, isChecked, value, ...props }, ref) => {
+    return (
+      <Root>
+        <Input
+          ref={ref}
+          type="checkbox"
+          className={className}
+          disabled={isDisabled}
+          checked={isChecked}
+          value={value}
+          {...props}
+        />
+        <CheckboxDisplay>
+          <StyledSvgCheck strokeWidth={3} />
+        </CheckboxDisplay>
+        {text}
+      </Root>
+    );
+  }
+);
+
+Checkbox.displayName = "Checkbox";
+export { Checkbox };
 
 const Root = styled.label`
   cursor: pointer;
@@ -62,19 +64,8 @@ const StyledSvgCheck = styled(SvgCheck)`
   opacity: 0;
 `;
 
-const VisuallyHidden = css`
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  border: 0;
-  padding: 0;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-`;
-
 const Input = styled.input`
-  ${VisuallyHidden};
+  ${VISUALLY_HIDDEN};
   margin-left: 35px;
 
   & + ${CheckboxDisplay} {
