@@ -6,6 +6,8 @@ import {
   ExampleButton,
   LineIcons,
   ExampleInput,
+  ExampleCheckbox,
+  TestForm,
 } from "@/components";
 
 export default function UiKit() {
@@ -15,6 +17,8 @@ export default function UiKit() {
       <ExampleButton />
       <LineIcons />
       <ExampleInput />
+      <ExampleCheckbox />
+      <TestForm />
     </Main>
   );
 }

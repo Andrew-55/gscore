@@ -1,4 +1,4 @@
-import React, { FC, InputHTMLAttributes } from "react";
+import React, { InputHTMLAttributes } from "react";
 import styled, { css } from "styled-components";
 
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
@@ -12,33 +12,35 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
 }
 
-export const Input: FC<Props> = ({
-  className,
-  isDisabled,
-  isSuccess,
-  isError,
-  errorMessage,
-  ...props
-}) => {
-  return (
-    <div>
-      <Root>
-        <StyledInput
-          className={className}
-          disabled={isDisabled}
-          $isSuccess={isSuccess}
-          $isError={isError}
-          {...props}
-        />
+const Input = React.forwardRef<HTMLInputElement, Props>(
+  (
+    { className, isDisabled, isSuccess, isError, errorMessage, ...props },
+    ref
+  ) => {
+    return (
+      <div>
+        <Root>
+          <StyledInput
+            ref={ref}
+            className={className}
+            disabled={isDisabled}
+            $isSuccess={isSuccess}
+            $isError={isError}
+            {...props}
+          />
 
-        {isSuccess && <StyledSvgCheck stroke={COLORS.gren_300} />}
+          {isSuccess && <StyledSvgCheck stroke={COLORS.gren_300} />}
 
-        {isError && <StyledSvgClose stroke={COLORS.red_300} />}
-      </Root>
-      {!!errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-    </div>
-  );
-};
+          {isError && <StyledSvgClose stroke={COLORS.red_300} />}
+        </Root>
+        {!!errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      </div>
+    );
+  }
+);
+
+Input.displayName = "Input";
+export { Input };
 
 const Root = styled.div`
   position: relative;
