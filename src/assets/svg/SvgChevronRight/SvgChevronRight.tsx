@@ -5,6 +5,7 @@ export const SvgChevronRight = ({
   width = 12,
   height = 20,
   stroke = "#fff",
+  strokeWidth = 2,
   ...props
 }: SVGProps<SVGSVGElement>) => (
   <svg
@@ -18,7 +19,7 @@ export const SvgChevronRight = ({
     <path
       d="m1.5 19 9-9-9-9"
       stroke={stroke}
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
     />

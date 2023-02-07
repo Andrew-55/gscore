@@ -12,3 +12,5 @@ export { SvgPhone } from "./SvgPhone";
 export { SvgMark } from "./SvgMark";
 export { SvgWebIcon } from "./SvgWebIcon";
 export { SvgCheck } from "./SvgCheck";
+export { SvgTextLogo } from "./SvgTextLogo";
+export { SvgLogoIcon } from "./SvgLogoIcon";

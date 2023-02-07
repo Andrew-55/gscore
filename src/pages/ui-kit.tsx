@@ -8,11 +8,14 @@ import {
   ExampleInput,
   ExampleCheckbox,
   TestForm,
+  Header,
 } from "@/components";
 
 export default function UiKit() {
   return (
     <Main>
+      <Header username="Alex" />
+      <Header />
       <Typography />
       <ExampleButton />
       <LineIcons />

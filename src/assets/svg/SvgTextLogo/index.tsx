@@ -1,0 +1,1 @@
+export { SvgTextLogo } from "./SvgTextLogo";

@@ -9,6 +9,7 @@ export const COLORS = {
   color_500: "#969696",
   color_600: "#737373",
   color_700: "#393939",
+  color_701: "#272727",
   color_800: "#0C0C0C",
   gren_300: "#05C168",
   red_100: "#FFEFF0",
