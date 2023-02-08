@@ -14,7 +14,7 @@ export const HeaderMobile: FC<Props> = ({ username }) => {
   const [isMobileBurgerMenuVisible, setIsMobileBurgerMenuVisible] =
     useState(false);
 
-  const handleClosePopUp = () => {
+  const handleCloseBurgerMenu = () => {
     setIsMobileBurgerMenuVisible((prev) => !prev);
   };
 
@@ -33,7 +33,7 @@ export const HeaderMobile: FC<Props> = ({ username }) => {
       )}
 
       {isMobileBurgerMenuVisible && (
-        <MobileBurgerMenu username={username} onClose={handleClosePopUp} />
+        <MobileBurgerMenu username={username} onClose={handleCloseBurgerMenu} />
       )}
     </Root>
   );
