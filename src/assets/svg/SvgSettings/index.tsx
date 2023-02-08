@@ -1,0 +1,1 @@
+export { SvgSettings } from "./SvgSettings";

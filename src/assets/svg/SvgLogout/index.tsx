@@ -1,0 +1,1 @@
+export { SvgLogout } from "./SvgLogout";

@@ -1,17 +1,23 @@
 import Link from "next/link";
 import React, { FC, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
-import { COLORS, TYPOGRAPHY, Z_INDEX } from "@/assets/styles";
+import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgChevronRight, SvgLogoIcon, SvgTextLogo } from "@/assets/svg";
 import { ButtonIcon } from "@/ui";
+
+import { HeaderDropdownMenu } from "../HeaderDropdownMenu";
 
 interface Props {
   username?: string;
 }
 
 export const Header: FC<Props> = ({ username }) => {
-  const [isPopUp, setPopUp] = useState(false);
+  const [isDropdownMenuVisible, setIsDropdownMenuVisible] = useState(false);
+
+  const handleCloseDropdownMenu = () => {
+    setIsDropdownMenuVisible((prev) => !prev);
+  };
 
   return (
     <Root>
@@ -23,20 +29,19 @@ export const Header: FC<Props> = ({ username }) => {
       {username && (
         <WrapUser>
           <Link href="/subscriptions">My subscriptions</Link>
-          <WrapUser>
+
+          {isDropdownMenuVisible ? (
+            <HeaderDropdownMenu
+              onClose={handleCloseDropdownMenu}
+              username={username}
+            />
+          ) : (
             <ButtonIcon
               text={username}
-              icon={<StyledSvgChevron $isPopUp={isPopUp} strokeWidth={3} />}
-              onClick={() => setPopUp((prev) => !prev)}
+              icon={<StyledSvgChevron strokeWidth={3} />}
+              onClick={handleCloseDropdownMenu}
             />
-
-            {isPopUp && (
-              <StyledPopUp>
-                <div>Settings</div>
-                <div>Logout</div>
-              </StyledPopUp>
-            )}
-          </WrapUser>
+          )}
         </WrapUser>
       )}
     </Root>
@@ -65,25 +70,8 @@ const WrapUser = styled.div`
   column-gap: 32px;
 `;
 
-const StyledPopUp = styled.div`
-  position: absolute;
-  background-color: ${COLORS.color_701};
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 20px;
-  top: 94px;
-  right: 86px;
-  z-index: ${Z_INDEX.headerPopUp};
-`;
-
-const StyledSvgChevron = styled(SvgChevronRight)<{ $isPopUp?: boolean }>`
+const StyledSvgChevron = styled(SvgChevronRight)`
   transform: rotate(90deg);
   height: 14px;
   width: 7px;
-  ${({ $isPopUp }) =>
-    $isPopUp &&
-    css`
-      transform: rotate(-90deg);
-    `}
 `;

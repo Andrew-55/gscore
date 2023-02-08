@@ -1,10 +1,14 @@
 import * as React from "react";
 import { SVGProps } from "react";
 
-export const SvgLogoIcon = (props: SVGProps<SVGSVGElement>) => (
+export const SvgLogoIcon = ({
+  width = 43,
+  height = 42,
+  ...props
+}: SVGProps<SVGSVGElement>) => (
   <svg
-    width={43}
-    height={42}
+    width={width}
+    height={height}
     viewBox="0 0 43 42"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
