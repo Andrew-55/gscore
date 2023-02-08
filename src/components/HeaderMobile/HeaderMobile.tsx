@@ -1,27 +1,20 @@
-import Link from "next/link";
 import React, { FC, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
-import { COLORS, TYPOGRAPHY, Z_INDEX } from "@/assets/styles";
-import {
-  SvgChevronRight,
-  SvgLogoIcon,
-  SvgMenuLine,
-  SvgTextLogo,
-} from "@/assets/svg";
+import { COLORS, TYPOGRAPHY } from "@/assets/styles";
+import { SvgLogoIcon, SvgMenuLine, SvgTextLogo } from "@/assets/svg";
+import { MobileBurgerMenu } from "@/components";
 import { ButtonIcon } from "@/ui";
-
-import { HeaderMobilePopUp } from "../HeaderMobilePopUp";
 
 interface Props {
   username?: string;
 }
 
 export const HeaderMobile: FC<Props> = ({ username }) => {
-  const [isMobilePopUp, setIsMobilePopUp] = useState(false);
+  const [isMobileBurgerMenu, setIsMobileBurgerMenu] = useState(false);
 
   const handleClosePopUp = () => {
-    setIsMobilePopUp((prev) => !prev);
+    setIsMobileBurgerMenu((prev) => !prev);
   };
 
   return (
@@ -34,12 +27,12 @@ export const HeaderMobile: FC<Props> = ({ username }) => {
       {username && (
         <ButtonIcon
           icon={<SvgMenuLine />}
-          onClick={() => setIsMobilePopUp((prev) => !prev)}
+          onClick={() => setIsMobileBurgerMenu((prev) => !prev)}
         />
       )}
 
-      {isMobilePopUp && (
-        <HeaderMobilePopUp username={username} onClose={handleClosePopUp} />
+      {isMobileBurgerMenu && (
+        <MobileBurgerMenu username={username} onClose={handleClosePopUp} />
       )}
     </Root>
   );
@@ -60,24 +53,4 @@ const Logo = styled.div`
   display: flex;
   align-items: center;
   column-gap: 10px;
-`;
-
-const Settings = styled.div`
-  position: absolute;
-`;
-
-const WrapUser = styled.div`
-  display: flex;
-  column-gap: 32px;
-`;
-
-const StyledSvgChevron = styled(SvgChevronRight)<{ $isPopUp?: boolean }>`
-  transform: rotate(90deg);
-  height: 14px;
-  width: 7px;
-  ${({ $isPopUp }) =>
-    $isPopUp &&
-    css`
-      transform: rotate(-90deg);
-    `}
 `;

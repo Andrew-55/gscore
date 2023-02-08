@@ -1,23 +1,21 @@
 import Link from "next/link";
-import React, { FC, useState } from "react";
-import styled, { css } from "styled-components";
+import React, { FC } from "react";
+import styled from "styled-components";
 
 import { COLORS, TYPOGRAPHY, Z_INDEX } from "@/assets/styles";
 import { SvgSettings, SvgLogout } from "@/assets/svg";
-import { useOnclickOutsideWithExtraRef } from "@/utils/hooks";
+import { useOnclickOutside } from "@/utils/hooks";
 
 interface Props {
   onClose: () => void;
-  refExtra: React.RefObject<HTMLDivElement>;
+  refOutOf: React.RefObject<HTMLDivElement>;
 }
 
-export const HeaderPopUp: FC<Props> = ({ onClose, refExtra }) => {
-  const ref = React.useRef<HTMLDivElement>(null);
-
-  useOnclickOutsideWithExtraRef(ref, refExtra, onClose);
+export const HeaderDropdownMenu: FC<Props> = ({ onClose, refOutOf }) => {
+  useOnclickOutside(refOutOf, onClose);
 
   return (
-    <Root ref={ref}>
+    <Root>
       <Link href="/settings">
         <Wrap>
           <SvgSettings /> Settings

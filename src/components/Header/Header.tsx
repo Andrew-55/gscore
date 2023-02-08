@@ -6,19 +6,19 @@ import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgChevronRight, SvgLogoIcon, SvgTextLogo } from "@/assets/svg";
 import { ButtonIcon } from "@/ui";
 
-import { HeaderPopUp } from "../HeaderPopUp";
+import { HeaderDropdownMenu } from "../HeaderDropdownMenu";
 
 interface Props {
   username?: string;
 }
 
 export const Header: FC<Props> = ({ username }) => {
-  const [isPopUp, setIsPopUp] = useState(false);
+  const [isDropdownMenu, setIsDropdownMenu] = useState(false);
 
   const ref = React.useRef<HTMLDivElement>(null);
 
-  const handleClosePopUp = () => {
-    setIsPopUp((prev) => !prev);
+  const handleCloseDropdownMenu = () => {
+    setIsDropdownMenu((prev) => !prev);
   };
 
   return (
@@ -31,17 +31,25 @@ export const Header: FC<Props> = ({ username }) => {
       {username && (
         <WrapUser>
           <Link href="/subscriptions">My subscriptions</Link>
-          <WrapUser ref={ref}>
+          <div ref={ref}>
             <ButtonIcon
               text={username}
-              icon={<StyledSvgChevron $isPopUp={isPopUp} strokeWidth={3} />}
-              onClick={() => setIsPopUp((prev) => !prev)}
+              icon={
+                <StyledSvgChevron
+                  $isDropdownMenu={isDropdownMenu}
+                  strokeWidth={3}
+                />
+              }
+              onClick={() => setIsDropdownMenu((prev) => !prev)}
             />
 
-            {isPopUp && (
-              <HeaderPopUp onClose={handleClosePopUp} refExtra={ref} />
+            {isDropdownMenu && (
+              <HeaderDropdownMenu
+                onClose={handleCloseDropdownMenu}
+                refOutOf={ref}
+              />
             )}
-          </WrapUser>
+          </div>
         </WrapUser>
       )}
     </Root>
@@ -70,12 +78,12 @@ const WrapUser = styled.div`
   column-gap: 32px;
 `;
 
-const StyledSvgChevron = styled(SvgChevronRight)<{ $isPopUp?: boolean }>`
+const StyledSvgChevron = styled(SvgChevronRight)<{ $isDropdownMenu?: boolean }>`
   transform: rotate(90deg);
   height: 14px;
   width: 7px;
-  ${({ $isPopUp }) =>
-    $isPopUp &&
+  ${({ $isDropdownMenu }) =>
+    $isDropdownMenu &&
     css`
       transform: rotate(-90deg);
     `}

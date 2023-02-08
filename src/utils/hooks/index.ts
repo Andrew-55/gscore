@@ -1,1 +1,1 @@
-export { useOnclickOutsideWithExtraRef } from "./useOnclickOutsideWithExtraRef";
+export { useOnclickOutside } from "./useOnclickOutside";

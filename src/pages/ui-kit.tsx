@@ -17,7 +17,7 @@ import {
 export default function UiKit() {
   const [isMobile, setIsMobile] = useState(false);
 
-  let mobile = useMediaQuery({ query: "(max-width: 700px)" });
+  let mobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   useEffect(() => {
     setIsMobile(mobile);

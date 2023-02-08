@@ -18,8 +18,8 @@ interface Props {
   onClose: () => void;
 }
 
-export const HeaderMobilePopUp: FC<Props> = ({ username, onClose }) => {
-  const [isPopUp, setIsPopUp] = useState(false);
+export const MobileBurgerMenu: FC<Props> = ({ username, onClose }) => {
+  const [isSettings, setIsSettings] = useState(false);
 
   return (
     <Root>
@@ -37,10 +37,10 @@ export const HeaderMobilePopUp: FC<Props> = ({ username, onClose }) => {
         <Settings>
           <StyledButtonIcon
             text={username}
-            icon={<StyledSvgChevron $isPopUp={isPopUp} strokeWidth={3} />}
-            onClick={() => setIsPopUp((prev) => !prev)}
+            icon={<StyledSvgChevron $isSettings={isSettings} strokeWidth={3} />}
+            onClick={() => setIsSettings((prev) => !prev)}
           />
-          {isPopUp && (
+          {isSettings && (
             <SettingsContent>
               <Link href="/settings">
                 <Wrap>
@@ -48,13 +48,13 @@ export const HeaderMobilePopUp: FC<Props> = ({ username, onClose }) => {
                     width={20}
                     height={20}
                     stroke={COLORS.color_500}
-                  />{" "}
+                  />
                   Settings
                 </Wrap>
               </Link>
               <Link href="/login">
                 <Wrap>
-                  <SvgLogout width={20} height={20} stroke={COLORS.color_500} />{" "}
+                  <SvgLogout width={20} height={20} stroke={COLORS.color_500} />
                   Logout
                 </Wrap>
               </Link>
@@ -129,12 +129,12 @@ const Wrap = styled.div`
   column-gap: 12px;
 `;
 
-const StyledSvgChevron = styled(SvgChevronRight)<{ $isPopUp?: boolean }>`
+const StyledSvgChevron = styled(SvgChevronRight)<{ $isSettings?: boolean }>`
   transform: rotate(90deg);
   height: 14px;
   width: 7px;
-  ${({ $isPopUp }) =>
-    $isPopUp &&
+  ${({ $isSettings }) =>
+    $isSettings &&
     css`
       transform: rotate(-90deg);
     `}

@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 
-export const useOnclickOutsideWithExtraRef = (
+export const useOnclickOutside = (
   ref: React.MutableRefObject<HTMLElement | null | undefined>,
-  refExtra: React.MutableRefObject<HTMLElement | null | undefined>,
   callback: (event: Event) => void
 ) => {
   useEffect(() => {
@@ -10,12 +9,7 @@ export const useOnclickOutsideWithExtraRef = (
       if (!ref.current || ref.current.contains(event.target as Node | null)) {
         return;
       }
-      if (
-        !refExtra.current ||
-        refExtra.current.contains(event.target as Node | null)
-      ) {
-        return;
-      }
+
       callback(event);
     };
 
@@ -26,5 +20,5 @@ export const useOnclickOutsideWithExtraRef = (
       document.removeEventListener("mousedown", listener);
       document.removeEventListener("touchstart", listener);
     };
-  }, [ref, refExtra, callback]);
+  }, [ref, callback]);
 };
