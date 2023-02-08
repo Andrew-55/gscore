@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React, { FC, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgChevronRight, SvgLogoIcon, SvgTextLogo } from "@/assets/svg";
@@ -13,12 +13,10 @@ interface Props {
 }
 
 export const Header: FC<Props> = ({ username }) => {
-  const [isDropdownMenu, setIsDropdownMenu] = useState(false);
-
-  const ref = React.useRef<HTMLDivElement>(null);
+  const [isDropdownMenuVisible, setIsDropdownMenuVisible] = useState(false);
 
   const handleCloseDropdownMenu = () => {
-    setIsDropdownMenu((prev) => !prev);
+    setIsDropdownMenuVisible((prev) => !prev);
   };
 
   return (
@@ -31,25 +29,19 @@ export const Header: FC<Props> = ({ username }) => {
       {username && (
         <WrapUser>
           <Link href="/subscriptions">My subscriptions</Link>
-          <div ref={ref}>
+
+          {isDropdownMenuVisible ? (
+            <HeaderDropdownMenu
+              onClose={handleCloseDropdownMenu}
+              username={username}
+            />
+          ) : (
             <ButtonIcon
               text={username}
-              icon={
-                <StyledSvgChevron
-                  $isDropdownMenu={isDropdownMenu}
-                  strokeWidth={3}
-                />
-              }
-              onClick={() => setIsDropdownMenu((prev) => !prev)}
+              icon={<StyledSvgChevron strokeWidth={3} />}
+              onClick={handleCloseDropdownMenu}
             />
-
-            {isDropdownMenu && (
-              <HeaderDropdownMenu
-                onClose={handleCloseDropdownMenu}
-                refOutOf={ref}
-              />
-            )}
-          </div>
+          )}
         </WrapUser>
       )}
     </Root>
@@ -78,13 +70,8 @@ const WrapUser = styled.div`
   column-gap: 32px;
 `;
 
-const StyledSvgChevron = styled(SvgChevronRight)<{ $isDropdownMenu?: boolean }>`
+const StyledSvgChevron = styled(SvgChevronRight)`
   transform: rotate(90deg);
   height: 14px;
   width: 7px;
-  ${({ $isDropdownMenu }) =>
-    $isDropdownMenu &&
-    css`
-      transform: rotate(-90deg);
-    `}
 `;

@@ -3,34 +3,44 @@ import React, { FC } from "react";
 import styled from "styled-components";
 
 import { COLORS, TYPOGRAPHY, Z_INDEX } from "@/assets/styles";
-import { SvgSettings, SvgLogout } from "@/assets/svg";
+import { SvgSettings, SvgLogout, SvgChevronRight } from "@/assets/svg";
+import { ButtonIcon } from "@/ui";
 import { useOnclickOutside } from "@/utils/hooks";
 
 interface Props {
   onClose: () => void;
-  refOutOf: React.RefObject<HTMLDivElement>;
+  username: string;
 }
 
-export const HeaderDropdownMenu: FC<Props> = ({ onClose, refOutOf }) => {
-  useOnclickOutside(refOutOf, onClose);
+export const HeaderDropdownMenu: FC<Props> = ({ username, onClose }) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  useOnclickOutside(ref, onClose);
 
   return (
-    <Root>
-      <Link href="/settings">
-        <Wrap>
-          <SvgSettings /> Settings
-        </Wrap>
-      </Link>
-      <Link href="/login">
-        <Wrap>
-          <SvgLogout /> Logout
-        </Wrap>
-      </Link>
-    </Root>
+    <div ref={ref}>
+      <ButtonIcon
+        text={username}
+        icon={<StyledSvgChevron strokeWidth={3} />}
+        onClick={onClose}
+      />
+      <DropdownMenu>
+        <Link href="/settings">
+          <Wrap>
+            <SvgSettings /> Settings
+          </Wrap>
+        </Link>
+        <Link href="/login">
+          <Wrap>
+            <SvgLogout /> Logout
+          </Wrap>
+        </Link>
+      </DropdownMenu>
+    </div>
   );
 };
 
-const Root = styled.div`
+const DropdownMenu = styled.div`
   position: absolute;
   top: 94px;
   right: 86px;
@@ -49,4 +59,10 @@ const Root = styled.div`
 const Wrap = styled.div`
   display: flex;
   column-gap: 12px;
+`;
+
+const StyledSvgChevron = styled(SvgChevronRight)`
+  transform: rotate(-90deg);
+  height: 14px;
+  width: 7px;
 `;

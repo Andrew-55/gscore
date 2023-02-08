@@ -11,10 +11,11 @@ interface Props {
 }
 
 export const HeaderMobile: FC<Props> = ({ username }) => {
-  const [isMobileBurgerMenu, setIsMobileBurgerMenu] = useState(false);
+  const [isMobileBurgerMenuVisible, setIsMobileBurgerMenuVisible] =
+    useState(false);
 
   const handleClosePopUp = () => {
-    setIsMobileBurgerMenu((prev) => !prev);
+    setIsMobileBurgerMenuVisible((prev) => !prev);
   };
 
   return (
@@ -27,11 +28,11 @@ export const HeaderMobile: FC<Props> = ({ username }) => {
       {username && (
         <ButtonIcon
           icon={<SvgMenuLine />}
-          onClick={() => setIsMobileBurgerMenu((prev) => !prev)}
+          onClick={() => setIsMobileBurgerMenuVisible((prev) => !prev)}
         />
       )}
 
-      {isMobileBurgerMenu && (
+      {isMobileBurgerMenuVisible && (
         <MobileBurgerMenu username={username} onClose={handleClosePopUp} />
       )}
     </Root>

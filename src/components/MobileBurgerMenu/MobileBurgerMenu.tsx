@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const MobileBurgerMenu: FC<Props> = ({ username, onClose }) => {
-  const [isSettings, setIsSettings] = useState(false);
+  const [isSettingsVisible, setIsSettingsVisible] = useState(false);
 
   return (
     <Root>
@@ -37,10 +37,13 @@ export const MobileBurgerMenu: FC<Props> = ({ username, onClose }) => {
         <Settings>
           <StyledButtonIcon
             text={username}
-            icon={<StyledSvgChevron $isSettings={isSettings} strokeWidth={3} />}
-            onClick={() => setIsSettings((prev) => !prev)}
+            icon={
+              <StyledSvgChevron $isOn={isSettingsVisible} strokeWidth={3} />
+            }
+            onClick={() => setIsSettingsVisible((prev) => !prev)}
           />
-          {isSettings && (
+
+          {isSettingsVisible && (
             <SettingsContent>
               <Link href="/settings">
                 <Wrap>
@@ -129,12 +132,12 @@ const Wrap = styled.div`
   column-gap: 12px;
 `;
 
-const StyledSvgChevron = styled(SvgChevronRight)<{ $isSettings?: boolean }>`
+const StyledSvgChevron = styled(SvgChevronRight)<{ $isOn?: boolean }>`
   transform: rotate(90deg);
   height: 14px;
   width: 7px;
-  ${({ $isSettings }) =>
-    $isSettings &&
+  ${({ $isOn }) =>
+    $isOn &&
     css`
       transform: rotate(-90deg);
     `}
