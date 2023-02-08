@@ -14,3 +14,6 @@ export { SvgWebIcon } from "./SvgWebIcon";
 export { SvgCheck } from "./SvgCheck";
 export { SvgTextLogo } from "./SvgTextLogo";
 export { SvgLogoIcon } from "./SvgLogoIcon";
+export { SvgSettings } from "./SvgSettings";
+export { SvgLogout } from "./SvgLogout";
+export { SvgMenuLine } from "./SvgMenuLine";

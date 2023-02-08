@@ -2,47 +2,44 @@ import Link from "next/link";
 import React, { FC, useState } from "react";
 import styled, { css } from "styled-components";
 
-import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { SvgChevronRight, SvgLogoIcon, SvgTextLogo } from "@/assets/svg";
+import { COLORS, TYPOGRAPHY, Z_INDEX } from "@/assets/styles";
+import {
+  SvgChevronRight,
+  SvgLogoIcon,
+  SvgMenuLine,
+  SvgTextLogo,
+} from "@/assets/svg";
 import { ButtonIcon } from "@/ui";
 
-import { HeaderPopUp } from "../HeaderPopUp";
+import { HeaderMobilePopUp } from "../HeaderMobilePopUp";
 
 interface Props {
   username?: string;
 }
 
-export const Header: FC<Props> = ({ username }) => {
-  const [isPopUp, setIsPopUp] = useState(false);
-
-  const ref = React.useRef<HTMLDivElement>(null);
+export const HeaderMobile: FC<Props> = ({ username }) => {
+  const [isMobilePopUp, setIsMobilePopUp] = useState(false);
 
   const handleClosePopUp = () => {
-    setIsPopUp((prev) => !prev);
+    setIsMobilePopUp((prev) => !prev);
   };
 
   return (
     <Root>
       <Logo>
-        <SvgLogoIcon />
-        <SvgTextLogo />
+        <SvgLogoIcon width={32} height={32} />
+        <SvgTextLogo width={88} height={17} />
       </Logo>
 
       {username && (
-        <WrapUser>
-          <Link href="/subscriptions">My subscriptions</Link>
-          <WrapUser ref={ref}>
-            <ButtonIcon
-              text={username}
-              icon={<StyledSvgChevron $isPopUp={isPopUp} strokeWidth={3} />}
-              onClick={() => setIsPopUp((prev) => !prev)}
-            />
+        <ButtonIcon
+          icon={<SvgMenuLine />}
+          onClick={() => setIsMobilePopUp((prev) => !prev)}
+        />
+      )}
 
-            {isPopUp && (
-              <HeaderPopUp onClose={handleClosePopUp} refExtra={ref} />
-            )}
-          </WrapUser>
-        </WrapUser>
+      {isMobilePopUp && (
+        <HeaderMobilePopUp username={username} onClose={handleClosePopUp} />
       )}
     </Root>
   );
@@ -53,7 +50,7 @@ const Root = styled.div`
   width: 100%;
   color: ${COLORS.color_100};
   ${TYPOGRAPHY.THICCCBOI_Medium_20px}
-  padding: 32px 86px;
+  padding: 28px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -63,6 +60,10 @@ const Logo = styled.div`
   display: flex;
   align-items: center;
   column-gap: 10px;
+`;
+
+const Settings = styled.div`
+  position: absolute;
 `;
 
 const WrapUser = styled.div`
