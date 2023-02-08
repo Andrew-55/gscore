@@ -1,2 +1,2 @@
 export { ROTATE, VISUALLY_HIDDEN } from "./common";
-export { COLORS, TYPOGRAPHY } from "./constants";
+export { COLORS, TYPOGRAPHY, Z_INDEX } from "./constants";

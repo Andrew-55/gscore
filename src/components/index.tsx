@@ -1,6 +1,10 @@
-export { Typography } from "./Typography";
-export { LineIcons } from "./LineIcons";
-export { ExampleButton } from "./ExampleButton";
-export { ExampleInput } from "./ExampleInput";
-export { ExampleCheckbox } from "./ExampleCheckbox";
-export { TestForm } from "./TestForm";
+export { Typography } from "./Example/Typography";
+export { LineIcons } from "./Example/LineIcons";
+export { ExampleButton } from "./Example/ExampleButton";
+export { ExampleInput } from "./Example/ExampleInput";
+export { ExampleCheckbox } from "./Example/ExampleCheckbox";
+export { TestForm } from "./Example/TestForm";
+export { Header } from "./Header";
+export { HeaderDropdownMenu } from "./HeaderDropdownMenu";
+export { HeaderMobile } from "./HeaderMobile";
+export { MobileBurgerMenu } from "./MobileBurgerMenu";

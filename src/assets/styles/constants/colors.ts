@@ -9,6 +9,7 @@ export const COLORS = {
   color_500: "#969696",
   color_600: "#737373",
   color_700: "#393939",
+  color_701: "#272727",
   color_800: "#0C0C0C",
   gren_300: "#05C168",
   red_100: "#FFEFF0",
@@ -23,4 +24,5 @@ export const COLORS = {
   checkbox_box_shadow: "rgba(20, 20, 43, 0.06)",
   checkbox_focus_box_shadow: "rgba(199, 199, 199, 0.3)",
   checkbox_focus_checked_box_shadow: "rgba(252, 88, 66, 0.3)",
+  black1: "rgba(24, 24, 24, 0.6);",
 };

@@ -1,27 +1,25 @@
 import * as React from "react";
 import { SVGProps } from "react";
 
-export const SvgChevronRight = ({
-  width = 12,
-  height = 20,
+export const SvgMenuLine = ({
+  width = 24,
+  height = 24,
   stroke = "#fff",
-  strokeWidth = 2,
   ...props
 }: SVGProps<SVGSVGElement>) => (
   <svg
     width={width}
     height={height}
-    viewBox="0 0 12 20"
+    viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
-      d="m1.5 19 9-9-9-9"
       stroke={stroke}
-      strokeWidth={strokeWidth}
+      strokeWidth={2}
       strokeLinecap="round"
-      strokeLinejoin="round"
+      d="M4 5h16M4 12h16M4 19h16"
     />
   </svg>
 );
