@@ -19,5 +19,5 @@ export const ButtonTab: FC<Props> = ({ className, text, ...props }) => {
 const Root = styled.button`
   text-align: center;
   white-space: nowrap;
-  border-bottom: 2px solid ${COLORS.without_color};
+  border-bottom: 2px solid ${COLORS.transparent};
 `;

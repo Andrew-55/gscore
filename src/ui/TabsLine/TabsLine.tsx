@@ -6,7 +6,7 @@ import { ButtonTab } from "@/ui";
 
 interface Props {
   activeIndex: number;
-  onClickTab: (i: number) => void;
+  onClickTab: (index: number) => void;
   tabs: string[];
 }
 

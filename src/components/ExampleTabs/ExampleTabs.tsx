@@ -4,6 +4,12 @@ import styled from "styled-components";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { TabsLine, Tabs } from "@/ui";
 
+enum TAB {
+  FIRST,
+  SECOND,
+  THIRD,
+}
+
 export const ExampleTabs = () => {
   const tabs = ["Profile", "Subscriptions", "Change password"];
   const [activeIndex, setActiveIndex] = useState(0);
@@ -28,13 +34,9 @@ export const ExampleTabs = () => {
           activeIndex={activeIndex}
           onClickTab={handleClickTab}
         />
-        {tabs[activeIndex] === "Profile" && <StyledDiv>Profile</StyledDiv>}
-        {tabs[activeIndex] === "Subscriptions" && (
-          <StyledDiv>Subscriptions</StyledDiv>
-        )}
-        {tabs[activeIndex] === "Change password" && (
-          <StyledDiv>Change password</StyledDiv>
-        )}
+        {activeIndex === TAB.FIRST && <StyledDiv>Profile</StyledDiv>}
+        {activeIndex === TAB.SECOND && <StyledDiv>Subscriptions</StyledDiv>}
+        {activeIndex === TAB.THIRD && <StyledDiv>Change password</StyledDiv>}
       </WrapTab>
       <WrapTab>
         <Tabs
@@ -42,13 +44,9 @@ export const ExampleTabs = () => {
           activeIndex={activeIndexTwo}
           onClickTab={handleClickTabTwo}
         />
-        {tabsTwo[activeIndexTwo] === "Create account" && (
-          <StyledDiv>Create account</StyledDiv>
-        )}
-        {tabsTwo[activeIndexTwo] === "Log in" && <StyledDiv>Log in</StyledDiv>}
-        {tabsTwo[activeIndexTwo] === "Checkout" && (
-          <StyledDiv>Checkout</StyledDiv>
-        )}
+        {activeIndexTwo === TAB.FIRST && <StyledDiv>Create account</StyledDiv>}
+        {activeIndexTwo === TAB.SECOND && <StyledDiv>Log in</StyledDiv>}
+        {activeIndexTwo === TAB.THIRD && <StyledDiv>Checkout</StyledDiv>}
       </WrapTab>
     </Root>
   );
