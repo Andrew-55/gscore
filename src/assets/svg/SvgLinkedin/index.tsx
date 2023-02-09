@@ -1,0 +1,1 @@
+export { SvgLinkedin } from "./SvgLinkedin";

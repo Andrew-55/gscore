@@ -17,3 +17,6 @@ export { SvgLogoIcon } from "./SvgLogoIcon";
 export { SvgSettings } from "./SvgSettings";
 export { SvgLogout } from "./SvgLogout";
 export { SvgMenuLine } from "./SvgMenuLine";
+export { SvgFacebook } from "./SvgFacebook";
+export { SvgTwitter } from "./SvgTwitter";
+export { SvgLinkedin } from "./SvgLinkedin";
