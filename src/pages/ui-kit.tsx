@@ -11,6 +11,7 @@ import {
   ExampleCheckbox,
   TestForm,
   Header,
+  Footer,
   HeaderMobile,
 } from "@/components";
 
@@ -26,6 +27,7 @@ export default function UiKit() {
   return (
     <Main>
       {isMobile ? <HeaderMobile username="Alex" /> : <Header username="Alex" />}
+      <Footer />
       <Typography />
       <ExampleButton />
       <LineIcons />

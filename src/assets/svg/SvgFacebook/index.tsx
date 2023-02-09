@@ -1,0 +1,1 @@
+export { SvgFacebook } from "./SvgFacebook";

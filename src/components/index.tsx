@@ -5,6 +5,7 @@ export { ExampleInput } from "./Example/ExampleInput";
 export { ExampleCheckbox } from "./Example/ExampleCheckbox";
 export { TestForm } from "./Example/TestForm";
 export { Header } from "./Header";
+export { Footer } from "./Footer";
 export { HeaderDropdownMenu } from "./HeaderDropdownMenu";
 export { HeaderMobile } from "./HeaderMobile";
 export { MobileBurgerMenu } from "./MobileBurgerMenu";
