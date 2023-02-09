@@ -18,13 +18,13 @@ export const Footer = () => {
           <StyledSvgLogoIcon />
           <StyledSvgTextLogo />
         </Logo>
-        <StyledParagraph>
+        <Paragraph>
           Ut enim ad minim veniam quis nostrud exercitation ea commodo
-        </StyledParagraph>
+        </Paragraph>
       </FooterColumn>
       <FooterBottom>
-        <StyledParagraphBottom>
-          Copyright © 2022 GScore | All Rights Reserved{" "}
+        <ParagraphBottom>
+          Copyright © {new Date().getFullYear()} GScore | All Rights Reserved{" "}
           <StyledSpan>
             |{" "}
             <StyledLink
@@ -41,7 +41,7 @@ export const Footer = () => {
               Privacy Policy
             </StyledLink>
           </StyledSpan>
-        </StyledParagraphBottom>
+        </ParagraphBottom>
         <SocialMedia>
           <a href="https://purrweb.com/" target={"_blank"} rel="noreferrer">
             <SvgFacebook />
@@ -115,11 +115,11 @@ const ParagraphStyle = css`
   }
 `;
 
-const StyledParagraph = styled.p`
+const Paragraph = styled.p`
   ${ParagraphStyle};
 `;
 
-const StyledParagraphBottom = styled.p`
+const ParagraphBottom = styled.p`
   margin-left: -18px;
   ${ParagraphStyle};
 
