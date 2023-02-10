@@ -10,19 +10,19 @@ interface Props {
 }
 
 export const THEMES = {
-  active: css`
+  ACTIVE: css`
     color: ${COLORS.gren_300};
   `,
-  hold: css`
+  HOLD: css`
     color: ${COLORS.orange_300};
   `,
-  inactive: css`
+  INACTIVE: css`
     color: ${COLORS.red_300};
   `,
 };
 
 export const Status: FC<Props> = ({ status }) => {
-  return <Root $status={status}>{status}</Root>;
+  return <Root $status={status}>{status.toLowerCase()}</Root>;
 };
 
 const Root = styled.span<{ $status: StatusType }>`

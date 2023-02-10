@@ -4,25 +4,21 @@ import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Card } from "@/components/Card";
 
 export const ExampleCard = () => {
-  const title = "Gscore";
-
   return (
     <Root>
       <Title>Cards</Title>
       <Card
-        title={title}
-        status="active"
-        typeLicense="Single site license"
+        name="Single site license"
+        status="ACTIVE"
         price="77"
-        validUntil={new Date(2023, 11, 15)}
+        currentPeriodEnd="15.11.2023"
       />
       <Card
-        title={title}
-        status="active"
-        typeLicense="Single site license"
-        price="77"
-        validUntil={new Date(2023, 11, 15)}
+        name="Single site license"
+        status="ACTIVE"
         isDisabled
+        price="77"
+        currentPeriodEnd="15.11.2023"
       />
     </Root>
   );

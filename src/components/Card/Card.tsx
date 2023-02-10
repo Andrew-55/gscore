@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import React, { FC } from "react";
 import styled, { css } from "styled-components";
 
@@ -6,36 +5,32 @@ import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Button, Status, StatusType } from "@/ui";
 
 interface Props {
-  title: string;
-  status: StatusType;
-  typeLicense: string;
+  name: string;
   price: string;
-  validUntil: Date;
+  status: StatusType;
+  currentPeriodEnd: string;
   isDisabled?: boolean;
 }
 
 export const Card: FC<Props> = ({
-  title,
+  name,
   status,
-  typeLicense,
   price,
-  validUntil,
+  currentPeriodEnd,
   isDisabled,
 }) => {
-  const dateString = `${dayjs(validUntil).format("DD.MM.YYYY")}`;
-
   return (
     <Root $isDisabled={isDisabled}>
       <Header>
-        <Title>{title}</Title>
+        <Title>Gscore</Title>
         <Status status={status} />
       </Header>
       <Content>
         <License>
-          <span>{typeLicense}</span>
+          <span>{name}</span>
           <span>${price}</span>
         </License>
-        <Valid>valid until {dateString}</Valid>
+        <Valid>valid until {currentPeriodEnd}</Valid>
         <StyledButton text="View" variant="secondary" isDisabled={isDisabled} />
       </Content>
     </Root>
@@ -49,16 +44,16 @@ const Root = styled.div<{ $isDisabled?: boolean }>`
   border-radius: 12px;
   box-shadow: 0px 24px 65px ${COLORS.card_box_shadow};
 
+  @media (max-width: 768px) {
+    max-width: 318px;
+    border-radius: 8px;
+  }
+
   ${({ $isDisabled }) =>
     $isDisabled &&
     css`
       opacity: 0.6;
     `}
-
-  @media (max-width: 768px) {
-    max-width: 318px;
-    border-radius: 8px;
-  }
 `;
 
 const Header = styled.div`
