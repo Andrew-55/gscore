@@ -14,6 +14,7 @@ import {
   Footer,
   HeaderMobile,
   ExampleTabs,
+  ExampleCard,
 } from "@/components";
 
 export default function UiKit() {
@@ -29,13 +30,14 @@ export default function UiKit() {
     <Main>
       {isMobile ? <HeaderMobile username="Alex" /> : <Header username="Alex" />}
       <ExampleTabs />
+      <ExampleCard />
       <Footer />
       <Typography />
       <ExampleButton />
       <LineIcons />
       <ExampleInput />
       <ExampleCheckbox />
-      <TestForm />
+      {/* <TestForm /> */}
     </Main>
   );
 }

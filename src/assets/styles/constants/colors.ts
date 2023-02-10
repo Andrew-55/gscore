@@ -26,4 +26,5 @@ export const COLORS = {
   checkbox_focus_checked_box_shadow: "rgba(252, 88, 66, 0.3)",
   black1: "rgba(24, 24, 24, 0.6);",
   transparent: "rgba(0, 0, 0, 0)",
+  card_box_shadow: "rgba(0, 0, 0, 0.12)",
 };
