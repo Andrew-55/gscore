@@ -14,14 +14,14 @@ export const ExampleCard = () => {
         status="active"
         typeLicense="Single site license"
         price="77"
-        valid_until={new Date(2023, 11, 15)}
+        validUntil={new Date(2023, 11, 15)}
       />
       <Card
         title={title}
         status="active"
         typeLicense="Single site license"
         price="77"
-        valid_until={new Date(2023, 11, 15)}
+        validUntil={new Date(2023, 11, 15)}
         isDisabled
       />
     </Root>

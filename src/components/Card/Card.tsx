@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import React, { FC } from "react";
 import styled, { css } from "styled-components";
 
@@ -9,7 +10,7 @@ interface Props {
   status: StatusType;
   typeLicense: string;
   price: string;
-  valid_until: Date;
+  validUntil: Date;
   isDisabled?: boolean;
 }
 
@@ -18,10 +19,10 @@ export const Card: FC<Props> = ({
   status,
   typeLicense,
   price,
-  valid_until,
+  validUntil,
   isDisabled,
 }) => {
-  const dateString = `${valid_until.getDate()}.${valid_until.getMonth()}.${valid_until.getFullYear()}`;
+  const dateString = `${dayjs(validUntil).format("DD.MM.YYYY")}`;
 
   return (
     <Root $isDisabled={isDisabled}>
@@ -30,10 +31,10 @@ export const Card: FC<Props> = ({
         <Status status={status} />
       </Header>
       <Content>
-        <Wrap>
-          <Span>{typeLicense}</Span>
-          <Span>${price}</Span>
-        </Wrap>
+        <License>
+          <span>{typeLicense}</span>
+          <span>${price}</span>
+        </License>
         <Valid>valid until {dateString}</Valid>
         <StyledButton text="View" variant="secondary" isDisabled={isDisabled} />
       </Content>
@@ -85,24 +86,18 @@ const Content = styled.div`
   }
 `;
 
-const Wrap = styled.div`
+const License = styled.div`
   display: flex;
   column-gap: 10px;
   justify-content: space-between;
   margin-bottom: 12px;
-
-  @media (max-width: 768px) {
-    margin-bottom: 4px;
-  }
-`;
-
-const Span = styled.span`
   color: ${COLORS.color_100};
   ${TYPOGRAPHY.THICCCBOI_Medium_24px}
 
   @media (max-width: 768px) {
     ${TYPOGRAPHY.THICCCBOI_Medium_18px}
     line-height: 30px;
+    margin-bottom: 4px;
   }
 `;
 
