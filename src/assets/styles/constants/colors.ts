@@ -20,7 +20,7 @@ export const COLORS = {
   btn_box_shadow: "rgba(252, 88, 66, 0.2)",
   btn_border_primary: "rgba(252, 88, 66, 0.3)",
   btn_border_secondary: "rgba(255, 255, 255, 0.3)",
-  input_box_shadow_disabled: "rgba(20, 20, 43, 0.06)",
+  input_box_shadow: "rgba(20, 20, 43, 0.06)",
   checkbox_box_shadow: "rgba(20, 20, 43, 0.06)",
   checkbox_focus_box_shadow: "rgba(199, 199, 199, 0.3)",
   checkbox_focus_checked_box_shadow: "rgba(252, 88, 66, 0.3)",

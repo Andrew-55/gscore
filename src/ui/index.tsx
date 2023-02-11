@@ -7,3 +7,4 @@ export { TabsLine } from "./TabsLine";
 export { Tabs } from "./Tabs";
 export { Status } from "./Status";
 export type { StatusType } from "./Status";
+export { InputLabel } from "./InputLabel";
