@@ -89,6 +89,12 @@ export const TYPOGRAPHY = {
   font-size: 22px;
   line-height: 28px;
   `,
+  THICCCBOI_Bold_24px: `
+  font-family: "THICCCBOI", sans serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 26px;
+  `,
   THICCCBOI_Bold_28px: `
     font-family: "THICCCBOI", sans serif;
     font-weight: 700;
