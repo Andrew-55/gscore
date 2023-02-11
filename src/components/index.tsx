@@ -14,3 +14,4 @@ export { Card } from "./Card";
 export { ExampleCard } from "./Example/ExampleCard";
 export { PricingCard } from "./PricingCard";
 export { ExamplePricingCard } from "./Example/ExamplePricingCard";
+export { Layout } from "./Layout";

@@ -61,7 +61,6 @@ export const Footer = () => {
 const Root = styled.div`
   position: relative;
   width: 100%;
-  color: ${COLORS.color_100};
   ${TYPOGRAPHY.THICCCBOI_Medium_20px}
   padding: 60px 86px 42px 86px;
   border-top: 1px solid ${COLORS.color_700};

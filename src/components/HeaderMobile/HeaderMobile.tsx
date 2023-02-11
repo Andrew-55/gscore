@@ -42,7 +42,6 @@ export const HeaderMobile: FC<Props> = ({ username }) => {
 const Root = styled.div`
   position: relative;
   width: 100%;
-  color: ${COLORS.color_100};
   ${TYPOGRAPHY.THICCCBOI_Medium_20px}
   padding: 28px 16px;
   display: flex;
