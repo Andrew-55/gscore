@@ -47,6 +47,10 @@ const StyledButtonTab = styled(ButtonTab)<{ $isActive: boolean }>`
   padding: 0 24px 12px 24px;
   ${TYPOGRAPHY.THICCCBOI_Bold_18px}
 
+  @media (max-width: 768px) {
+    ${TYPOGRAPHY.THICCCBOI_Bold_16px};
+  }
+
   ${({ $isActive }) =>
     $isActive &&
     css`

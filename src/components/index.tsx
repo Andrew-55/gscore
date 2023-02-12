@@ -15,3 +15,5 @@ export { ExampleCard } from "./Example/ExampleCard";
 export { PricingCard } from "./PricingCard";
 export { ExamplePricingCard } from "./Example/ExamplePricingCard";
 export { Layout } from "./Layout";
+export { PersonalInfoForm } from "./PersonalInfoForm";
+export { ChangePasswordForm } from "./ChangePasswordForm";

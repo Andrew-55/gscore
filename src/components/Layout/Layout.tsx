@@ -31,7 +31,11 @@ export const Layout: FC<Props> = ({ children }) => {
 };
 
 const Wrap = styled.div`
-  min-height: 100vh;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   color: ${COLORS.color_100};
