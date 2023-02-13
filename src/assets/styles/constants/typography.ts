@@ -38,7 +38,12 @@ export const TYPOGRAPHY = {
     font-size: 16px;
     line-height: 18px;
   `,
-
+  THICCCBOI_Regular_18px: `
+    font-family: "THICCCBOI", sans serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 30px;
+  `,
   THICCCBOI_Medium_16px: `
     font-family: "THICCCBOI", sans serif;
     font-weight: 500;
@@ -100,6 +105,12 @@ export const TYPOGRAPHY = {
     font-weight: 700;
     font-size: 28px;
     line-height: 40px;
+  `,
+  THICCCBOI_Bold_44px: `
+  font-family: "THICCCBOI", sans serif;
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 54px;
   `,
   THICCCBOI_Bold_54px: `
     font-family: "THICCCBOI", sans serif;

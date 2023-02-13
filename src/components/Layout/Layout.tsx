@@ -34,8 +34,7 @@ const Wrap = styled.div`
   max-width: 1440px;
   margin-left: auto;
   margin-right: auto;
-  height: 100vh;
-  min-height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   color: ${COLORS.color_100};

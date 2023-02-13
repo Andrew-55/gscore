@@ -21,8 +21,10 @@ export const ListItem: FC<Props> = ({ text, colorIcon }) => {
 };
 
 const Root = styled.li`
-  display: flex;
+  display: grid;
+  grid-template-columns: 28px 1fr;
   align-items: center;
+  justify-items: start;
   column-gap: 14px;
 `;
 
