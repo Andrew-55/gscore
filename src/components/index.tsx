@@ -12,3 +12,5 @@ export { MobileBurgerMenu } from "./MobileBurgerMenu";
 export { ExampleTabs } from "./Example/ExampleTabs";
 export { Card } from "./Card";
 export { ExampleCard } from "./Example/ExampleCard";
+export { PricingCard } from "./PricingCard";
+export { ExamplePricingCard } from "./Example/ExamplePricingCard";

@@ -27,4 +27,6 @@ export const COLORS = {
   black1: "rgba(24, 24, 24, 0.6);",
   transparent: "rgba(0, 0, 0, 0)",
   card_box_shadow: "rgba(0, 0, 0, 0.12)",
+  box_shadow_03: "rgba(0, 0, 0, 0.06)",
+  white_opacity_70: "rgba(255, 255, 255, 0.7)",
 };

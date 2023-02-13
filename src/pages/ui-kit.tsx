@@ -15,6 +15,7 @@ import {
   HeaderMobile,
   ExampleTabs,
   ExampleCard,
+  ExamplePricingCard,
 } from "@/components";
 import { ExampleCode } from "@/components/Example/ExampleCode";
 
@@ -30,6 +31,7 @@ export default function UiKit() {
   return (
     <Main>
       {isMobile ? <HeaderMobile username="Alex" /> : <Header username="Alex" />}
+      <ExamplePricingCard />
       <ExampleCode />
       <ExampleTabs />
       <ExampleCard />
