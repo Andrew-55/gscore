@@ -62,6 +62,10 @@ const Root = styled.div<{ $isActive?: boolean }>`
   border-radius: 12px;
   box-shadow: 0px 8px 28px ${COLORS.box_shadow_03};
 
+  @media (max-width: 768px) {
+    padding: 24px 24px;
+  }
+
   ${({ $isActive }) =>
     $isActive &&
     css`
