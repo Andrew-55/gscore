@@ -12,7 +12,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
 }
 
-const Input = React.forwardRef<HTMLInputElement, Props>(
+export const Input = React.forwardRef<HTMLInputElement, Props>(
   (
     { className, isDisabled, isSuccess, isError, errorMessage, ...props },
     ref
@@ -40,7 +40,6 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
 );
 
 Input.displayName = "Input";
-export { Input };
 
 const Root = styled.div`
   position: relative;
@@ -68,7 +67,7 @@ const StyledInput = styled.input<{ $isSuccess?: boolean; $isError?: boolean }>`
   &:disabled {
     border: 1px solid ${COLORS.color_300};
     opacity: 0.6;
-    box-shadow: 0px 2px 12px ${COLORS.input_box_shadow_disabled};
+    box-shadow: 0px 2px 12px ${COLORS.input_box_shadow};
   }
 
   ${({ $isSuccess }) =>

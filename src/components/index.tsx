@@ -9,3 +9,6 @@ export { Footer } from "./Footer";
 export { HeaderDropdownMenu } from "./HeaderDropdownMenu";
 export { HeaderMobile } from "./HeaderMobile";
 export { MobileBurgerMenu } from "./MobileBurgerMenu";
+export { ExampleTabs } from "./Example/ExampleTabs";
+export { Card } from "./Card";
+export { ExampleCard } from "./Example/ExampleCard";

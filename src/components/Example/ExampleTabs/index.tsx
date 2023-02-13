@@ -1,0 +1,1 @@
+export { ExampleTabs } from "./ExampleTabs";

@@ -77,6 +77,18 @@ export const TYPOGRAPHY = {
     font-size: 16px;
     line-height: 18px;
   `,
+  THICCCBOI_Bold_18px: `
+  font-family: "THICCCBOI", sans serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 20px;
+  `,
+  THICCCBOI_Bold_22px: `
+  font-family: "THICCCBOI", sans serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 28px;
+  `,
   THICCCBOI_Bold_28px: `
     font-family: "THICCCBOI", sans serif;
     font-weight: 700;

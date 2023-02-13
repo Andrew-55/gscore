@@ -13,7 +13,10 @@ import {
   Header,
   Footer,
   HeaderMobile,
+  ExampleTabs,
+  ExampleCard,
 } from "@/components";
+import { ExampleCode } from "@/components/Example/ExampleCode";
 
 export default function UiKit() {
   const [isMobile, setIsMobile] = useState(false);
@@ -27,13 +30,16 @@ export default function UiKit() {
   return (
     <Main>
       {isMobile ? <HeaderMobile username="Alex" /> : <Header username="Alex" />}
+      <ExampleCode />
+      <ExampleTabs />
+      <ExampleCard />
       <Footer />
       <Typography />
       <ExampleButton />
       <LineIcons />
       <ExampleInput />
       <ExampleCheckbox />
-      <TestForm />
+      {/* <TestForm /> */}
     </Main>
   );
 }

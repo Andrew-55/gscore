@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import styled, { css } from "styled-components";
+import React from "react";
+import styled from "styled-components";
 
 import { COLORS, TYPOGRAPHY, VISUALLY_HIDDEN } from "@/assets/styles";
 import { SvgCheck } from "@/assets/svg";
@@ -28,7 +28,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, Props>(
         <CheckboxDisplay>
           <StyledSvgCheck strokeWidth={3} />
         </CheckboxDisplay>
-        {text}
+        {!!text && <TextLabel>{text}</TextLabel>}
       </Root>
     );
   }
@@ -44,9 +44,12 @@ const Root = styled.label`
   color: ${COLORS.color_100};
   display: grid;
   grid-template-columns: 28px 1fr;
-  column-gap: 14px;
   align-items: center;
   justify-content: center;
+`;
+
+const TextLabel = styled.span`
+  margin-left: 14px;
 `;
 
 const CheckboxDisplay = styled.div`
@@ -94,6 +97,7 @@ const Input = styled.input`
   &:checked:focus + ${CheckboxDisplay} {
     box-shadow: 0 0 0 4px ${COLORS.checkbox_focus_checked_box_shadow};
   }
+
   &:checked:hover:not(:disabled) + ${CheckboxDisplay} {
     background-color: ${COLORS.red_400};
     border: 1px solid ${COLORS.red_400};
