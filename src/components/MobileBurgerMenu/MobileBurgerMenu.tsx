@@ -55,7 +55,7 @@ export const MobileBurgerMenu: FC<Props> = ({ username, onClose }) => {
                   Settings
                 </Wrap>
               </Link>
-              <Link href="/login">
+              <Link href="/start">
                 <Wrap>
                   <SvgLogout width={20} height={20} stroke={COLORS.color_500} />
                   Logout

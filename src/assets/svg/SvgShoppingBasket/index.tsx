@@ -1,0 +1,1 @@
+export { SvgShoppingBasket } from "./SvgShoppingBasket";

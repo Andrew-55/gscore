@@ -27,7 +27,9 @@ const Root = styled.ul`
   color: ${COLORS.color_100};
   display: flex;
   column-gap: 16px;
+  row-gap: 16px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 `;
 
 const StyledButtonTab = styled(ButtonTab)`
@@ -37,6 +39,11 @@ const StyledButtonTab = styled(ButtonTab)`
   border: none;
   text-align: start;
   ${TYPOGRAPHY.THICCCBOI_Semi_Bold_20px}
+
+  @media (max-width: 768px) {
+    ${TYPOGRAPHY.THICCCBOI_Semi_Bold_16px}
+    width: 150px;
+  }
 `;
 
 const Line = styled.div<{ $isRed: boolean }>`

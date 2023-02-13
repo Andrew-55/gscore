@@ -30,7 +30,7 @@ export const HeaderDropdownMenu: FC<Props> = ({ username, onClose }) => {
             <SvgSettings /> Settings
           </Wrap>
         </Link>
-        <Link href="/login">
+        <Link href="/start">
           <Wrap>
             <SvgLogout /> Logout
           </Wrap>

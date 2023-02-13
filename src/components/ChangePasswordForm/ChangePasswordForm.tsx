@@ -26,7 +26,7 @@ export const ChangePasswordForm: FC<Props> = ({ onConfirm }) => {
     formState: { errors, isValid },
     reset,
   } = useForm({
-    mode: "onSubmit",
+    mode: "onBlur",
     defaultValues: {
       currentPassword: "",
       newPassword: "",
