@@ -17,7 +17,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 
 export const InputLabel = React.forwardRef<HTMLInputElement, Props>(
   ({ className, label, isDisabled, isCopy, value, ...props }, ref) => {
-    const isValue = !!value;
+    const hasValue = !!value;
 
     return (
       <Root>
@@ -31,7 +31,7 @@ export const InputLabel = React.forwardRef<HTMLInputElement, Props>(
           {...props}
         />
 
-        {isCopy && isValue && (
+        {isCopy && hasValue && (
           <StylecButtonIcon icon={<SvgCopy onClick={() => copy(value)} />} />
         )}
       </Root>
