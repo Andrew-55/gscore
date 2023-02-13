@@ -1,16 +1,11 @@
 import styled from "styled-components";
 
-import { COLORS } from "@/assets/styles";
+import { Layout } from "@/components";
 
 export default function Settings() {
   return (
-    <Main>
+    <Layout>
       <h1>Settings</h1>
-    </Main>
+    </Layout>
   );
 }
-
-const Main = styled.main`
-  padding: 20px;
-  color: ${COLORS.color_800};
-`;

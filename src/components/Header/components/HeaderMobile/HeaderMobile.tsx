@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
 
-import { COLORS, TYPOGRAPHY } from "@/assets/styles";
+import { TYPOGRAPHY } from "@/assets/styles";
 import { SvgLogoIcon, SvgMenuLine, SvgTextLogo } from "@/assets/svg";
 import { MobileBurgerMenu } from "@/components";
 import { ButtonIcon } from "@/ui";
@@ -39,7 +39,7 @@ export const HeaderMobile: FC<Props> = ({ username }) => {
   );
 };
 
-const Root = styled.div`
+const Root = styled.header`
   position: relative;
   width: 100%;
   ${TYPOGRAPHY.THICCCBOI_Medium_20px}
