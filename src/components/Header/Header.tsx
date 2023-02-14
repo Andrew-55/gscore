@@ -8,11 +8,11 @@ export const Header = () => {
   const [isMobile, setIsMobile] = useState(false);
   const username = "Alex";
 
-  let mobile = useMediaQuery({ query: "(max-width: 768px)" });
+  let isMobileSize = useMediaQuery({ query: "(max-width: 768px)" });
 
   useEffect(() => {
-    setIsMobile(mobile);
-  }, [mobile, setIsMobile]);
+    setIsMobile(isMobileSize);
+  }, [isMobileSize]);
 
   return (
     <>
