@@ -4,18 +4,36 @@ import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { PricingCard } from "@/components/PricingCard";
 
 export const ExamplePricingCard = () => {
+  const handleClickButton = (id: number) => {
+    console.warn(id);
+  };
+
   return (
     <Root>
       <Title>Pricing Card</Title>
       <WrapCard>
-        <PricingCard name="Single site license" price="77" sitesCount={1} />
         <PricingCard
+          id={1}
+          name="Single site license"
+          price="77"
+          sitesCount={1}
+          onClickButton={handleClickButton}
+        />
+        <PricingCard
+          id={2}
           name="3 Site license"
           price="117"
           sitesCount={3}
-          isActive
+          isRed
+          onClickButton={handleClickButton}
         />
-        <PricingCard name="10 Site license" price="167" sitesCount={10} />
+        <PricingCard
+          id={3}
+          name="10 Site license"
+          price="167"
+          sitesCount={10}
+          onClickButton={handleClickButton}
+        />
       </WrapCard>
     </Root>
   );
