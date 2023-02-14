@@ -9,9 +9,9 @@ import { ChangePasswordFormValues } from "@/components/ChangePasswordForm/Change
 import { PersonalInfoFormValues } from "@/components/PersonalInfoForm/PersonalInfoForm";
 import { TabsLine } from "@/ui";
 
-enum TAB {
-  FIRST,
-  SECOND,
+enum TABS {
+  PERSONAL_INFO = "Personal Info",
+  CHANGE_PASSWORD = "Change password",
 }
 
 export default function Settings() {
@@ -26,14 +26,14 @@ export default function Settings() {
     username,
     email,
   }: PersonalInfoFormValues) => {
-    alert(username + email);
+    console.warn(username + email);
   };
 
   const handleChangePassword = ({
     currentPassword,
     newPassword,
   }: ChangePasswordFormValues) => {
-    alert(currentPassword + " " + newPassword);
+    console.warn(currentPassword + " " + newPassword);
   };
 
   return (
@@ -50,14 +50,15 @@ export default function Settings() {
             onClickTab={handleClickTab}
           />
           <WrapForm>
-            {activeIndex === TAB.FIRST && (
+            {tabs[activeIndex] === TABS.PERSONAL_INFO && (
               <PersonalInfoForm
                 username="Alex"
                 email="alex@test.ru"
                 onConfirm={handleChangePersonalInfo}
               />
             )}
-            {activeIndex === TAB.SECOND && (
+
+            {tabs[activeIndex] === TABS.CHANGE_PASSWORD && (
               <ChangePasswordForm onConfirm={handleChangePassword} />
             )}
           </WrapForm>
