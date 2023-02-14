@@ -30,7 +30,7 @@ export default function UiKit() {
 
   return (
     <Main>
-      {isMobile ? <HeaderMobile username="Alex" /> : <Header username="Alex" />}
+      <Header />
       <ExamplePricingCard />
       <ExampleCode />
       <ExampleTabs />

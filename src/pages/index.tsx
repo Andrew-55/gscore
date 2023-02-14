@@ -1,4 +1,7 @@
 import Head from "next/head";
+import styled from "styled-components";
+
+import { Layout } from "@/components";
 
 export default function Home() {
   return (
@@ -9,7 +12,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main></main>
+      <Layout>
+        <Root>
+          <h1>Home</h1>
+        </Root>
+      </Layout>
     </>
   );
 }
+
+const Root = styled.div`
+  padding: 30px 86px;
+`;

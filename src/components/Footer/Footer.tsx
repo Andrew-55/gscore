@@ -58,7 +58,7 @@ export const Footer = () => {
   );
 };
 
-const Root = styled.div`
+const Root = styled.footer`
   position: relative;
   width: 100%;
   ${TYPOGRAPHY.THICCCBOI_Medium_20px}

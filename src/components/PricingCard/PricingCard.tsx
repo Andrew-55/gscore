@@ -56,11 +56,14 @@ const Root = styled.div<{ $isActive?: boolean }>`
   max-width: 404px;
   width: 100%;
   padding: 42px 48px;
-  text-align: center;
   color: ${COLORS.color_100};
   background-color: ${COLORS.color_701};
   border-radius: 12px;
   box-shadow: 0px 8px 28px ${COLORS.box_shadow_03};
+
+  @media (max-width: 768px) {
+    padding: 24px 24px;
+  }
 
   ${({ $isActive }) =>
     $isActive &&
@@ -70,12 +73,14 @@ const Root = styled.div<{ $isActive?: boolean }>`
 `;
 
 const Description = styled.p`
+  text-align: center;
   ${TYPOGRAPHY.THICCCBOI_Medium_18px}
   line-height: 30px;
   margin-bottom: 40px;
 `;
 
 const Name = styled.h3`
+  text-align: center;
   ${TYPOGRAPHY.THICCCBOI_Bold_24px};
   margin-bottom: 8px;
 `;

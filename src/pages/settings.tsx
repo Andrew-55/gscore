@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { TYPOGRAPHY } from "@/assets/styles";
 import { ChangePasswordForm, PersonalInfoForm } from "@/components";
+import { Layout } from "@/components";
 import { ChangePasswordFormValues } from "@/components/ChangePasswordForm/ChangePasswordForm";
 import { PersonalInfoFormValues } from "@/components/PersonalInfoForm/PersonalInfoForm";
 import { TabsLine } from "@/ui";
@@ -35,27 +36,28 @@ export default function Settings() {
   };
 
   return (
-    <Main>
-      <Title>Settings</Title>
-      <TabsLine
-        tabs={tabs}
-        activeIndex={activeIndex}
-        onClickTab={handleClickTab}
-      />
-
-      <WrapForm>
-        {activeIndex === TAB.FIRST && (
-          <PersonalInfoForm
-            username="Alex"
-            email="alex@test.ru"
-            onConfirm={handleChangePersonalInfo}
-          />
-        )}
-        {activeIndex === TAB.SECOND && (
-          <ChangePasswordForm onConfirm={handleChangePassword} />
-        )}
-      </WrapForm>
-    </Main>
+    <Layout>
+      <Main>
+        <Title>Settings</Title>
+        <TabsLine
+          tabs={tabs}
+          activeIndex={activeIndex}
+          onClickTab={handleClickTab}
+        />
+        <WrapForm>
+          {activeIndex === TAB.FIRST && (
+            <PersonalInfoForm
+              username="Alex"
+              email="alex@test.ru"
+              onConfirm={handleChangePersonalInfo}
+            />
+          )}
+          {activeIndex === TAB.SECOND && (
+            <ChangePasswordForm onConfirm={handleChangePassword} />
+          )}
+        </WrapForm>
+      </Main>
+    </Layout>
   );
 }
 
