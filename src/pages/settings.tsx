@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React, { useState } from "react";
 import styled from "styled-components";
 
@@ -36,28 +37,33 @@ export default function Settings() {
   };
 
   return (
-    <Layout>
-      <Main>
-        <Title>Settings</Title>
-        <TabsLine
-          tabs={tabs}
-          activeIndex={activeIndex}
-          onClickTab={handleClickTab}
-        />
-        <WrapForm>
-          {activeIndex === TAB.FIRST && (
-            <PersonalInfoForm
-              username="Alex"
-              email="alex@test.ru"
-              onConfirm={handleChangePersonalInfo}
-            />
-          )}
-          {activeIndex === TAB.SECOND && (
-            <ChangePasswordForm onConfirm={handleChangePassword} />
-          )}
-        </WrapForm>
-      </Main>
-    </Layout>
+    <>
+      <Head>
+        <title>Settings</title>
+      </Head>
+      <Layout>
+        <Main>
+          <Title>Settings</Title>
+          <TabsLine
+            tabs={tabs}
+            activeIndex={activeIndex}
+            onClickTab={handleClickTab}
+          />
+          <WrapForm>
+            {activeIndex === TAB.FIRST && (
+              <PersonalInfoForm
+                username="Alex"
+                email="alex@test.ru"
+                onConfirm={handleChangePersonalInfo}
+              />
+            )}
+            {activeIndex === TAB.SECOND && (
+              <ChangePasswordForm onConfirm={handleChangePassword} />
+            )}
+          </WrapForm>
+        </Main>
+      </Layout>
+    </>
   );
 }
 

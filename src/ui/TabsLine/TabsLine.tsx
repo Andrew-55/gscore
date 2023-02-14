@@ -47,6 +47,16 @@ const StyledButtonTab = styled(ButtonTab)<{ $isActive: boolean }>`
   padding: 0 24px 12px 24px;
   ${TYPOGRAPHY.THICCCBOI_Bold_18px}
 
+  &:hover, &:focus {
+    color: ${COLORS.color_600};
+    border-bottom: 2px solid ${COLORS.color_600};
+  }
+
+  &:active {
+    color: ${COLORS.red_400};
+    border-bottom: 2px solid ${COLORS.red_400};
+  }
+
   @media (max-width: 768px) {
     ${TYPOGRAPHY.THICCCBOI_Bold_16px};
   }
@@ -56,5 +66,11 @@ const StyledButtonTab = styled(ButtonTab)<{ $isActive: boolean }>`
     css`
       color: ${COLORS.primary_01};
       border-bottom: 2px solid ${COLORS.primary_01};
+
+      &:hover,
+      &:focus {
+        color: ${COLORS.red_400};
+        border-bottom: 2px solid ${COLORS.red_400};
+      }
     `}
 `;
