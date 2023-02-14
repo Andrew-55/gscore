@@ -12,7 +12,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
 }
 
-const Input = React.forwardRef<HTMLInputElement, Props>(
+export const Input = React.forwardRef<HTMLInputElement, Props>(
   (
     { className, isDisabled, isSuccess, isError, errorMessage, ...props },
     ref
@@ -40,7 +40,6 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
 );
 
 Input.displayName = "Input";
-export { Input };
 
 const Root = styled.div`
   position: relative;

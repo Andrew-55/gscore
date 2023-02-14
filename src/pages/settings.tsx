@@ -1,15 +1,17 @@
+import Head from "next/head";
 import React, { useState } from "react";
 import styled from "styled-components";
 
 import { TYPOGRAPHY } from "@/assets/styles";
 import { ChangePasswordForm, PersonalInfoForm } from "@/components";
+import { Layout } from "@/components";
 import { ChangePasswordFormValues } from "@/components/ChangePasswordForm/ChangePasswordForm";
 import { PersonalInfoFormValues } from "@/components/PersonalInfoForm/PersonalInfoForm";
 import { TabsLine } from "@/ui";
 
-enum TAB {
-  FIRST,
-  SECOND,
+enum TABS {
+  PERSONAL_INFO = "Personal Info",
+  CHANGE_PASSWORD = "Change password",
 }
 
 export default function Settings() {
@@ -24,38 +26,45 @@ export default function Settings() {
     username,
     email,
   }: PersonalInfoFormValues) => {
-    alert(username + email);
+    console.warn(username + email);
   };
 
   const handleChangePassword = ({
     currentPassword,
     newPassword,
   }: ChangePasswordFormValues) => {
-    alert(currentPassword + " " + newPassword);
+    console.warn(currentPassword + " " + newPassword);
   };
 
   return (
-    <Main>
-      <Title>Settings</Title>
-      <TabsLine
-        tabs={tabs}
-        activeIndex={activeIndex}
-        onClickTab={handleClickTab}
-      />
-
-      <WrapForm>
-        {activeIndex === TAB.FIRST && (
-          <PersonalInfoForm
-            username="Alex"
-            email="alex@test.ru"
-            onConfirm={handleChangePersonalInfo}
+    <>
+      <Head>
+        <title>Settings</title>
+      </Head>
+      <Layout>
+        <Main>
+          <Title>Settings</Title>
+          <TabsLine
+            tabs={tabs}
+            activeIndex={activeIndex}
+            onClickTab={handleClickTab}
           />
-        )}
-        {activeIndex === TAB.SECOND && (
-          <ChangePasswordForm onConfirm={handleChangePassword} />
-        )}
-      </WrapForm>
-    </Main>
+          <WrapForm>
+            {tabs[activeIndex] === TABS.PERSONAL_INFO && (
+              <PersonalInfoForm
+                username="Alex"
+                email="alex@test.ru"
+                onConfirm={handleChangePersonalInfo}
+              />
+            )}
+
+            {tabs[activeIndex] === TABS.CHANGE_PASSWORD && (
+              <ChangePasswordForm onConfirm={handleChangePassword} />
+            )}
+          </WrapForm>
+        </Main>
+      </Layout>
+    </>
   );
 }
 

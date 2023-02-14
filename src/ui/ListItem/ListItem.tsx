@@ -15,7 +15,7 @@ export const ListItem: FC<Props> = ({ text, colorIcon }) => {
       <WrapIcon>
         <SvgCheck stroke={colorIcon} width={14} height={10} strokeWidth={3.5} />
       </WrapIcon>
-      {text}
+      <Text>{text}</Text>
     </Root>
   );
 };
@@ -36,4 +36,8 @@ const WrapIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const Text = styled.span`
+  text-align: start;
 `;

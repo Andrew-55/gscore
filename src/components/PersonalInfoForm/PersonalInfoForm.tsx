@@ -63,6 +63,7 @@ export const PersonalInfoForm: FC<Props> = ({ username, email, onConfirm }) => {
           isSuccess={isValid}
           autoFocus
         />
+
         <Input
           placeholder="Email"
           type="email"
@@ -72,7 +73,6 @@ export const PersonalInfoForm: FC<Props> = ({ username, email, onConfirm }) => {
           isError={!!errors.email}
           errorMessage={errors.email?.message}
           isSuccess={isValid}
-          autoFocus
         />
       </WrapInput>
       <StyledButton text="Save" type="submit" variant="primary" />

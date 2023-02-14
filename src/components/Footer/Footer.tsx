@@ -43,22 +43,34 @@ export const Footer = () => {
           </StyledSpan>
         </ParagraphBottom>
         <SocialMedia>
-          <a href="https://purrweb.com/" target={"_blank"} rel="noreferrer">
+          <SocialMediaLink
+            href="https://purrweb.com/"
+            target={"_blank"}
+            rel="noreferrer"
+          >
             <SvgFacebook />
-          </a>
-          <a href="https://purrweb.com/" target={"_blank"} rel="noreferrer">
+          </SocialMediaLink>
+          <SocialMediaLink
+            href="https://purrweb.com/"
+            target={"_blank"}
+            rel="noreferrer"
+          >
             <SvgTwitter />
-          </a>
-          <a href="https://purrweb.com/" target={"_blank"} rel="noreferrer">
+          </SocialMediaLink>
+          <SocialMediaLink
+            href="https://purrweb.com/"
+            target={"_blank"}
+            rel="noreferrer"
+          >
             <SvgLinkedin />
-          </a>
+          </SocialMediaLink>
         </SocialMedia>
       </FooterBottom>
     </Root>
   );
 };
 
-const Root = styled.div`
+const Root = styled.footer`
   position: relative;
   width: 100%;
   ${TYPOGRAPHY.THICCCBOI_Medium_20px}
@@ -154,6 +166,34 @@ const SocialMedia = styled.div`
   align-items: center;
 `;
 
+const SocialMediaLink = styled.a`
+  fill: ${COLORS.color_100};
+
+  &:hover {
+    fill: ${COLORS.primary_01};
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    fill: ${COLORS.primary_01};
+  }
+
+  &:active {
+    fill: ${COLORS.red_400};
+  }
+`;
+
 const StyledLink = styled.a`
   border-bottom: 1px solid ${COLORS.color_100};
+
+  &:hover,
+  &:focus {
+    color: ${COLORS.primary_01};
+    border-bottom: 1px solid ${COLORS.primary_01};
+  }
+
+  &:active {
+    color: ${COLORS.red_400};
+    border-bottom: 1px solid ${COLORS.red_400};
+  }
 `;
