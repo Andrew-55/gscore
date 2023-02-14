@@ -69,7 +69,6 @@ export const ChangePasswordForm: FC<Props> = ({ onConfirm }) => {
           {...register("newPassword", {
             required: "Field can't be empty",
             validate: (value: string) => {
-              checkPasswordLength(value);
               if (watch("currentPassword") === value) {
                 return "The password must be different from the existing one";
               }
