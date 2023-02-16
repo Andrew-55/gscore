@@ -89,6 +89,7 @@ const Logo = styled.div`
 `;
 
 const StyledSvgLogoIcon = styled(SvgLogoIcon)`
+  fill: ${COLORS.color_100};
   @media (max-width: 768px) {
     width: 32px;
     height: 32px;
@@ -96,6 +97,7 @@ const StyledSvgLogoIcon = styled(SvgLogoIcon)`
 `;
 
 const StyledSvgTextLogo = styled(SvgTextLogo)`
+  fill: ${COLORS.color_100};
   @media (max-width: 768px) {
     width: 88px;
     height: 17px;
@@ -168,6 +170,7 @@ const SocialMedia = styled.div`
 
 const SocialMediaLink = styled.a`
   fill: ${COLORS.color_100};
+  transition: all 0.3s ease-out;
 
   &:hover {
     fill: ${COLORS.primary_01};
@@ -190,6 +193,7 @@ const StyledLink = styled.a`
   &:focus {
     color: ${COLORS.primary_01};
     border-bottom: 1px solid ${COLORS.primary_01};
+    transition: all 0.3s ease-out;
   }
 
   &:active {

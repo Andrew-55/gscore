@@ -4,7 +4,7 @@ import { SVGProps } from "react";
 export const SvgMenuLine = ({
   width = 24,
   height = 24,
-  stroke = "#fff",
+  stroke,
   ...props
 }: SVGProps<SVGSVGElement>) => (
   <svg

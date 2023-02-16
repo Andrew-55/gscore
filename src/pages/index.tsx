@@ -1,4 +1,5 @@
 import Head from "next/head";
+import ScrollContainer from "react-indiana-drag-scroll";
 import styled from "styled-components";
 
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
@@ -76,7 +77,8 @@ export default function Home() {
       <Layout>
         <Main>
           <Title>Get started with Gscore today!</Title>
-          <WrapPricingCard>
+
+          <WrapPricingCard horizontal hideScrollbars={false}>
             {pricingCards.map((card) => {
               return (
                 <PricingCard
@@ -90,6 +92,7 @@ export default function Home() {
               );
             })}
           </WrapPricingCard>
+
           <Question>
             <p>Have more than 10 sites?</p>
             <StyledLink
@@ -107,7 +110,7 @@ export default function Home() {
 }
 
 const Main = styled.main`
-  padding: 16px 56px;
+  padding: 16px 86px;
 
   @media (max-width: 1200px) {
     padding: 16px 32px;
@@ -128,32 +131,31 @@ const Title = styled.h1`
   }
 `;
 
-const WrapPricingCard = styled.div`
+const WrapPricingCard = styled(ScrollContainer)`
   display: flex;
-  gap: 20px;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  column-gap: 20px;
   margin-bottom: 32px;
-  justify-content: space-around;
   padding-top: 50px;
+  padding-bottom: 20px;
+
+  @media (max-width: 768px) {
+    padding-top: 0px;
+  }
 
   & > *:nth-child(2) {
     background-color: ${COLORS.primary_01};
     margin-top: -50px;
     margin-bottom: 50px;
-    & svg {
-      stroke: ${COLORS.primary_01};
-    }
-  }
 
-  @media (max-width: 1200px) {
-    flex-wrap: wrap;
-  }
-
-  @media (max-width: 768px) {
-    padding-top: 0;
-
-    & > *:nth-child(2) {
+    @media (max-width: 768px) {
       margin-top: 0;
       margin-bottom: 0;
+    }
+
+    & svg {
+      stroke: ${COLORS.primary_01};
     }
   }
 `;

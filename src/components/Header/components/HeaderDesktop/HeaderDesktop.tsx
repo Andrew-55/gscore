@@ -1,9 +1,11 @@
 import Link from "next/link";
 import React, { FC, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
-import { TYPOGRAPHY } from "@/assets/styles";
-import { SvgChevronRight, SvgLogoIcon, SvgTextLogo } from "@/assets/svg";
+import { COLORS, TYPOGRAPHY } from "@/assets/styles";
+import { SvgChevronRight } from "@/assets/svg";
+import { LogoLink } from "@/components";
 import { ButtonIcon } from "@/ui";
 
 import { HeaderDropdownMenu } from "../HeaderDropdownMenu";
@@ -14,6 +16,7 @@ interface Props {
 
 export const HeaderDesktop: FC<Props> = ({ username }) => {
   const [isDropdownMenuVisible, setIsDropdownMenuVisible] = useState(false);
+  const nodeRef = React.useRef(null);
 
   const handleCloseDropdownMenu = () => {
     setIsDropdownMenuVisible((prev) => !prev);
@@ -21,27 +24,33 @@ export const HeaderDesktop: FC<Props> = ({ username }) => {
 
   return (
     <Root>
-      <Logo>
-        <SvgLogoIcon />
-        <SvgTextLogo />
-      </Logo>
+      <LogoLink />
 
       {username && (
         <WrapUser>
-          <Link href="/subscriptions">My subscriptions</Link>
+          <StyledLink href="/subscriptions">My subscriptions</StyledLink>
 
-          {isDropdownMenuVisible ? (
-            <HeaderDropdownMenu
-              onClose={handleCloseDropdownMenu}
-              username={username}
-            />
-          ) : (
-            <ButtonIcon
-              text={username}
-              icon={<StyledSvgChevron strokeWidth={3} />}
-              onClick={handleCloseDropdownMenu}
-            />
-          )}
+          <CSSTransition
+            nodeRef={nodeRef}
+            in={isDropdownMenuVisible}
+            classNames="dropmenu"
+            timeout={50}
+          >
+            <div ref={nodeRef}>
+              {isDropdownMenuVisible ? (
+                <HeaderDropdownMenu
+                  onClose={handleCloseDropdownMenu}
+                  username={username}
+                />
+              ) : (
+                <ButtonIcon
+                  text={username}
+                  icon={<StyledSvgChevron strokeWidth={3} />}
+                  onClick={handleCloseDropdownMenu}
+                />
+              )}
+            </div>
+          </CSSTransition>
         </WrapUser>
       )}
     </Root>
@@ -58,10 +67,16 @@ const Root = styled.header`
   align-items: center;
 `;
 
-const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  column-gap: 10px;
+const StyledLink = styled(Link)`
+  &:hover,
+  &:focus {
+    color: ${COLORS.primary_01};
+    transition: all 0.3s ease-out;
+  }
+
+  &:active {
+    color: ${COLORS.red_400};
+  }
 `;
 
 const WrapUser = styled.div`

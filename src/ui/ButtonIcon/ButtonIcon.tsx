@@ -31,4 +31,17 @@ const Root = styled.button`
   align-items: center;
   justify-content: space-between;
   column-gap: 12px;
+  stroke: ${COLORS.color_100};
+
+  &:hover,
+  &:focus {
+    color: ${COLORS.primary_01};
+    stroke: ${COLORS.primary_01};
+    transition: all 0.3s ease-out;
+  }
+
+  &:active {
+    color: ${COLORS.red_400};
+    stroke: ${COLORS.red_400};
+  }
 `;

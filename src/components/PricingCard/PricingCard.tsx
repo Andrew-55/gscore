@@ -59,9 +59,10 @@ export const PricingCard: FC<Props> = ({
 };
 
 const Root = styled.div<{ $isRed?: boolean }>`
+  display: inline-block;
+  flex: 0 0 auto;
   position: relative;
-  max-width: 404px;
-  width: 100%;
+  width: 404px;
   padding: 42px 48px;
   color: ${COLORS.color_100};
   background-color: ${COLORS.color_701};
@@ -70,7 +71,7 @@ const Root = styled.div<{ $isRed?: boolean }>`
 
   @media (max-width: 992px) {
     padding: 24px 24px;
-    max-width: 330px;
+    width: 330px;
   }
 
   ${({ $isRed }) =>
