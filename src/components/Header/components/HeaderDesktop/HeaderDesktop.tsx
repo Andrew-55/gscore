@@ -16,10 +16,11 @@ interface Props {
 
 export const HeaderDesktop: FC<Props> = ({ username }) => {
   const [isDropdownMenuVisible, setIsDropdownMenuVisible] = useState(false);
+  const [isButtonClose, setIsButtonClose] = useState(false);
   const nodeRef = React.useRef(null);
 
   const handleCloseDropdownMenu = () => {
-    setIsDropdownMenuVisible((prev) => !prev);
+    setIsDropdownMenuVisible(false);
   };
 
   return (
@@ -30,26 +31,35 @@ export const HeaderDesktop: FC<Props> = ({ username }) => {
         <WrapUser>
           <StyledLink href="/subscriptions">My subscriptions</StyledLink>
 
+          {isButtonClose ? (
+            <ButtonIcon
+              text={username}
+              icon={<StyledSvgChevronClose strokeWidth={3} />}
+              onClick={() => setIsDropdownMenuVisible(false)}
+            />
+          ) : (
+            <ButtonIcon
+              text={username}
+              icon={<StyledSvgChevron strokeWidth={3} />}
+              onClick={() => setIsDropdownMenuVisible(true)}
+            />
+          )}
+
           <CSSTransition
             nodeRef={nodeRef}
             in={isDropdownMenuVisible}
-            classNames="dropmenu"
-            timeout={50}
+            classNames="header__drop__menu"
+            timeout={500}
+            unmountOnExit
+            onEnter={() => setIsButtonClose(true)}
+            onExited={() => setIsButtonClose(false)}
           >
-            <div ref={nodeRef}>
-              {isDropdownMenuVisible ? (
-                <HeaderDropdownMenu
-                  onClose={handleCloseDropdownMenu}
-                  username={username}
-                />
-              ) : (
-                <ButtonIcon
-                  text={username}
-                  icon={<StyledSvgChevron strokeWidth={3} />}
-                  onClick={handleCloseDropdownMenu}
-                />
-              )}
-            </div>
+            <WrapHeaderDropdownMenu ref={nodeRef}>
+              <HeaderDropdownMenu
+                onClose={handleCloseDropdownMenu}
+                username={username}
+              />
+            </WrapHeaderDropdownMenu>
           </CSSTransition>
         </WrapUser>
       )}
@@ -84,8 +94,20 @@ const WrapUser = styled.div`
   column-gap: 32px;
 `;
 
+const WrapHeaderDropdownMenu = styled.div`
+  position: absolute;
+  top: 94px;
+  right: 86px;
+`;
+
 const StyledSvgChevron = styled(SvgChevronRight)`
   transform: rotate(90deg);
+  height: 14px;
+  width: 7px;
+`;
+
+const StyledSvgChevronClose = styled(SvgChevronRight)`
+  transform: rotate(-90deg);
   height: 14px;
   width: 7px;
 `;

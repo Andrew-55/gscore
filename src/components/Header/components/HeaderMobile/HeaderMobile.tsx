@@ -18,7 +18,7 @@ export const HeaderMobile: FC<Props> = ({ username }) => {
   const shadowRef = React.useRef(null);
 
   const handleCloseBurgerMenu = () => {
-    setIsMobileBurgerMenuVisible((prev) => !prev);
+    setIsMobileBurgerMenuVisible(false);
   };
 
   return (

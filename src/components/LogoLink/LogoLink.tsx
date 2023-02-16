@@ -14,8 +14,8 @@ export const LogoLink: FC<Props> = ({ isMobile }) => {
     <Root href="/">
       {isMobile ? (
         <>
-          <SvgLogoIcon width={32} height={32} />
-          <SvgTextLogo width={88} height={17} />
+          <StyledSvgLogoIcon />
+          <StyledSvgTextLogo />
         </>
       ) : (
         <>
@@ -45,4 +45,14 @@ const Root = styled(Link)`
   &:active svg {
     fill: ${COLORS.red_400};
   }
+`;
+
+const StyledSvgLogoIcon = styled(SvgLogoIcon)`
+  width: 32px;
+  height: 32px;
+`;
+
+const StyledSvgTextLogo = styled(SvgTextLogo)`
+  width: 88px;
+  height: 17px;
 `;

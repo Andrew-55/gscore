@@ -144,7 +144,7 @@ const WrapPricingCard = styled(ScrollContainer)`
     padding-top: 0px;
   }
 
-  & > *:nth-child(2) {
+  & > div:nth-child(2) {
     background-color: ${COLORS.primary_01};
     margin-top: -50px;
     margin-bottom: 50px;

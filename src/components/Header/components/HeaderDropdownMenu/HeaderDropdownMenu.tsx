@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
-import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
 import { COLORS, TYPOGRAPHY, Z_INDEX } from "@/assets/styles";
-import { SvgSettings, SvgLogout, SvgChevronRight } from "@/assets/svg";
+import { SvgSettings, SvgLogout } from "@/assets/svg";
 import { ButtonIcon } from "@/ui";
 import { useOnclickOutside } from "@/utils/hooks";
 
@@ -25,30 +24,21 @@ export const HeaderDropdownMenu: FC<Props> = ({ username, onClose }) => {
   };
 
   return (
-    <div ref={ref}>
-      <ButtonIcon
-        text={username}
-        icon={<StyledSvgChevron strokeWidth={3} />}
-        onClick={onClose}
+    <DropdownMenu ref={ref}>
+      <StyledLink href="/settings">
+        <SvgSettings /> Settings
+      </StyledLink>
+      <StyledButtonIcon
+        text="Logout"
+        icon={<SvgLogout />}
+        onClick={handleClickLogout}
       />
-      <DropdownMenu>
-        <StyledLink href="/settings">
-          <SvgSettings /> Settings
-        </StyledLink>
-        <StyledButtonIcon
-          text="Logout"
-          icon={<SvgLogout />}
-          onClick={handleClickLogout}
-        />
-      </DropdownMenu>
-    </div>
+    </DropdownMenu>
   );
 };
 
 const DropdownMenu = styled.div`
-  position: absolute;
-  top: 94px;
-  right: 86px;
+  position: relative;
   min-width: 188px;
   padding: 28px 24px;
   background-color: ${COLORS.color_701};
@@ -77,12 +67,6 @@ const StyledLink = styled(Link)`
     color: ${COLORS.red_400};
     stroke: ${COLORS.red_400};
   }
-`;
-
-const StyledSvgChevron = styled(SvgChevronRight)`
-  transform: rotate(-90deg);
-  height: 14px;
-  width: 7px;
 `;
 
 const StyledButtonIcon = styled(ButtonIcon)`
