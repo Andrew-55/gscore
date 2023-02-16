@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { TYPOGRAPHY } from "@/assets/styles";
 import { Button, Input } from "@/ui";
-import { checkPasswordPolicy } from "@/utils/logic-functions";
+import { checkPasswordLength } from "@/utils/logic-functions";
 
 type Props = {
   onConfirm: ({
@@ -55,27 +55,24 @@ export const ChangePasswordForm: FC<Props> = ({ onConfirm }) => {
           type="password"
           {...register("currentPassword", {
             required: "Field can't be empty",
-            validate: checkPasswordPolicy,
+            validate: checkPasswordLength,
           })}
           isError={!!errors.currentPassword}
           errorMessage={errors.currentPassword?.message}
           isSuccess={isValid}
           autoFocus
         />
+
         <Input
           placeholder="New Password"
           type="password"
           {...register("newPassword", {
             required: "Field can't be empty",
-            minLength: {
-              value: 6,
-              message: "Password must be minimum 6 characters",
-            },
             validate: (value: string) => {
-              checkPasswordPolicy(value);
               if (watch("currentPassword") === value) {
                 return "The password must be different from the existing one";
               }
+              return checkPasswordLength(value);
             },
           })}
           isError={!!errors.newPassword}

@@ -138,10 +138,16 @@ export const TYPOGRAPHY = {
     line-height: 18px;
   `,
 
-  DM_Sans_Bold_54px: `
+  DM_Sans_Bold_34px: `
     font-family: "DM Sans", sans serif;
     font-weight: 700;
-    font-size: 54px;
-    line-height: 66px;
+    font-size: 34px;
+    line-height: 44px;
+  `,
+  DM_Sans_Bold_54px: `
+  font-family: "DM Sans", sans serif;
+  font-weight: 700;
+  font-size: 54px;
+  line-height: 66px;
   `,
 };

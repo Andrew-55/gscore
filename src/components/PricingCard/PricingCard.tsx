@@ -6,19 +6,22 @@ import { Button } from "@/ui";
 import { ListItem } from "@/ui/ListItem";
 
 interface Props {
+  id: number;
   name: string;
   price: string;
   sitesCount: number;
-  isActive?: boolean;
+  isRed?: boolean;
+  onClickButton: (id: number) => void;
 }
 
 export const PricingCard: FC<Props> = ({
+  id,
   name,
   price,
   sitesCount,
-  isActive,
+  isRed,
+  onClickButton,
 }) => {
-  const colorCurrent = isActive ? COLORS.primary_01 : COLORS.color_701;
   const list = [
     "Special introductory pricing",
     "Unlimited Pages and Keywords",
@@ -32,7 +35,7 @@ export const PricingCard: FC<Props> = ({
   );
 
   return (
-    <Root $isActive={isActive}>
+    <Root $isRed={isRed}>
       <Price>${price}</Price>
       <Name>{name}</Name>
       <Description>
@@ -42,47 +45,75 @@ export const PricingCard: FC<Props> = ({
       <Content>
         <StyledUl>
           {list.map((item, index) => (
-            <ListItem key={index} text={item} colorIcon={colorCurrent} />
+            <ListItem key={index} text={item} />
           ))}
         </StyledUl>
-        <StyledButton text="Get Gscore" variant="secondary" />
+        <StyledButton
+          text="Get Gscore"
+          variant="secondary"
+          onClick={() => onClickButton(id)}
+        />
       </Content>
     </Root>
   );
 };
 
-const Root = styled.div<{ $isActive?: boolean }>`
+const Root = styled.div<{ $isRed?: boolean }>`
+  display: inline-block;
+  flex: 0 0 auto;
   position: relative;
-  max-width: 404px;
-  width: 100%;
+  width: 404px;
   padding: 42px 48px;
-  text-align: center;
   color: ${COLORS.color_100};
   background-color: ${COLORS.color_701};
   border-radius: 12px;
   box-shadow: 0px 8px 28px ${COLORS.box_shadow_03};
 
-  ${({ $isActive }) =>
-    $isActive &&
+  @media (max-width: 992px) {
+    padding: 24px 24px;
+    width: 330px;
+  }
+
+  ${({ $isRed }) =>
+    $isRed &&
     css`
       background-color: ${COLORS.primary_01};
+      & svg {
+        stroke: ${COLORS.primary_01};
+      }
     `}
 `;
 
 const Description = styled.p`
+  text-align: center;
   ${TYPOGRAPHY.THICCCBOI_Medium_18px}
   line-height: 30px;
   margin-bottom: 40px;
+
+  @media (max-width: 992px) {
+    ${TYPOGRAPHY.THICCCBOI_Regular_14px};
+    margin-bottom: 20px;
+  }
 `;
 
 const Name = styled.h3`
+  text-align: center;
   ${TYPOGRAPHY.THICCCBOI_Bold_24px};
   margin-bottom: 8px;
+
+  @media (max-width: 992px) {
+    ${TYPOGRAPHY.THICCCBOI_Bold_22px};
+  }
 `;
 
 const Price = styled.p`
+  text-align: center;
   ${TYPOGRAPHY.DM_Sans_Bold_54px};
   margin-bottom: 4px;
+
+  @media (max-width: 992px) {
+    ${TYPOGRAPHY.DM_Sans_Bold_34px};
+  }
 `;
 
 const Content = styled.div`
@@ -96,6 +127,10 @@ const StyledUl = styled.ul`
   display: flex;
   flex-direction: column;
   row-gap: 16px;
+
+  @media (max-width: 992px) {
+    ${TYPOGRAPHY.THICCCBOI_Medium_16px};
+  }
 `;
 
 const StyledButton = styled(Button)`

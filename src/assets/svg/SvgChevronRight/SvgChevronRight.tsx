@@ -4,7 +4,7 @@ import { SVGProps } from "react";
 export const SvgChevronRight = ({
   width = 12,
   height = 20,
-  stroke = "#fff",
+  stroke,
   strokeWidth = 2,
   ...props
 }: SVGProps<SVGSVGElement>) => (

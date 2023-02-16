@@ -4,7 +4,7 @@ import { SVGProps } from "react";
 export const SvgLogout = ({
   width = 22,
   height = 22,
-  stroke = "#fff",
+  stroke,
   ...props
 }: SVGProps<SVGSVGElement>) => (
   <svg

@@ -26,7 +26,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, Props>(
           {...props}
         />
         <CheckboxDisplay>
-          <StyledSvgCheck strokeWidth={3} />
+          <StyledSvgCheck stroke={COLORS.color_100} strokeWidth={3} />
         </CheckboxDisplay>
         {!!text && <TextLabel>{text}</TextLabel>}
       </Root>

@@ -2,22 +2,15 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import {
-  SvgFacebook,
-  SvgLinkedin,
-  SvgLogoIcon,
-  SvgTextLogo,
-  SvgTwitter,
-} from "@/assets/svg";
+import { SvgFacebook, SvgLinkedin, SvgTwitter } from "@/assets/svg";
+
+import { Logo } from "../Logo";
 
 export const Footer = () => {
   return (
     <Root>
       <FooterColumn>
-        <Logo>
-          <StyledSvgLogoIcon />
-          <StyledSvgTextLogo />
-        </Logo>
+        <Logo />
         <Paragraph>
           Ut enim ad minim veniam quis nostrud exercitation ea commodo
         </Paragraph>
@@ -43,22 +36,34 @@ export const Footer = () => {
           </StyledSpan>
         </ParagraphBottom>
         <SocialMedia>
-          <a href="https://purrweb.com/" target={"_blank"} rel="noreferrer">
+          <SocialMediaLink
+            href="https://purrweb.com/"
+            target={"_blank"}
+            rel="noreferrer"
+          >
             <SvgFacebook />
-          </a>
-          <a href="https://purrweb.com/" target={"_blank"} rel="noreferrer">
+          </SocialMediaLink>
+          <SocialMediaLink
+            href="https://purrweb.com/"
+            target={"_blank"}
+            rel="noreferrer"
+          >
             <SvgTwitter />
-          </a>
-          <a href="https://purrweb.com/" target={"_blank"} rel="noreferrer">
+          </SocialMediaLink>
+          <SocialMediaLink
+            href="https://purrweb.com/"
+            target={"_blank"}
+            rel="noreferrer"
+          >
             <SvgLinkedin />
-          </a>
+          </SocialMediaLink>
         </SocialMedia>
       </FooterBottom>
     </Root>
   );
 };
 
-const Root = styled.div`
+const Root = styled.footer`
   position: relative;
   width: 100%;
   ${TYPOGRAPHY.THICCCBOI_Medium_20px}
@@ -67,26 +72,6 @@ const Root = styled.div`
 
   @media (max-width: 768px) {
     padding: 40px 16px 24px 16px;
-  }
-`;
-
-const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  column-gap: 10px;
-`;
-
-const StyledSvgLogoIcon = styled(SvgLogoIcon)`
-  @media (max-width: 768px) {
-    width: 32px;
-    height: 32px;
-  }
-`;
-
-const StyledSvgTextLogo = styled(SvgTextLogo)`
-  @media (max-width: 768px) {
-    width: 88px;
-    height: 17px;
   }
 `;
 
@@ -154,6 +139,36 @@ const SocialMedia = styled.div`
   align-items: center;
 `;
 
+const SocialMediaLink = styled.a`
+  fill: ${COLORS.color_100};
+  transition: all 0.3s ease-out;
+
+  &:hover {
+    fill: ${COLORS.primary_01};
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    fill: ${COLORS.primary_01};
+  }
+
+  &:active {
+    fill: ${COLORS.red_400};
+  }
+`;
+
 const StyledLink = styled.a`
   border-bottom: 1px solid ${COLORS.color_100};
+
+  &:hover,
+  &:focus {
+    color: ${COLORS.primary_01};
+    border-bottom: 1px solid ${COLORS.primary_01};
+    transition: all 0.3s ease-out;
+  }
+
+  &:active {
+    color: ${COLORS.red_400};
+    border-bottom: 1px solid ${COLORS.red_400};
+  }
 `;
