@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { FC, useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgChevronRight } from "@/assets/svg";
@@ -16,7 +16,7 @@ interface Props {
 
 export const HeaderDesktop: FC<Props> = ({ username }) => {
   const [isDropdownMenuVisible, setIsDropdownMenuVisible] = useState(false);
-  const [isButtonClose, setIsButtonClose] = useState(false);
+  const [valueClick, setValueClick] = useState(true);
   const nodeRef = React.useRef(null);
 
   const handleCloseDropdownMenu = () => {
@@ -31,19 +31,11 @@ export const HeaderDesktop: FC<Props> = ({ username }) => {
         <WrapUser>
           <StyledLink href="/subscriptions">My subscriptions</StyledLink>
 
-          {isButtonClose ? (
-            <ButtonIcon
-              text={username}
-              icon={<StyledSvgChevronClose strokeWidth={3} />}
-              onClick={() => setIsDropdownMenuVisible(false)}
-            />
-          ) : (
-            <ButtonIcon
-              text={username}
-              icon={<StyledSvgChevron strokeWidth={3} />}
-              onClick={() => setIsDropdownMenuVisible(true)}
-            />
-          )}
+          <ButtonIcon
+            text={username}
+            icon={<StyledSvgChevron $isOpening={valueClick} strokeWidth={3} />}
+            onClick={() => setIsDropdownMenuVisible(valueClick)}
+          />
 
           <CSSTransition
             nodeRef={nodeRef}
@@ -51,8 +43,8 @@ export const HeaderDesktop: FC<Props> = ({ username }) => {
             classNames="header__drop__menu"
             timeout={500}
             unmountOnExit
-            onEnter={() => setIsButtonClose(true)}
-            onExited={() => setIsButtonClose(false)}
+            onEnter={() => setValueClick(false)}
+            onExited={() => setValueClick(true)}
           >
             <WrapHeaderDropdownMenu ref={nodeRef}>
               <HeaderDropdownMenu
@@ -100,14 +92,13 @@ const WrapHeaderDropdownMenu = styled.div`
   right: 86px;
 `;
 
-const StyledSvgChevron = styled(SvgChevronRight)`
+const StyledSvgChevron = styled(SvgChevronRight)<{ $isOpening: boolean }>`
   transform: rotate(90deg);
   height: 14px;
   width: 7px;
-`;
-
-const StyledSvgChevronClose = styled(SvgChevronRight)`
-  transform: rotate(-90deg);
-  height: 14px;
-  width: 7px;
+  ${({ $isOpening }) =>
+    !$isOpening &&
+    css`
+      transform: rotate(-90deg);
+    `}
 `;

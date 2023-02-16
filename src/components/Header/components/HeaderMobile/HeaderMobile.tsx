@@ -23,7 +23,7 @@ export const HeaderMobile: FC<Props> = ({ username }) => {
 
   return (
     <Root>
-      <LogoLink isMobile />
+      <LogoLink />
 
       {username && (
         <ButtonIcon

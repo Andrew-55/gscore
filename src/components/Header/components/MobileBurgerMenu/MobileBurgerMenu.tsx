@@ -36,7 +36,7 @@ export const MobileBurgerMenu: FC<Props> = ({ username, onClose }) => {
     <Root ref={ref}>
       <WrapLogo>
         <ButtonIcon icon={<SvgClose />} onClick={onClose} />
-        <LogoLink isMobile />
+        <LogoLink />
       </WrapLogo>
 
       <StyledLink href="/subscriptions">My subscriptions</StyledLink>

@@ -1,28 +1,15 @@
 import Link from "next/link";
-import React, { FC } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import { COLORS } from "@/assets/styles";
-import { SvgLogoIcon, SvgTextLogo } from "@/assets/svg";
 
-interface Props {
-  isMobile?: boolean;
-}
+import { Logo } from "../Logo";
 
-export const LogoLink: FC<Props> = ({ isMobile }) => {
+export const LogoLink = () => {
   return (
     <Root href="/">
-      {isMobile ? (
-        <>
-          <StyledSvgLogoIcon />
-          <StyledSvgTextLogo />
-        </>
-      ) : (
-        <>
-          <SvgLogoIcon />
-          <SvgTextLogo />
-        </>
-      )}
+      <Logo />
     </Root>
   );
 };
@@ -45,14 +32,4 @@ const Root = styled(Link)`
   &:active svg {
     fill: ${COLORS.red_400};
   }
-`;
-
-const StyledSvgLogoIcon = styled(SvgLogoIcon)`
-  width: 32px;
-  height: 32px;
-`;
-
-const StyledSvgTextLogo = styled(SvgTextLogo)`
-  width: 88px;
-  height: 17px;
 `;
