@@ -1,17 +1,19 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { FC, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 import styled, { css } from "styled-components";
 
-import { COLORS, TYPOGRAPHY, Z_INDEX } from "@/assets/styles";
+import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import {
   SvgChevronRight,
   SvgClose,
-  SvgLogoIcon,
   SvgLogout,
   SvgSettings,
-  SvgTextLogo,
 } from "@/assets/svg";
+import { LogoLink } from "@/components/LogoLink";
 import { ButtonIcon } from "@/ui";
+import { useOnclickOutside } from "@/utils/hooks";
 
 interface Props {
   username?: string;
@@ -19,70 +21,62 @@ interface Props {
 }
 
 export const MobileBurgerMenu: FC<Props> = ({ username, onClose }) => {
+  const router = useRouter();
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
+  const ref = React.useRef<HTMLDivElement>(null);
+  const nodeRef = React.useRef(null);
+
+  useOnclickOutside(ref, onClose);
+
+  const handleClickLogout = () => {
+    router.push("/login");
+  };
 
   return (
-    <Root>
-      <MobilePopUp>
-        <WrapLogo>
-          <ButtonIcon icon={<SvgClose />} onClick={onClose} />
-          <Logo>
-            <SvgLogoIcon width={32} height={32} />
-            <SvgTextLogo width={88} height={17} />
-          </Logo>
-        </WrapLogo>
-        <WrapLink>
-          <Link href="/subscriptions">My subscriptions</Link>
-        </WrapLink>
-        <Settings>
-          <StyledButtonIcon
-            text={username}
-            icon={
-              <StyledSvgChevron $isOn={isSettingsVisible} strokeWidth={3} />
-            }
-            onClick={() => setIsSettingsVisible((prev) => !prev)}
-          />
+    <Root ref={ref}>
+      <WrapLogo>
+        <ButtonIcon icon={<SvgClose />} onClick={onClose} />
+        <LogoLink />
+      </WrapLogo>
 
-          {isSettingsVisible && (
-            <SettingsContent>
-              <Link href="/settings">
-                <Wrap>
-                  <SvgSettings
-                    width={20}
-                    height={20}
-                    stroke={COLORS.color_500}
-                  />
-                  Settings
-                </Wrap>
-              </Link>
-              <Link href="/login">
-                <Wrap>
-                  <SvgLogout width={20} height={20} stroke={COLORS.color_500} />
-                  Logout
-                </Wrap>
-              </Link>
-            </SettingsContent>
-          )}
-        </Settings>
-      </MobilePopUp>
+      <StyledLink href="/subscriptions">My subscriptions</StyledLink>
+
+      <Settings>
+        <StyledButtonIcon
+          text={username}
+          icon={<StyledSvgChevron $isOn={isSettingsVisible} strokeWidth={3} />}
+          onClick={() => setIsSettingsVisible((prev) => !prev)}
+        />
+
+        <CSSTransition
+          nodeRef={nodeRef}
+          in={isSettingsVisible}
+          classNames="burger__menu"
+          timeout={500}
+          unmountOnExit
+        >
+          <SettingsContent ref={nodeRef}>
+            <StyledLinkMenu href="/settings">
+              <SvgSettings width={20} height={20} />
+              Settings
+            </StyledLinkMenu>
+            <StyledButtonIconMenu
+              text="Logout"
+              icon={<SvgLogout />}
+              onClick={handleClickLogout}
+            />
+          </SettingsContent>
+        </CSSTransition>
+      </Settings>
     </Root>
   );
 };
 
 const Root = styled.div`
-  position: fixed;
+  position: absolute;
+  left: auto;
   top: 0;
   right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: ${COLORS.black1};
-  z-index: ${Z_INDEX.headerPopUp};
-`;
-
-const MobilePopUp = styled.div`
-  position: relative;
-  margin-left: auto;
-  margin-right: 0;
   width: 70%;
   height: 100%;
   padding: 28px 24px;
@@ -91,24 +85,56 @@ const MobilePopUp = styled.div`
   ${TYPOGRAPHY.THICCCBOI_Medium_16px}
 `;
 
-const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  column-gap: 10px;
-`;
-
 const WrapLogo = styled.div`
   display: flex;
   column-gap: 32px;
   margin-bottom: 48px;
 `;
 
-const WrapLink = styled.div`
+const StyledLink = styled(Link)`
+  display: block;
   margin-bottom: 20px;
+
+  &:hover,
+  &:focus {
+    color: ${COLORS.primary_01};
+    transition: all 0.3s ease-out;
+  }
+
+  &:active {
+    color: ${COLORS.red_400};
+  }
+`;
+
+const StyledLinkMenu = styled(Link)`
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+  stroke: ${COLORS.color_500};
+  color: ${COLORS.color_500};
+
+  &:hover,
+  &:focus {
+    color: ${COLORS.primary_01};
+    stroke: ${COLORS.primary_01};
+    transition: all 0.3s ease-out;
+  }
+
+  &:active {
+    color: ${COLORS.red_400};
+    stroke: ${COLORS.red_400};
+  }
 `;
 
 const StyledButtonIcon = styled(ButtonIcon)`
   width: 100%;
+`;
+
+const StyledButtonIconMenu = styled(ButtonIcon)`
+  stroke: ${COLORS.color_500};
+  color: ${COLORS.color_500};
+  flex-direction: row-reverse;
+  justify-content: start;
 `;
 
 const Settings = styled.div`
@@ -122,14 +148,6 @@ const SettingsContent = styled.div`
   flex-direction: column;
   row-gap: 24px;
   margin-top: 28px;
-  color: ${COLORS.color_500};
-  stroke: ${COLORS.color_500};
-`;
-
-const Wrap = styled.div`
-  display: flex;
-  align-items: center;
-  column-gap: 12px;
 `;
 
 const StyledSvgChevron = styled(SvgChevronRight)<{ $isOn?: boolean }>`

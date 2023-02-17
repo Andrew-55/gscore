@@ -6,14 +6,13 @@ import { SvgCheck } from "@/assets/svg";
 
 interface Props {
   text: string;
-  colorIcon: string;
 }
 
-export const ListItem: FC<Props> = ({ text, colorIcon }) => {
+export const ListItem: FC<Props> = ({ text }) => {
   return (
     <Root>
       <WrapIcon>
-        <SvgCheck stroke={colorIcon} width={14} height={10} strokeWidth={3.5} />
+        <SvgCheck width={14} height={10} strokeWidth={3.5} />
       </WrapIcon>
       <Text>{text}</Text>
     </Root>
@@ -24,6 +23,7 @@ const Root = styled.li`
   display: grid;
   grid-template-columns: 28px 1fr;
   align-items: center;
+  justify-items: start;
   column-gap: 14px;
 `;
 
@@ -32,6 +32,7 @@ const WrapIcon = styled.div`
   height: 26px;
   border-radius: 100%;
   background-color: ${COLORS.color_100};
+  stroke: ${COLORS.color_701};
   display: flex;
   justify-content: center;
   align-items: center;

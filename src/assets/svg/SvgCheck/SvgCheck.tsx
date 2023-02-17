@@ -4,7 +4,7 @@ import { SVGProps } from "react";
 export const SvgCheck = ({
   width = 22,
   height = 18,
-  stroke = "#fff",
+  stroke,
   strokeWidth = 2,
   ...props
 }: SVGProps<SVGSVGElement>) => (

@@ -4,7 +4,7 @@ import { SVGProps } from "react";
 export const SvgClose = ({
   width = 18,
   height = 18,
-  stroke = "#fff",
+  stroke,
   ...props
 }: SVGProps<SVGSVGElement>) => (
   <svg

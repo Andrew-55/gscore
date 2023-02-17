@@ -2,22 +2,15 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import {
-  SvgFacebook,
-  SvgLinkedin,
-  SvgLogoIcon,
-  SvgTextLogo,
-  SvgTwitter,
-} from "@/assets/svg";
+import { SvgFacebook, SvgLinkedin, SvgTwitter } from "@/assets/svg";
+
+import { Logo } from "../Logo";
 
 export const Footer = () => {
   return (
     <Root>
       <FooterColumn>
-        <Logo>
-          <StyledSvgLogoIcon />
-          <StyledSvgTextLogo />
-        </Logo>
+        <Logo />
         <Paragraph>
           Ut enim ad minim veniam quis nostrud exercitation ea commodo
         </Paragraph>
@@ -79,26 +72,6 @@ const Root = styled.footer`
 
   @media (max-width: 768px) {
     padding: 40px 16px 24px 16px;
-  }
-`;
-
-const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  column-gap: 10px;
-`;
-
-const StyledSvgLogoIcon = styled(SvgLogoIcon)`
-  @media (max-width: 768px) {
-    width: 32px;
-    height: 32px;
-  }
-`;
-
-const StyledSvgTextLogo = styled(SvgTextLogo)`
-  @media (max-width: 768px) {
-    width: 88px;
-    height: 17px;
   }
 `;
 
@@ -168,6 +141,7 @@ const SocialMedia = styled.div`
 
 const SocialMediaLink = styled.a`
   fill: ${COLORS.color_100};
+  transition: all 0.3s ease-out;
 
   &:hover {
     fill: ${COLORS.primary_01};
@@ -190,6 +164,7 @@ const StyledLink = styled.a`
   &:focus {
     color: ${COLORS.primary_01};
     border-bottom: 1px solid ${COLORS.primary_01};
+    transition: all 0.3s ease-out;
   }
 
   &:active {
