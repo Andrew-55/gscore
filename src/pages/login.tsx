@@ -1,16 +1,24 @@
-import styled from "styled-components";
+import Head from "next/head";
+import React from "react";
 
-import { COLORS } from "@/assets/styles";
+import { Layout, LayoutComeIn } from "@/components";
+import { LoginForm, LoginFormValues } from "@/components";
 
 export default function Login() {
+  const handleLogin = ({ email, password }: LoginFormValues) => {
+    console.warn(email + " " + password);
+  };
+
   return (
-    <Main>
-      <h1>Log in</h1>
-    </Main>
+    <>
+      <Head>
+        <title>Login</title>
+      </Head>
+      <Layout>
+        <LayoutComeIn>
+          <LoginForm onConfirm={handleLogin} />
+        </LayoutComeIn>
+      </Layout>
+    </>
   );
 }
-
-const Main = styled.main`
-  padding: 20px;
-  color: ${COLORS.color_800};
-`;

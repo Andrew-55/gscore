@@ -5,20 +5,23 @@ import styled from "styled-components";
 import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
 import { Button, Input } from "@/ui";
-import { checkIsEmail, checkStringIsEmpty } from "@/utils/logic-functions";
+import {
+  checkIsEmail,
+  checkPasswordLength,
+  checkStringIsEmpty,
+} from "@/utils/logic-functions";
 
 type Props = {
-  username: string;
-  email: string;
-  onConfirm: ({ username, email }: PersonalInfoFormValues) => void;
+  onConfirm: ({ username, email, password }: CreateAccountFormValues) => void;
 };
 
-export type PersonalInfoFormValues = {
+export type CreateAccountFormValues = {
   username: string;
   email: string;
+  password: string;
 };
 
-export const PersonalInfoForm: FC<Props> = ({ username, email, onConfirm }) => {
+export const CreateAccountForm: FC<Props> = ({ onConfirm }) => {
   const {
     register,
     handleSubmit,
@@ -27,8 +30,9 @@ export const PersonalInfoForm: FC<Props> = ({ username, email, onConfirm }) => {
   } = useForm({
     mode: "onBlur",
     defaultValues: {
-      username: username,
-      email: email,
+      username: "",
+      email: "",
+      password: "",
     },
   });
 
@@ -38,59 +42,74 @@ export const PersonalInfoForm: FC<Props> = ({ username, email, onConfirm }) => {
     };
   }, [reset]);
 
-  const onSubmit: SubmitHandler<PersonalInfoFormValues> = ({
+  const onSubmit: SubmitHandler<CreateAccountFormValues> = ({
     username,
     email,
-  }: PersonalInfoFormValues) => {
-    onConfirm({ username, email });
+    password,
+  }: CreateAccountFormValues) => {
+    onConfirm({ username, email, password });
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Title>Personal Info</Title>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Title>Create account</Title>
+      <Description>
+        You need to enter your name and email. We will send you a temporary
+        password by email
+      </Description>
       <WrapInput>
         <Input
           placeholder="Username"
-          type="text"
+          type="string"
           {...register("username", {
             required: ERROR_MESSAGE.required,
-            maxLength: {
-              value: 25,
-              message: ERROR_MESSAGE.usernameMaxLength,
-            },
             validate: checkStringIsEmpty,
           })}
           isError={!!errors.username}
           errorMessage={errors.username?.message}
           isSuccess={isValid}
-          autoFocus
         />
-
         <Input
           placeholder="Email"
           type="email"
           {...register("email", {
+            required: ERROR_MESSAGE.required,
             validate: checkIsEmail,
           })}
           isError={!!errors.email}
           errorMessage={errors.email?.message}
           isSuccess={isValid}
         />
+        <Input
+          placeholder="Password"
+          type="password"
+          {...register("password", {
+            required: ERROR_MESSAGE.required,
+            validate: checkPasswordLength,
+          })}
+          isError={!!errors.password}
+          errorMessage={errors.password?.message}
+          isSuccess={isValid}
+        />
       </WrapInput>
-      <StyledButton text="Save" type="submit" variant="primary" />
-    </Form>
+      <StyledButton text="Send password" type="submit" variant="primary" />
+    </form>
   );
 };
 
-const Form = styled.form``;
-
 const Title = styled.h3`
-  ${TYPOGRAPHY.THICCCBOI_Bold_28px};
-  margin-bottom: 24px;
+  ${TYPOGRAPHY.THICCCBOI_Bold_44px};
+  margin-bottom: 16px;
 
   @media (max-width: 768px) {
     ${TYPOGRAPHY.THICCCBOI_Bold_22px};
   }
+`;
+
+const Description = styled.p`
+  ${TYPOGRAPHY.THICCCBOI_Regular_14px};
+  line-height: 24px;
+  margin-bottom: 32px;
 `;
 
 const WrapInput = styled.div`
@@ -101,7 +120,7 @@ const WrapInput = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  max-width: 160px;
+  max-width: 200px;
 
   @media (max-width: 480px) {
     max-width: 100%;
