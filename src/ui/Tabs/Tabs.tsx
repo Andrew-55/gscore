@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { FC } from "react";
 import styled, { css } from "styled-components";
 
@@ -6,16 +7,21 @@ import { ButtonTab } from "@/ui";
 
 interface Props {
   activeIndex: number;
-  onClickTab: (index: number) => void;
-  tabs: string[];
+  tabs?: { title: string; url: string }[];
 }
 
-export const Tabs: FC<Props> = ({ activeIndex, onClickTab, tabs }) => {
+const tabs = [
+  { title: "Create account", url: "/create-account" },
+  { title: "Log in", url: "/login" },
+  { title: "Checkout", url: "/checkout" },
+];
+
+export const Tabs: FC<Props> = ({ activeIndex }) => {
   return (
     <Root>
       {tabs.map((item, index) => (
         <li key={index}>
-          <StyledButtonTab text={item} onClick={() => onClickTab(index)} />
+          <StyledLink href={item.url}>{item.title}</StyledLink>
           <Line $isRed={activeIndex >= index} />
         </li>
       ))}
@@ -32,7 +38,8 @@ const Root = styled.ul`
   flex-wrap: wrap;
 `;
 
-const StyledButtonTab = styled(ButtonTab)`
+const StyledLink = styled(Link)`
+  display: block;
   width: 195px;
   padding-bottom: 24px;
   color: ${COLORS.color_100};

@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React, { useState } from "react";
 import styled from "styled-components";
 
@@ -38,32 +39,29 @@ export default function Start() {
   };
 
   return (
-    <Main>
-      <WrapTabs>
-        <Tabs
-          activeIndex={activeIndex}
-          onClickTab={handleClickTab}
-          tabs={tabs}
-        />
-      </WrapTabs>
+    <>
+      <Head>
+        <title>Home</title>
+      </Head>
+      <Main>
+        {activeIndex === TAB.FIRST && (
+          <>
+            <CreateAccountForm onConfirm={handleCreateAccount} />
+            <Qustion>
+              Have an account?
+              <StyledButtonTabs
+                text="Go to the next step"
+                onClick={() => setActiveIndex(1)}
+              />
+            </Qustion>
+          </>
+        )}
 
-      {activeIndex === TAB.FIRST && (
-        <>
-          <CreateAccountForm onConfirm={handleCreateAccount} />
-          <Qustion>
-            Have an account?
-            <StyledButtonTabs
-              text="Go to the next step"
-              onClick={() => setActiveIndex(1)}
-            />
-          </Qustion>
-        </>
-      )}
+        {activeIndex === TAB.SECOND && <LoginForm onConfirm={handleLogin} />}
 
-      {activeIndex === TAB.SECOND && <LoginForm onConfirm={handleLogin} />}
-
-      {activeIndex === TAB.THIRD && <Checkout />}
-    </Main>
+        {activeIndex === TAB.THIRD && <Checkout />}
+      </Main>
+    </>
   );
 }
 
