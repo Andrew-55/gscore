@@ -1,23 +1,15 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { FC } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import { COLORS, TYPOGRAPHY, Z_INDEX } from "@/assets/styles";
 import { SvgSettings, SvgLogout } from "@/assets/svg";
 import { ButtonIcon } from "@/ui";
-import { useOnclickOutside } from "@/utils/hooks";
 
-interface Props {
-  onClose: () => void;
-  username: string;
-}
-
-export const HeaderDropdownMenu: FC<Props> = ({ username, onClose }) => {
+export const HeaderDropdownMenu = () => {
   const router = useRouter();
   const ref = React.useRef<HTMLDivElement>(null);
-
-  useOnclickOutside(ref, onClose);
 
   const handleClickLogout = () => {
     router.push("/login");
