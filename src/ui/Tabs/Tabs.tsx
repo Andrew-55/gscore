@@ -3,26 +3,21 @@ import React, { FC } from "react";
 import styled, { css } from "styled-components";
 
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { ButtonTab } from "@/ui";
 
 interface Props {
   activeIndex: number;
-  tabs?: { title: string; url: string }[];
+  tabs: { title: string; url: string }[];
 }
 
-const tabs = [
-  { title: "Create account", url: "/create-account" },
-  { title: "Log in", url: "/login" },
-  { title: "Checkout", url: "/checkout" },
-];
-
-export const Tabs: FC<Props> = ({ activeIndex }) => {
+export const Tabs: FC<Props> = ({ activeIndex, tabs }) => {
   return (
     <Root>
       {tabs.map((item, index) => (
         <li key={index}>
-          <StyledLink href={item.url}>{item.title}</StyledLink>
-          <Line $isRed={activeIndex >= index} />
+          <StyledLink href={item.url}>
+            <span>{item.title}</span>
+            <Line $isRed={activeIndex >= index} />
+          </StyledLink>
         </li>
       ))}
     </Root>
@@ -31,21 +26,44 @@ export const Tabs: FC<Props> = ({ activeIndex }) => {
 
 const Root = styled.ul`
   color: ${COLORS.color_100};
-  display: flex;
-  column-gap: 16px;
-  row-gap: 16px;
   margin-bottom: 20px;
-  flex-wrap: wrap;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  column-gap: 16px;
+  padding-bottom: 20px;
+  overflow-y: auto;
 `;
 
 const StyledLink = styled(Link)`
   display: block;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
   width: 195px;
-  padding-bottom: 24px;
   color: ${COLORS.color_100};
-  border: none;
   text-align: start;
   ${TYPOGRAPHY.THICCCBOI_Semi_Bold_20px}
+
+  &:hover,
+  &:focus {
+    color: ${COLORS.primary_01};
+    transition: all 0.3s ease-out;
+
+    & > div {
+      background-color: ${COLORS.primary_01};
+      opacity: 0.7;
+      transition: all 0.3s ease-out;
+    }
+  }
+
+  &:active {
+    color: ${COLORS.red_400};
+    & > div {
+      background-color: ${COLORS.red_400};
+      transition: all 0.3s ease-out;
+    }
+  }
 
   @media (max-width: 768px) {
     ${TYPOGRAPHY.THICCCBOI_Semi_Bold_16px}

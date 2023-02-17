@@ -6,7 +6,7 @@ import { TYPOGRAPHY } from "@/assets/styles";
 import { Button, Input } from "@/ui";
 import {
   checkIsEmail,
-  checkPasswordPolicy,
+  checkPasswordLength,
   checkStringIsEmpty,
 } from "@/utils/logic-functions";
 
@@ -84,7 +84,7 @@ export const CreateAccountForm: FC<Props> = ({ onConfirm }) => {
           type="password"
           {...register("password", {
             required: "Field can't be empty",
-            validate: checkPasswordPolicy,
+            validate: checkPasswordLength,
           })}
           isError={!!errors.password}
           errorMessage={errors.password?.message}

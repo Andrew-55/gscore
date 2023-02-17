@@ -24,3 +24,4 @@ export type { LoginFormValues } from "./LoginForm";
 export { Checkout } from "./Checkout";
 export { LogoLink } from "./LogoLink";
 export { Logo } from "./Logo";
+export { LayoutComeIn } from "./LayoutComeIn";

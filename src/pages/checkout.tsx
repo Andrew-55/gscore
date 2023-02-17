@@ -1,41 +1,19 @@
 import Head from "next/head";
 import React from "react";
-import styled from "styled-components";
 
-import { Layout } from "@/components";
-import { Tabs } from "@/ui";
+import { Checkout, Layout, LayoutComeIn } from "@/components";
 
-export default function Checkout() {
+export default function CheckoutPage() {
   return (
     <>
       <Head>
         <title>Checkout</title>
       </Head>
       <Layout>
-        <Main>
-          <WrapTabs>
-            <Tabs activeIndex={2} />
-          </WrapTabs>
+        <LayoutComeIn namePage="CHECKOUT">
           <Checkout />
-        </Main>
+        </LayoutComeIn>
       </Layout>
     </>
   );
 }
-
-const Main = styled.div`
-  max-width: 652px;
-  padding: 32px 16px;
-  margin-left: auto;
-  margin-right: auto;
-`;
-
-const WrapTabs = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 64px;
-
-  @media (max-width: 768px) {
-    margin-bottom: 32px;
-  }
-`;
