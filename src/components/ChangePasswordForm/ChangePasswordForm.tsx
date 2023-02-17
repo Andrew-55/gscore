@@ -2,6 +2,7 @@ import React, { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
 
+import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
 import { Button, Input } from "@/ui";
 import { checkPasswordLength } from "@/utils/logic-functions";
@@ -54,7 +55,7 @@ export const ChangePasswordForm: FC<Props> = ({ onConfirm }) => {
           placeholder="Current Password"
           type="password"
           {...register("currentPassword", {
-            required: "Field can't be empty",
+            required: ERROR_MESSAGE.required,
             validate: checkPasswordLength,
           })}
           isError={!!errors.currentPassword}
@@ -67,10 +68,10 @@ export const ChangePasswordForm: FC<Props> = ({ onConfirm }) => {
           placeholder="New Password"
           type="password"
           {...register("newPassword", {
-            required: "Field can't be empty",
+            required: ERROR_MESSAGE.required,
             validate: (value: string) => {
               if (watch("currentPassword") === value) {
-                return "The password must be different from the existing one";
+                return ERROR_MESSAGE.passwordNotDifferent;
               }
               return checkPasswordLength(value);
             },

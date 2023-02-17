@@ -2,6 +2,7 @@ import React, { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
 
+import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
 import { Button, Input } from "@/ui";
 import {
@@ -61,7 +62,7 @@ export const CreateAccountForm: FC<Props> = ({ onConfirm }) => {
           placeholder="Username"
           type="string"
           {...register("username", {
-            required: "Field can't be empty",
+            required: ERROR_MESSAGE.required,
             validate: checkStringIsEmpty,
           })}
           isError={!!errors.username}
@@ -72,7 +73,7 @@ export const CreateAccountForm: FC<Props> = ({ onConfirm }) => {
           placeholder="Email"
           type="email"
           {...register("email", {
-            required: "Field can't be empty",
+            required: ERROR_MESSAGE.required,
             validate: checkIsEmail,
           })}
           isError={!!errors.email}
@@ -83,7 +84,7 @@ export const CreateAccountForm: FC<Props> = ({ onConfirm }) => {
           placeholder="Password"
           type="password"
           {...register("password", {
-            required: "Field can't be empty",
+            required: ERROR_MESSAGE.required,
             validate: checkPasswordLength,
           })}
           isError={!!errors.password}

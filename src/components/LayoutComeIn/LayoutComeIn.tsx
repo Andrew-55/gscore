@@ -4,18 +4,11 @@ import styled from "styled-components";
 import { OPACITY } from "@/assets/styles";
 import { Tabs } from "@/ui";
 
-enum PAGES {
-  CREATE_ACCOUNT = 0,
-  LOGIN = 1,
-  CHECKOUT = 2,
-}
-
 type Props = {
   children: React.ReactNode;
-  namePage: keyof typeof PAGES;
 };
 
-export const LayoutComeIn: FC<Props> = ({ children, namePage }) => {
+export const LayoutComeIn: FC<Props> = ({ children }) => {
   const tabs = [
     { title: "Create account", url: "/create-account" },
     { title: "Log in", url: "/login" },
@@ -25,7 +18,7 @@ export const LayoutComeIn: FC<Props> = ({ children, namePage }) => {
   return (
     <Root>
       <WrapTabs>
-        <Tabs activeIndex={PAGES[namePage]} tabs={tabs} />
+        <Tabs tabs={tabs} />
       </WrapTabs>
       <Children>{children}</Children>
     </Root>

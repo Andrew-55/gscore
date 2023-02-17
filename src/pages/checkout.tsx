@@ -10,7 +10,7 @@ export default function CheckoutPage() {
         <title>Checkout</title>
       </Head>
       <Layout>
-        <LayoutComeIn namePage="CHECKOUT">
+        <LayoutComeIn>
           <Checkout />
         </LayoutComeIn>
       </Layout>

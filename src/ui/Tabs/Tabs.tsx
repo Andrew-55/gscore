@@ -1,15 +1,19 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { FC } from "react";
 import styled, { css } from "styled-components";
 
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 
 interface Props {
-  activeIndex: number;
   tabs: { title: string; url: string }[];
 }
 
-export const Tabs: FC<Props> = ({ activeIndex, tabs }) => {
+export const Tabs: FC<Props> = ({ tabs }) => {
+  const router = useRouter();
+
+  const activeIndex = tabs.findIndex((tab) => tab.url === router.pathname);
+
   return (
     <Root>
       {tabs.map((item, index) => (
@@ -32,7 +36,7 @@ const Root = styled.ul`
   justify-content: space-between;
   column-gap: 16px;
   padding-bottom: 20px;
-  overflow-y: auto;
+  overflow-x: auto;
 `;
 
 const StyledLink = styled(Link)`

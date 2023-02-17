@@ -6,7 +6,7 @@ import { LoginForm, LoginFormValues } from "@/components";
 
 export default function Login() {
   const handleLogin = ({ email, password }: LoginFormValues) => {
-    alert(email + " " + password);
+    console.warn(email + " " + password);
   };
 
   return (
@@ -15,7 +15,7 @@ export default function Login() {
         <title>Login</title>
       </Head>
       <Layout>
-        <LayoutComeIn namePage="LOGIN">
+        <LayoutComeIn>
           <LoginForm onConfirm={handleLogin} />
         </LayoutComeIn>
       </Layout>

@@ -2,6 +2,7 @@ import React, { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
 
+import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
 import { Button, Input } from "@/ui";
 import { checkIsEmail } from "@/utils/logic-functions";
@@ -50,7 +51,7 @@ export const LoginForm: FC<Props> = ({ onConfirm }) => {
           placeholder="Email"
           type="email"
           {...register("email", {
-            required: "Field can't be empty",
+            required: ERROR_MESSAGE.required,
             validate: checkIsEmail,
           })}
           isError={!!errors.email}
@@ -61,7 +62,7 @@ export const LoginForm: FC<Props> = ({ onConfirm }) => {
           placeholder="Password"
           type="password"
           {...register("password", {
-            required: "Field can't be empty",
+            required: ERROR_MESSAGE.required,
           })}
           isError={!!errors.password}
           errorMessage={errors.password?.message}

@@ -2,6 +2,7 @@ import React, { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
 
+import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
 import { Button, Input } from "@/ui";
 import { checkIsEmail, checkStringIsEmpty } from "@/utils/logic-functions";
@@ -52,9 +53,10 @@ export const PersonalInfoForm: FC<Props> = ({ username, email, onConfirm }) => {
           placeholder="Username"
           type="text"
           {...register("username", {
+            required: ERROR_MESSAGE.required,
             maxLength: {
               value: 25,
-              message: "Name is too length, max 25 characters",
+              message: ERROR_MESSAGE.usernameMaxLength,
             },
             validate: checkStringIsEmpty,
           })}

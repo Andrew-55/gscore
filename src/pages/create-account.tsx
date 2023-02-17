@@ -13,7 +13,7 @@ export default function CreateAccount() {
     email,
     password,
   }: CreateAccountFormValues) => {
-    alert(username + " " + email + " " + password);
+    console.warn(username + " " + email + " " + password);
   };
 
   return (
@@ -22,7 +22,7 @@ export default function CreateAccount() {
         <title>Create Account</title>
       </Head>
       <Layout>
-        <LayoutComeIn namePage="CREATE_ACCOUNT">
+        <LayoutComeIn>
           <>
             <CreateAccountForm onConfirm={handleCreateAccount} />
             <Qustion>
