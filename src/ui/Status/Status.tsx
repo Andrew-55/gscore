@@ -6,7 +6,7 @@ import { COLORS } from "@/assets/styles";
 export type StatusType = keyof typeof THEMES;
 
 interface Props {
-  status: StatusType;
+  status: string;
 }
 
 export const THEMES = {
@@ -22,10 +22,14 @@ export const THEMES = {
 };
 
 export const Status: FC<Props> = ({ status }) => {
-  return <Root $status={status}>{status.toLowerCase()}</Root>;
+  const key = (Object.keys(THEMES) as (keyof typeof THEMES)[]).find(
+    (key) => key.toString() === status
+  );
+
+  return <Root $status={key}>{status.toLowerCase()}</Root>;
 };
 
-const Root = styled.span<{ $status: StatusType }>`
+const Root = styled.span<{ $status?: StatusType }>`
   text-transform: capitalize;
-  ${({ $status }) => THEMES[$status]};
+  ${({ $status }) => $status && THEMES[$status]};
 `;

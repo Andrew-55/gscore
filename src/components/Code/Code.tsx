@@ -2,10 +2,10 @@ import React, { FC } from "react";
 import styled from "styled-components";
 
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { Button, Checkbox, InputLabel, Status, StatusType } from "@/ui";
+import { Button, Checkbox, InputLabel, Status } from "@/ui";
 
 interface Props {
-  status: StatusType;
+  status: string;
   code?: string;
   origin?: string;
   isDisabled?: boolean;
@@ -15,7 +15,7 @@ export const Code: FC<Props> = ({ status, code, isDisabled, origin }) => {
   return (
     <Root>
       <WrapCheckbox>
-        <Checkbox value={"1"} isDisabled={isDisabled} />
+        <Checkbox value={code || ""} isDisabled={isDisabled} />
       </WrapCheckbox>
       <Wrap>
         <LicenseCode
