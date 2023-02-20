@@ -8,19 +8,33 @@ import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgArrowRight } from "@/assets/svg";
 import { Layout, Card, Code } from "@/components";
 import { Button, ButtonIcon } from "@/ui";
+import { useSwitchComponent } from "@/utils/hooks";
 
 import { MY_SUBSCRIPTIONS } from "../stoge";
 
 export default function Subscriptions() {
   const [updateDisabled, setUpdateDisabled] = useState(true);
-  const [isCodesVisible, setIsCodesVisible] = useState(true);
+  const [isCodesVisible, setIsCodesVisible] = useState(false);
   const [currentCard, setCurrentCard] = useState(0);
   const nodeRef = React.useRef(null);
+  const newRef = React.useRef(null);
 
   const countCard = MY_SUBSCRIPTIONS.length;
   let isMobileSize = useMediaQuery({ query: "(max-width: 768px)" });
   let widthCard = isMobileSize ? 318 : 620;
   let valueMove = `${-(widthCard + 28) * currentCard}px`;
+
+  const handleMove = (moveLeft: boolean) => {
+    if (moveLeft && currentCard < countCard - 1) {
+      setCurrentCard((prev) => prev + 1);
+    }
+
+    if (!moveLeft && currentCard > 0) {
+      setCurrentCard((prev) => prev - 1);
+    }
+  };
+
+  useSwitchComponent(newRef, handleMove);
 
   return (
     <>
@@ -35,9 +49,10 @@ export default function Subscriptions() {
               text="Upgrade"
               variant="primary"
               onClick={() => setUpdateDisabled((prev) => !prev)}
+              isDisabled={!isCodesVisible}
             />
           </WrapTitle>
-          <WrapCard $valueMove={valueMove}>
+          <WrapCard $valueMove={valueMove} ref={newRef}>
             {MY_SUBSCRIPTIONS.map((subscription, index) => (
               <Card
                 key={subscription.id}
@@ -107,6 +122,7 @@ const Main = styled.main`
 
   @media (max-width: 768px) {
     padding: 24px 16px;
+    row-gap: 16px;
   }
 `;
 
@@ -126,6 +142,7 @@ const Title = styled.h1`
 
 const StyledButton = styled(Button)`
   max-width: 152px;
+
   @media (max-width: 768px) {
     ${TYPOGRAPHY.THICCCBOI_Bold_16px};
     padding: 4px 10px;
@@ -148,6 +165,7 @@ const StyledButton = styled(Button)`
 `;
 
 const WrapCard = styled.div<{ $valueMove: string }>`
+  cursor: pointer;
   display: flex;
   column-gap: 28px;
   margin-right: -86px;
@@ -162,6 +180,10 @@ const SwitchCard = styled.div`
   display: flex;
   align-items: center;
   column-gap: 12px;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 `;
 
 const StyledButtonIcon = styled(ButtonIcon)`
@@ -189,6 +211,10 @@ const StyledButtonIcon = styled(ButtonIcon)`
   &:disabled {
     border: 1px solid ${COLORS.color_700};
     stroke: ${COLORS.color_700};
+  }
+
+  @media (max-width: 480px) {
+    display: none;
   }
 `;
 

@@ -54,6 +54,7 @@ const Root = styled.div<{ $isDisabled?: boolean }>`
   background-color: ${COLORS.color_700};
   border-radius: 12px;
   box-shadow: 0px 24px 65px ${COLORS.card_box_shadow};
+  user-select: none;
 
   @media (max-width: 768px) {
     width: 318px;
