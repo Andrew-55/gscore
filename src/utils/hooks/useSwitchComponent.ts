@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 export const useSwitchComponent = (
   ref: React.MutableRefObject<HTMLElement | null | undefined>,
-  callback: (moveLeft: boolean) => void
+  callback: (left: boolean) => void
 ) => {
   useEffect(() => {
     let startX = 0;
