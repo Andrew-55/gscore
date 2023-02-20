@@ -40,7 +40,6 @@ export const Code: FC<Props> = ({ status, code, isDisabled, origin }) => {
 };
 
 const Root = styled.div`
-  max-width: 1268px;
   display: flex;
   align-items: flex-start;
   background-color: ${COLORS.color_701};

@@ -6,7 +6,7 @@ import styled, { css } from "styled-components";
 
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgArrowRight } from "@/assets/svg";
-import { Layout, Card, Code } from "@/components";
+import { Layout, Card, Code, SubscriptionsNo } from "@/components";
 import { Button, ButtonIcon } from "@/ui";
 import { useSwitchComponent } from "@/utils/hooks";
 
@@ -19,13 +19,15 @@ export default function Subscriptions() {
   const nodeRef = React.useRef(null);
   const newRef = React.useRef(null);
 
-  const countCard = MY_SUBSCRIPTIONS.length;
+  const countCards = MY_SUBSCRIPTIONS.length;
+  const IsCards = countCards > 0;
+
   let isMobileSize = useMediaQuery({ query: "(max-width: 768px)" });
   let widthCard = isMobileSize ? 318 : 620;
   let valueMove = `${-(widthCard + 28) * currentCard}px`;
 
   const handleMove = (moveLeft: boolean) => {
-    if (moveLeft && currentCard < countCard - 1) {
+    if (moveLeft && currentCard < countCards - 1) {
       setCurrentCard((prev) => prev + 1);
     }
 
@@ -45,91 +47,106 @@ export default function Subscriptions() {
         <Main>
           <WrapTitle>
             <Title>My subscriptions</Title>
-            <StyledButton
-              text="Upgrade"
-              variant="primary"
-              onClick={() => setUpdateDisabled((prev) => !prev)}
-              isDisabled={!isCodesVisible}
-            />
-          </WrapTitle>
-          <WrapCard $valueMove={valueMove} ref={newRef}>
-            {MY_SUBSCRIPTIONS.map((subscription, index) => (
-              <Card
-                key={subscription.id}
-                name={subscription.product.name}
-                status={subscription.status}
-                currentPeriodEnd={subscription.currentPeriodEnd}
-                price={subscription.product.prices
-                  .reduce(
-                    (accumulator, currentValue) =>
-                      accumulator + Number(currentValue.price),
-                    0
-                  )
-                  .toString()}
-                isDisabled={index !== currentCard}
-                onClick={() => setIsCodesVisible((prev) => !prev)}
-              />
-            ))}
-          </WrapCard>
-          <SwitchCard>
-            <StyledButtonIcon
-              icon={<StyledSvgArrowLeft />}
-              isDisabled={currentCard === 0}
-              onClick={() => setCurrentCard(currentCard - 1)}
-            />
-            <SwitchCardInfo>
-              {currentCard + 1}
-              <span>/{countCard}</span>
-            </SwitchCardInfo>
-            <StyledButtonIcon
-              icon={<SvgArrowRight />}
-              isDisabled={currentCard === countCard - 1}
-              onClick={() => setCurrentCard(currentCard + 1)}
-            />
-          </SwitchCard>
 
-          <CSSTransition
-            nodeRef={nodeRef}
-            in={isCodesVisible}
-            classNames="burger__menu"
-            timeout={1000}
-            unmountOnExit
-          >
-            <WrapCode ref={nodeRef}>
-              {MY_SUBSCRIPTIONS[currentCard].codes.map((code) => (
-                <Code
-                  key={code.id}
-                  code={code.code}
-                  status={code.status}
-                  origin={code.origin || ""}
-                  isDisabled={updateDisabled}
+            {IsCards && (
+              <StyledButtonTitle
+                text="Upgrade"
+                variant="primary"
+                onClick={() => setUpdateDisabled((prev) => !prev)}
+                isDisabled={!isCodesVisible}
+              />
+            )}
+          </WrapTitle>
+
+          {IsCards ? (
+            <>
+              <WrapCard $valueMove={valueMove} ref={newRef}>
+                {MY_SUBSCRIPTIONS.map((subscription, index) => (
+                  <Card
+                    key={subscription.id}
+                    name={subscription.product.name}
+                    status={subscription.status}
+                    currentPeriodEnd={subscription.currentPeriodEnd}
+                    price={subscription.product.prices
+                      .reduce(
+                        (accumulator, currentValue) =>
+                          accumulator + Number(currentValue.price),
+                        0
+                      )
+                      .toString()}
+                    isDisabled={index !== currentCard}
+                    onClick={() => setIsCodesVisible((prev) => !prev)}
+                  />
+                ))}
+              </WrapCard>
+              <SwitchCard>
+                <StyledButtonIcon
+                  icon={<StyledSvgArrowLeft />}
+                  isDisabled={currentCard === 0}
+                  onClick={() => setCurrentCard(currentCard - 1)}
                 />
-              ))}
-            </WrapCode>
-          </CSSTransition>
+                <SwitchCardInfo>
+                  {currentCard + 1}
+                  <span>/{countCards}</span>
+                </SwitchCardInfo>
+                <StyledButtonIcon
+                  icon={<SvgArrowRight />}
+                  isDisabled={currentCard === countCards - 1}
+                  onClick={() => setCurrentCard(currentCard + 1)}
+                />
+              </SwitchCard>
+
+              <CSSTransition
+                nodeRef={nodeRef}
+                in={isCodesVisible}
+                classNames="burger__menu"
+                timeout={1000}
+                unmountOnExit
+              >
+                <CodesBlock ref={nodeRef}>
+                  <WrapCode>
+                    {MY_SUBSCRIPTIONS[currentCard].codes.map((code) => (
+                      <Code
+                        key={code.id}
+                        code={code.code}
+                        status={code.status}
+                        origin={code.origin || ""}
+                        isDisabled={updateDisabled}
+                      />
+                    ))}
+                  </WrapCode>
+                  <CodesInfo>Select the domains you want to keep</CodesInfo>
+                  <StyledButton text="Confirm" variant="primary" />
+                </CodesBlock>
+              </CSSTransition>
+            </>
+          ) : (
+            <SubscriptionsNo />
+          )}
         </Main>
       </Layout>
     </>
   );
 }
 
-const Main = styled.main`
-  padding: 32px 86px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 48px;
+const Main = styled.div`
+  padding: 32px 86px 120px 86px;
   overflow-x: hidden;
 
   @media (max-width: 768px) {
-    padding: 24px 16px;
-    row-gap: 16px;
+    padding: 24px 16px 60px 16px;
+    row-gap: 32px;
   }
 `;
 
 const WrapTitle = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 44px;
+  margin-bottom: 48px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 32px;
+  }
 `;
 
 const Title = styled.h1`
@@ -140,7 +157,7 @@ const Title = styled.h1`
   }
 `;
 
-const StyledButton = styled(Button)`
+const StyledButtonTitle = styled(Button)`
   max-width: 152px;
 
   @media (max-width: 768px) {
@@ -169,6 +186,12 @@ const WrapCard = styled.div<{ $valueMove: string }>`
   display: flex;
   column-gap: 28px;
   margin-right: -86px;
+  margin-bottom: 32px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+  }
+
   ${({ $valueMove }) =>
     css`
       transform: translateX(${$valueMove});
@@ -180,6 +203,7 @@ const SwitchCard = styled.div`
   display: flex;
   align-items: center;
   column-gap: 12px;
+  margin-bottom: 32px;
 
   @media (max-width: 768px) {
     justify-content: center;
@@ -229,8 +253,56 @@ const SwitchCardInfo = styled.div`
   }
 `;
 
+const CodesBlock = styled.div`
+  display: grid;
+  grid-template-areas:
+    "codes codes"
+    "info button";
+  grid-template-columns: 1fr 152px;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    grid-template-areas:
+      "info"
+      "codes"
+      "button";
+    grid-template-columns: 1fr;
+  }
+`;
+
 const WrapCode = styled.div`
+  grid-area: codes;
   display: flex;
   flex-direction: column;
   row-gap: 32px;
+  margin-bottom: 56px;
+
+  @media (max-width: 768px) {
+    row-gap: 24px;
+    margin-bottom: 32px;
+  }
+`;
+
+const CodesInfo = styled.span`
+  display: block;
+  ${TYPOGRAPHY.THICCCBOI_Bold_20px};
+  grid-area: info;
+
+  @media (max-width: 768px) {
+    margin-bottom: 28px;
+    max-width: 60%;
+  }
+`;
+
+const StyledButton = styled(Button)`
+  max-width: 152px;
+  grid-area: button;
+
+  @media (max-width: 768px) {
+    justify-self: end;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 100%;
+  }
 `;

@@ -48,7 +48,7 @@ export const useSwitchComponent = (
       if (ref.current && ref.current.contains(event.target as Node | null)) {
         startX = event.targetTouches[0].clientX;
         document.addEventListener("touchmove", moveTouch);
-        document.addEventListener("touchcancel", deleteMoveTouch);
+        document.addEventListener("touchend", deleteMoveTouch);
       }
     };
 
@@ -59,7 +59,7 @@ export const useSwitchComponent = (
       document.removeEventListener("mousedown", listenerMouse);
       document.removeEventListener("touchstart", listenerTouch);
       document.removeEventListener("mouseup", deleteMoveMouse);
-      document.removeEventListener("touchcancel", deleteMoveTouch);
+      document.removeEventListener("touchend", deleteMoveTouch);
     };
   }, [ref, callback]);
 };
