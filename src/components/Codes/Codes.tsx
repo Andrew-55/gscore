@@ -8,10 +8,10 @@ import { Button } from "@/ui";
 
 interface Props {
   id: number;
-  updateOn: boolean;
+  isUpdateOn: boolean;
 }
 
-export const Codes: FC<Props> = ({ id, updateOn }) => {
+export const Codes: FC<Props> = ({ id, isUpdateOn }) => {
   const codes = MY_SUBSCRIPTIONS[id];
 
   return (
@@ -23,13 +23,17 @@ export const Codes: FC<Props> = ({ id, updateOn }) => {
               code={code.code}
               status={code.status}
               origin={code.origin || ""}
-              isDisabled={!updateOn}
+              isDisabled={!isUpdateOn}
             />
           </li>
         ))}
       </WrapCode>
-      {updateOn && <CodesInfo>Select the domains you want to keep</CodesInfo>}
-      {updateOn && <StyledButton text="Confirm" variant="primary" />}
+      {isUpdateOn && (
+        <>
+          <CodesInfo>Select the domains you want to keep</CodesInfo>
+          <StyledButton text="Confirm" variant="primary" />
+        </>
+      )}
     </Root>
   );
 };

@@ -10,13 +10,13 @@ import { Button } from "@/ui";
 import { MY_SUBSCRIPTIONS } from "../stoge";
 
 export default function Subscriptions() {
-  const [updateDisabled, setUpdateDisabled] = useState(true);
+  const [isUpdateOn, setIsUpdateOn] = useState(false);
   const [isCodesVisible, setIsCodesVisible] = useState(false);
   const [currentCard, setCurrentCard] = useState(0);
   const nodeRef = React.useRef(null);
 
   const countCards = MY_SUBSCRIPTIONS.length;
-  const isCards = countCards > 0;
+  const hasCards = countCards > 0;
 
   const handleViewCodes = (currentCard: number) => {
     setCurrentCard(currentCard);
@@ -33,17 +33,17 @@ export default function Subscriptions() {
           <WrapTitle>
             <Title>My subscriptions</Title>
 
-            {isCards && (
+            {hasCards && (
               <StyledButtonTitle
                 text="Upgrade"
                 variant="primary"
-                onClick={() => setUpdateDisabled((prev) => !prev)}
+                onClick={() => setIsUpdateOn((prev) => !prev)}
                 isDisabled={!isCodesVisible}
               />
             )}
           </WrapTitle>
 
-          {isCards ? (
+          {hasCards ? (
             <>
               <Cards onViewCodes={handleViewCodes} />
 
@@ -55,7 +55,7 @@ export default function Subscriptions() {
                 unmountOnExit
               >
                 <div ref={nodeRef}>
-                  <Codes id={currentCard} updateOn={!updateDisabled} />
+                  <Codes id={currentCard} isUpdateOn={isUpdateOn} />
                 </div>
               </CSSTransition>
             </>

@@ -28,12 +28,12 @@ export const Cards: FC<Props> = ({ onViewCodes }) => {
     setCurrentCard(currentCard - 1);
   };
 
-  const handleMove = (left: boolean) => {
-    if (left && currentCard < countCards - 1) {
+  const handleMove = (isMoveLeft: boolean) => {
+    if (isMoveLeft && currentCard < countCards - 1) {
       handleCurrentCardRigth();
     }
 
-    if (!left && currentCard > 0) {
+    if (!isMoveLeft && currentCard > 0) {
       handleCurrentCardLeft();
     }
   };
