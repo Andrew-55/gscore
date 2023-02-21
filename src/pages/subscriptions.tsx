@@ -1,8 +1,10 @@
 import Head from "next/head";
+import { useEffect } from "react";
 import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
+import { Api } from "@/api";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
 import { Button } from "@/ui";
@@ -15,6 +17,8 @@ export default function Subscriptions() {
   const [currentCard, setCurrentCard] = useState(0);
   const nodeRef = React.useRef(null);
 
+  const api = new Api();
+
   const countCards = MY_SUBSCRIPTIONS.length;
   const hasCards = countCards > 0;
 
@@ -22,6 +26,15 @@ export default function Subscriptions() {
     setCurrentCard(currentCard);
     setIsCodesVisible((prev) => !prev);
   };
+
+  useEffect(() => {
+    try {
+      const subscriptions = api.getSubscribeSelf();
+      //console.warn(subscriptions);
+    } catch (error) {
+      // console.warn("SubsERROR");
+    }
+  }, []);
 
   return (
     <>
