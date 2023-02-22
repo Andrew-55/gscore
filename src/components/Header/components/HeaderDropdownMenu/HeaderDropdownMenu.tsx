@@ -1,19 +1,17 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 
 import { COLORS, TYPOGRAPHY, Z_INDEX } from "@/assets/styles";
 import { SvgSettings, SvgLogout } from "@/assets/svg";
 import { ButtonIcon } from "@/ui";
 
-export const HeaderDropdownMenu = () => {
-  const router = useRouter();
-  const ref = React.useRef<HTMLDivElement>(null);
+type Props = {
+  onClickLogout: () => void;
+};
 
-  const handleClickLogout = () => {
-    router.push("/login");
-  };
+export const HeaderDropdownMenu: FC<Props> = ({ onClickLogout }) => {
+  const ref = React.useRef<HTMLDivElement>(null);
 
   return (
     <DropdownMenu ref={ref}>
@@ -23,7 +21,7 @@ export const HeaderDropdownMenu = () => {
       <StyledButtonIcon
         text="Logout"
         icon={<SvgLogout />}
-        onClick={handleClickLogout}
+        onClick={onClickLogout}
       />
     </DropdownMenu>
   );

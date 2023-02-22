@@ -1,72 +1,53 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
 import styled from "styled-components";
 
+import { getProducts } from "@/api/slice";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { PricingCard } from "@/components";
 import { Layout } from "@/components";
+import { useAppSelector } from "@/redux/hooks";
+import { getToken } from "@/redux/token";
+import { PricingCardType } from "@/types";
 
 export default function Home() {
-  //такой ответ придет с сервера
-  const products = [
-    {
-      id: 1,
-      sitesCount: 1,
-      name: "One cite",
-      prices: [
-        {
-          id: 1,
-          isActive: true,
-          productId: 1,
-          price: "46",
-        },
-      ],
-    },
-    {
-      id: 2,
-      sitesCount: 3,
-      name: "Three cites",
-      prices: [
-        {
-          id: 2,
-          isActive: true,
-          productId: 2,
-          price: "85",
-        },
-      ],
-    },
-    {
-      id: 3,
-      sitesCount: 7,
-      name: "Seven sites",
-      prices: [
-        {
-          id: 3,
-          isActive: true,
-          productId: 3,
-          price: "107",
-        },
-      ],
-    },
-  ];
+  const [pricingCards, setPricingCards] = useState<PricingCardType[]>([]);
+  const router = useRouter();
+  const toren = useAppSelector(getToken);
+  const hasPricingCards = !!pricingCards;
 
-  const pricingCards = products.map((product) => {
-    return {
-      id: product.id,
-      name: product.name,
-      sitesCount: product.sitesCount,
-      price: product.prices
-        .reduce(
-          (accumulator, currentValue) =>
-            accumulator + Number(currentValue.price),
-          0
-        )
-        .toString(),
-    };
-  });
+  if (toren === "") {
+    router.push("/login");
+  }
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const products = await getProducts(toren);
+        const prcd = products.map((product) => {
+          return {
+            id: product.id,
+            name: product.name,
+            sitesCount: product.sitesCount,
+            price: product.prices
+              .reduce(
+                (accumulator, currentValue) =>
+                  accumulator + Number(currentValue.price),
+                0
+              )
+              .toString(),
+          };
+        });
+        setPricingCards(prcd);
+      } catch (error) {}
+    }
+    fetchProducts();
+  }, [toren]);
 
   const handleClickButton = (id: number) => {
-    console.warn(id);
+    router.push(`checkout/products/${id}`);
   };
 
   return (
@@ -78,20 +59,22 @@ export default function Home() {
         <Main>
           <Title>Get started with Gscore today!</Title>
 
-          <WrapPricingCard horizontal hideScrollbars={false}>
-            {pricingCards.map((card) => {
-              return (
-                <PricingCard
-                  key={card.id}
-                  id={card.id}
-                  name={card.name}
-                  sitesCount={card.sitesCount}
-                  price={card.price}
-                  onClickButton={handleClickButton}
-                />
-              );
-            })}
-          </WrapPricingCard>
+          {hasPricingCards && (
+            <WrapPricingCard horizontal hideScrollbars={false}>
+              {pricingCards.map((card) => {
+                return (
+                  <PricingCard
+                    key={card.id}
+                    id={card.id}
+                    name={card.name}
+                    sitesCount={card.sitesCount}
+                    price={card.price}
+                    onClickButton={handleClickButton}
+                  />
+                );
+              })}
+            </WrapPricingCard>
+          )}
 
           <Question>
             <p>Have more than 10 sites?</p>

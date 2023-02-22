@@ -1,17 +1,24 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React from "react";
 
-import { Api } from "@/api";
+import { login } from "@/api";
 import { Layout, LayoutComeIn } from "@/components";
 import { LoginForm, LoginFormValues } from "@/components";
+import { useAppDispatch } from "@/redux/hooks";
+import { setToken } from "@/redux/token";
+import { setUser } from "@/redux/user";
 
 export default function Login() {
-  const api = new Api();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const handleLogin = async ({ email, password }: LoginFormValues) => {
     try {
-      const response = await api.login(email, password);
-      console.warn(response);
+      const { user, token } = await login(email, password);
+      dispatch(setUser(user));
+      dispatch(setToken(token));
+      router.push("/");
     } catch (error) {
       console.warn("Errors )))");
     }

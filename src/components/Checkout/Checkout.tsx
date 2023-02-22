@@ -1,14 +1,12 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgShoppingBasket } from "@/assets/svg";
+import { CheckoutItemType } from "@/types";
 import { Button } from "@/ui";
 
-export const Checkout = () => {
-  const name = "Single site license";
-  const price = "77";
-
+export const Checkout: FC<CheckoutItemType> = ({ id, name, price }) => {
   return (
     <Root>
       <Title>Checkout</Title>

@@ -9,9 +9,10 @@ import { ButtonIcon } from "@/ui";
 
 interface Props {
   username?: string;
+  onClickLogout: () => void;
 }
 
-export const HeaderMobile: FC<Props> = ({ username }) => {
+export const HeaderMobile: FC<Props> = ({ username, onClickLogout }) => {
   const [isMobileBurgerMenuVisible, setIsMobileBurgerMenuVisible] =
     useState(false);
   const menuRef = React.useRef(null);
@@ -53,6 +54,7 @@ export const HeaderMobile: FC<Props> = ({ username }) => {
           <MobileBurgerMenu
             username={username}
             onClose={handleCloseBurgerMenu}
+            onClickLogout={onClickLogout}
           />
         </WrapMobileBurgerMenu>
       </CSSTransition>

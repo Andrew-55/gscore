@@ -1,1 +1,2 @@
-export { Api } from "./api";
+export { ApiService } from "./api";
+export { login } from "./slice";

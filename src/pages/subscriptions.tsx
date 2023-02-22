@@ -1,12 +1,14 @@
 import Head from "next/head";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
-import { Api } from "@/api";
+import { getSubscribeSelf } from "@/api/slice";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
+import { useAppSelector } from "@/redux/hooks";
+import { getToken } from "@/redux/token";
 import { Button } from "@/ui";
 
 import { MY_SUBSCRIPTIONS } from "../stoge";
@@ -16,8 +18,8 @@ export default function Subscriptions() {
   const [isCodesVisible, setIsCodesVisible] = useState(false);
   const [currentCard, setCurrentCard] = useState(0);
   const nodeRef = React.useRef(null);
-
-  const api = new Api();
+  const router = useRouter();
+  const toren = useAppSelector(getToken);
 
   const countCards = MY_SUBSCRIPTIONS.length;
   const hasCards = countCards > 0;
@@ -27,14 +29,11 @@ export default function Subscriptions() {
     setIsCodesVisible((prev) => !prev);
   };
 
-  useEffect(() => {
-    try {
-      const subscriptions = api.getSubscribeSelf();
-      //console.warn(subscriptions);
-    } catch (error) {
-      // console.warn("SubsERROR");
-    }
-  }, []);
+  if (toren === "") {
+    router.push("/login");
+  }
+
+  const subscriptions = getSubscribeSelf(toren);
 
   return (
     <>
