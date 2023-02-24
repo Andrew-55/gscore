@@ -1,12 +1,17 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
 
+import { updatePassword, updatePersonalData } from "@/api/slice";
 import { TYPOGRAPHY } from "@/assets/styles";
 import { ChangePasswordForm, PersonalInfoForm } from "@/components";
 import { Layout } from "@/components";
 import { ChangePasswordFormValues } from "@/components/ChangePasswordForm/ChangePasswordForm";
 import { PersonalInfoFormValues } from "@/components/PersonalInfoForm/PersonalInfoForm";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { getToken } from "@/redux/token";
+import { getUser, setUser } from "@/redux/user";
 import { TabsLine } from "@/ui";
 
 enum TABS {
@@ -17,23 +22,38 @@ enum TABS {
 export default function Settings() {
   const tabs = ["Personal Info", "Change password"];
   const [activeIndex, setActiveIndex] = useState(0);
+  const router = useRouter();
+  const token = useAppSelector(getToken);
+  const user = useAppSelector(getUser);
+  const dispatch = useAppDispatch();
+
+  if (token === "") {
+    router.push("/login");
+  }
 
   const handleClickTab = (index: number) => {
     setActiveIndex(index);
   };
 
-  const handleChangePersonalInfo = ({
+  const handleChangePersonalInfo = async ({
     username,
     email,
   }: PersonalInfoFormValues) => {
-    console.warn(username + email);
+    try {
+      const user = await updatePersonalData(token, email, username);
+      dispatch(setUser(user));
+    } catch (error) {
+      console.warn(error);
+    }
   };
 
   const handleChangePassword = ({
     currentPassword,
     newPassword,
   }: ChangePasswordFormValues) => {
-    console.warn(currentPassword + " " + newPassword);
+    try {
+      updatePassword(token, currentPassword, newPassword);
+    } catch (error) {}
   };
 
   return (
@@ -52,8 +72,8 @@ export default function Settings() {
           <WrapForm>
             {tabs[activeIndex] === TABS.PERSONAL_INFO && (
               <PersonalInfoForm
-                username="Alex"
-                email="alex@test.ru"
+                username={user.username}
+                email={user.email}
                 onConfirm={handleChangePersonalInfo}
               />
             )}

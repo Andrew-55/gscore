@@ -61,7 +61,6 @@ export const ChangePasswordForm: FC<Props> = ({ onConfirm }) => {
           isError={!!errors.currentPassword}
           errorMessage={errors.currentPassword?.message}
           isSuccess={isValid}
-          autoFocus
         />
 
         <Input

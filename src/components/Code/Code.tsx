@@ -1,38 +1,83 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
+import { UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
 
+import { activateCode } from "@/api/slice";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
+import { useAppSelector } from "@/redux/hooks";
+import { getToken } from "@/redux/token";
 import { Button, Checkbox, InputLabel, Status } from "@/ui";
 
 interface Props {
+  id: number;
   status: string;
-  code?: string;
+  code: string;
   origin?: string;
   isDisabled?: boolean;
+  register: UseFormRegister<{
+    codeIds: string[];
+  }>;
 }
 
-export const Code: FC<Props> = ({ status, code, isDisabled, origin }) => {
+export const Code: FC<Props> = ({
+  id,
+  status,
+  code,
+  isDisabled,
+  origin,
+  register,
+}) => {
+  const [domain, setDomain] = useState(origin);
+  const [statusCode, setStatusCode] = useState(status);
+  const token = useAppSelector(getToken);
+
+  const handleOnChangeDomain = (value: string) => {
+    setDomain(value);
+  };
+
+  const handleClickActivate = async () => {
+    if (domain) {
+      try {
+        const { origin, status } = await activateCode(token, code, domain);
+        if (origin) {
+          setDomain(origin);
+        }
+        setStatusCode(status);
+      } catch (error) {}
+    }
+  };
+
   return (
     <Root>
       <WrapCheckbox>
-        <Checkbox value={code || ""} isDisabled={isDisabled} />
+        <Checkbox value={id} isDisabled={isDisabled} {...register("codeIds")} />
       </WrapCheckbox>
       <Wrap>
         <LicenseCode
           label="License code"
           value={code}
           isDisabled={isDisabled}
+          readOnly
           isCopy
         />
-        <Domain label="Domain" value={origin} isDisabled={isDisabled} />
+        <Domain
+          label="Domain"
+          value={domain}
+          isDisabled={!!origin}
+          onChange={(event) => handleOnChangeDomain(event.target.value)}
+        />
       </Wrap>
-      {status === "INACTIVE" && (
-        <StyledButton text="Activate" variant="secondary" />
+      {statusCode === "INACTIVE" && (
+        <StyledButton
+          text="Activate"
+          variant="secondary"
+          onClick={handleClickActivate}
+        />
       )}
       <StatusInfo>
         <StatusInfoTitle>Status</StatusInfoTitle>
         <WrapStatus>
-          <Status status={status} />
+          <Status status={statusCode} />
         </WrapStatus>
       </StatusInfo>
     </Root>

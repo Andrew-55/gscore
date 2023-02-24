@@ -14,6 +14,7 @@ import { PricingCardType } from "@/types";
 
 export default function Home() {
   const [pricingCards, setPricingCards] = useState<PricingCardType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const toren = useAppSelector(getToken);
   const hasPricingCards = !!pricingCards;
@@ -25,6 +26,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchProducts() {
       try {
+        setIsLoading(true);
         const products = await getProducts(toren);
         const prcd = products.map((product) => {
           return {
@@ -41,6 +43,7 @@ export default function Home() {
           };
         });
         setPricingCards(prcd);
+        setIsLoading(false);
       } catch (error) {}
     }
     fetchProducts();
@@ -59,21 +62,25 @@ export default function Home() {
         <Main>
           <Title>Get started with Gscore today!</Title>
 
-          {hasPricingCards && (
-            <WrapPricingCard horizontal hideScrollbars={false}>
-              {pricingCards.map((card) => {
-                return (
-                  <PricingCard
-                    key={card.id}
-                    id={card.id}
-                    name={card.name}
-                    sitesCount={card.sitesCount}
-                    price={card.price}
-                    onClickButton={handleClickButton}
-                  />
-                );
-              })}
-            </WrapPricingCard>
+          {isLoading ? (
+            <div>` LOADING.....`</div>
+          ) : (
+            hasPricingCards && (
+              <WrapPricingCard horizontal hideScrollbars={false}>
+                {pricingCards.map((card) => {
+                  return (
+                    <PricingCard
+                      key={card.id}
+                      id={card.id}
+                      name={card.name}
+                      sitesCount={card.sitesCount}
+                      price={card.price}
+                      onClickButton={handleClickButton}
+                    />
+                  );
+                })}
+              </WrapPricingCard>
+            )
           )}
 
           <Question>

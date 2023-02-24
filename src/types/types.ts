@@ -1,4 +1,8 @@
-import { UserState } from "@/redux/user";
+export type UserType = {
+  id: string;
+  username: string;
+  email: string;
+};
 
 export type PriceType = {
   id: number;
@@ -14,9 +18,18 @@ export type ProductType = {
   prices: PriceType[];
 };
 
+export type CodeType = {
+  id: number;
+  code: string;
+  origin: string | null;
+  status: string;
+  subscribeId: number;
+  userId: number;
+};
+
 export type ResponseLoginType = {
   token: string;
-  user: UserState;
+  user: UserType;
 };
 
 export type PricingCardType = {
@@ -30,4 +43,24 @@ export type CheckoutItemType = {
   id: number;
   name: string;
   price: string;
+};
+
+export type ResponseBuyType = {
+  id: number;
+  userId: number;
+  productId: number;
+  currentPeriodStart: number;
+  currentPeriodEnd: number;
+  status: string;
+};
+
+export type SubscriptionType = {
+  id: number;
+  userId: number;
+  productId: number;
+  currentPeriodStart: string;
+  currentPeriodEnd: string;
+  status: string;
+  product: ProductType;
+  codes: CodeType[];
 };

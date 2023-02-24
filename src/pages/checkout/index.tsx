@@ -10,9 +10,7 @@ export default function CheckoutPage() {
         <title>Checkout</title>
       </Head>
       <Layout>
-        <LayoutComeIn>
-          <Checkout />
-        </LayoutComeIn>
+        <LayoutComeIn>{/* <Checkout /> */}</LayoutComeIn>
       </Layout>
     </>
   );

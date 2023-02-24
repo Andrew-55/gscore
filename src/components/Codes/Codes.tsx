@@ -1,9 +1,13 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
 
+import { getCodeSelf, manageCode } from "@/api/slice";
 import { TYPOGRAPHY } from "@/assets/styles";
 import { Code } from "@/components";
-import { MY_SUBSCRIPTIONS } from "@/stoge";
+import { useAppSelector } from "@/redux/hooks";
+import { getToken } from "@/redux/token";
+import { CodeType } from "@/types";
 import { Button } from "@/ui";
 
 interface Props {
@@ -11,15 +15,49 @@ interface Props {
   isUpdateOn: boolean;
 }
 
+export type CodesFormValues = {
+  codeIds: string[];
+};
+
 export const Codes: FC<Props> = ({ id, isUpdateOn }) => {
-  const codes = MY_SUBSCRIPTIONS[id];
+  const [codes, setCodes] = useState<CodeType[]>();
+  const token = useAppSelector(getToken);
+
+  const { register, handleSubmit } = useForm({
+    defaultValues: { codeIds: [""] },
+  });
+
+  useEffect(() => {
+    async function fetchCodes() {
+      try {
+        const codes = await getCodeSelf(token);
+        const codesSubscribe = codes.filter((code) => code.subscribeId === id);
+
+        setCodes(codesSubscribe);
+      } catch (error) {}
+    }
+    fetchCodes();
+  }, [token, id]);
+
+  const onSubmit: SubmitHandler<CodesFormValues> = async ({
+    codeIds,
+  }: CodesFormValues) => {
+    if (codeIds.length > 0) {
+      const codesIds = codeIds.map((id) => Number(id));
+      console.log(codeIds);
+      const data = await manageCode(token, codesIds, id);
+      console.log(data);
+    }
+  };
 
   return (
-    <Root>
+    <Root onSubmit={handleSubmit(onSubmit)}>
       <WrapCode>
-        {codes.codes.map((code) => (
+        {codes?.map((code) => (
           <li key={code.id}>
             <Code
+              register={register}
+              id={code.id}
               code={code.code}
               status={code.status}
               origin={code.origin || ""}
@@ -28,17 +66,18 @@ export const Codes: FC<Props> = ({ id, isUpdateOn }) => {
           </li>
         ))}
       </WrapCode>
+
       {isUpdateOn && (
         <>
           <CodesInfo>Select the domains you want to keep</CodesInfo>
-          <StyledButton text="Confirm" variant="primary" />
+          <StyledButton text="Confirm" variant="primary" type="submit" />
         </>
       )}
     </Root>
   );
 };
 
-const Root = styled.div`
+const Root = styled.form`
   display: grid;
   grid-template-areas:
     "codes codes"

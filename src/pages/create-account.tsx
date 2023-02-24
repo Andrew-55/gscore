@@ -1,19 +1,34 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 
+import { createAccount } from "@/api/slice";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, LayoutComeIn } from "@/components";
 import { CreateAccountForm, CreateAccountFormValues } from "@/components";
+import { useAppDispatch } from "@/redux/hooks";
+import { setToken } from "@/redux/token";
+import { setUser } from "@/redux/user";
 
 export default function CreateAccount() {
-  const handleCreateAccount = ({
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const handleCreateAccount = async ({
     username,
     email,
     password,
   }: CreateAccountFormValues) => {
-    console.warn(username + " " + email + " " + password);
+    try {
+      const { user, token } = await createAccount(username, email, password);
+      dispatch(setUser(user));
+      dispatch(setToken(token));
+      router.push("/");
+    } catch (error) {
+      console.warn("Errors )))");
+    }
   };
 
   return (

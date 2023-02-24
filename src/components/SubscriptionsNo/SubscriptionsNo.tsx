@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 
@@ -5,13 +6,19 @@ import { TYPOGRAPHY } from "@/assets/styles";
 import { Button } from "@/ui";
 
 export const SubscriptionsNo = () => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push("/");
+  };
+
   return (
     <Root>
       <Info>No active subscriptions</Info>
       <Description>
         You can subscribe right now by clicking on the button below
       </Description>
-      <StyledButton text="Get Gscore" variant="primary" />
+      <StyledButton text="Get Gscore" variant="primary" onClick={handleClick} />
     </Root>
   );
 };

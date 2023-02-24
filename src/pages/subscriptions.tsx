@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
@@ -9,31 +9,46 @@ import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
 import { useAppSelector } from "@/redux/hooks";
 import { getToken } from "@/redux/token";
+import { SubscriptionType } from "@/types";
 import { Button } from "@/ui";
-
-import { MY_SUBSCRIPTIONS } from "../stoge";
 
 export default function Subscriptions() {
   const [isUpdateOn, setIsUpdateOn] = useState(false);
   const [isCodesVisible, setIsCodesVisible] = useState(false);
-  const [currentCard, setCurrentCard] = useState(0);
+  const [subscriptions, setSubscriptions] = useState<SubscriptionType[]>();
+  const [currentSubscribeId, setCurrentSubscribeId] = useState<number>();
   const nodeRef = React.useRef(null);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const toren = useAppSelector(getToken);
 
-  const countCards = MY_SUBSCRIPTIONS.length;
-  const hasCards = countCards > 0;
+  const hasCards = subscriptions && subscriptions.length > 0;
 
-  const handleViewCodes = (currentCard: number) => {
-    setCurrentCard(currentCard);
+  const handleViewCodes = () => {
+    setCurrentSubscribeId(currentSubscribeId);
     setIsCodesVisible((prev) => !prev);
+  };
+
+  const handleChangeSubscribe = (id: number) => {
+    setCurrentSubscribeId(id);
   };
 
   if (toren === "") {
     router.push("/login");
   }
 
-  const subscriptions = getSubscribeSelf(toren);
+  useEffect(() => {
+    async function fetchSubscriptions() {
+      try {
+        setIsLoading(true);
+        const subscriptions = await getSubscribeSelf(toren);
+        setSubscriptions(subscriptions);
+        setCurrentSubscribeId(subscriptions[0].id);
+        setIsLoading(false);
+      } catch (error) {}
+    }
+    fetchSubscriptions();
+  }, [toren]);
 
   return (
     <>
@@ -57,20 +72,28 @@ export default function Subscriptions() {
 
           {hasCards ? (
             <>
-              <Cards onViewCodes={handleViewCodes} />
+              <Cards
+                onViewCodes={handleViewCodes}
+                subscriptions={subscriptions}
+                onChangeSubscribe={handleChangeSubscribe}
+              />
 
-              <CSSTransition
-                nodeRef={nodeRef}
-                in={isCodesVisible}
-                classNames="burger__menu"
-                timeout={1000}
-                unmountOnExit
-              >
-                <div ref={nodeRef}>
-                  <Codes id={currentCard} isUpdateOn={isUpdateOn} />
-                </div>
-              </CSSTransition>
+              {currentSubscribeId && (
+                <CSSTransition
+                  nodeRef={nodeRef}
+                  in={isCodesVisible}
+                  classNames="burger__menu"
+                  timeout={1000}
+                  unmountOnExit
+                >
+                  <div ref={nodeRef}>
+                    <Codes id={currentSubscribeId} isUpdateOn={isUpdateOn} />
+                  </div>
+                </CSSTransition>
+              )}
             </>
+          ) : isLoading ? (
+            <div>` LOADING.....`</div>
           ) : (
             <SubscriptionsNo />
           )}

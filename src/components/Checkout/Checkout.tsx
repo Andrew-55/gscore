@@ -1,12 +1,31 @@
+import { useRouter } from "next/router";
 import React, { FC } from "react";
 import styled from "styled-components";
 
+import { buySubscribe } from "@/api/slice";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgShoppingBasket } from "@/assets/svg";
+import { useAppSelector } from "@/redux/hooks";
+import { getToken } from "@/redux/token";
 import { CheckoutItemType } from "@/types";
 import { Button } from "@/ui";
 
 export const Checkout: FC<CheckoutItemType> = ({ id, name, price }) => {
+  const toren = useAppSelector(getToken);
+  const router = useRouter();
+
+  if (toren === "") {
+    router.push("/login");
+  }
+
+  const handleClick = () => {
+    try {
+      buySubscribe(toren, id);
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
   return (
     <Root>
       <Title>Checkout</Title>
@@ -28,7 +47,7 @@ export const Checkout: FC<CheckoutItemType> = ({ id, name, price }) => {
         <span>Total:</span>
         <span>${price}</span>
       </Total>
-      <StyledButton text="Purchase" variant="primary" />
+      <StyledButton text="Purchase" variant="primary" onClick={handleClick} />
     </Root>
   );
 };
@@ -64,7 +83,7 @@ const Package = styled.div`
 const PackageHeader = styled.div`
   ${TYPOGRAPHY.THICCCBOI_Bold_24px}
   display: grid;
-  grid-template-columns: 1fr 80px;
+  grid-template-columns: 1fr 90px;
   column-gap: 10px;
 
   @media (max-width: 768px) {
@@ -86,7 +105,7 @@ const Line = styled.div`
 
 const License = styled.div`
   display: grid;
-  grid-template-columns: 1fr 80px;
+  grid-template-columns: 1fr 90px;
   column-gap: 10px;
 `;
 
