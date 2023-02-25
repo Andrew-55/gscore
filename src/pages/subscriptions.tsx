@@ -1,14 +1,13 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
 import { getSubscribeSelf } from "@/api/slice";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
+import { Layout, SubscriptionsNo, Codes, Cards, IsAuth } from "@/components";
 import { useAppSelector } from "@/redux/hooks";
-import { getToken } from "@/redux/token";
+import { getToken } from "@/redux/user";
 import { Button } from "@/ui";
 
 import { MY_SUBSCRIPTIONS } from "../stoge";
@@ -18,8 +17,7 @@ export default function Subscriptions() {
   const [isCodesVisible, setIsCodesVisible] = useState(false);
   const [currentCard, setCurrentCard] = useState(0);
   const nodeRef = React.useRef(null);
-  const router = useRouter();
-  const toren = useAppSelector(getToken);
+  const token = useAppSelector(getToken);
 
   const countCards = MY_SUBSCRIPTIONS.length;
   const hasCards = countCards > 0;
@@ -29,52 +27,48 @@ export default function Subscriptions() {
     setIsCodesVisible((prev) => !prev);
   };
 
-  if (toren === "") {
-    router.push("/login");
-  }
-
-  const subscriptions = getSubscribeSelf(toren);
-
   return (
     <>
       <Head>
         <title>Subscriptions</title>
       </Head>
       <Layout>
-        <Main>
-          <WrapTitle>
-            <Title>My subscriptions</Title>
+        <IsAuth>
+          <Main>
+            <WrapTitle>
+              <Title>My subscriptions</Title>
 
-            {hasCards && (
-              <StyledButtonTitle
-                text="Upgrade"
-                variant="primary"
-                onClick={() => setIsUpdateOn((prev) => !prev)}
-                isDisabled={!isCodesVisible}
-              />
+              {hasCards && (
+                <StyledButtonTitle
+                  text="Upgrade"
+                  variant="primary"
+                  onClick={() => setIsUpdateOn((prev) => !prev)}
+                  isDisabled={!isCodesVisible}
+                />
+              )}
+            </WrapTitle>
+
+            {hasCards ? (
+              <>
+                <Cards onViewCodes={handleViewCodes} />
+
+                <CSSTransition
+                  nodeRef={nodeRef}
+                  in={isCodesVisible}
+                  classNames="burger__menu"
+                  timeout={1000}
+                  unmountOnExit
+                >
+                  <div ref={nodeRef}>
+                    <Codes id={currentCard} isUpdateOn={isUpdateOn} />
+                  </div>
+                </CSSTransition>
+              </>
+            ) : (
+              <SubscriptionsNo />
             )}
-          </WrapTitle>
-
-          {hasCards ? (
-            <>
-              <Cards onViewCodes={handleViewCodes} />
-
-              <CSSTransition
-                nodeRef={nodeRef}
-                in={isCodesVisible}
-                classNames="burger__menu"
-                timeout={1000}
-                unmountOnExit
-              >
-                <div ref={nodeRef}>
-                  <Codes id={currentCard} isUpdateOn={isUpdateOn} />
-                </div>
-              </CSSTransition>
-            </>
-          ) : (
-            <SubscriptionsNo />
-          )}
-        </Main>
+          </Main>
+        </IsAuth>
       </Layout>
     </>
   );

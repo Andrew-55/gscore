@@ -1,19 +1,16 @@
-import { ProductType, ResponseLoginType } from "@/types";
+import { UserState } from "@/redux/user";
+import { ProductType } from "@/types";
 
 import { ApiService } from "./api";
+import { PATH } from "./constatns";
 
 const apiService = new ApiService();
 
-const baseURL = `https://internship.purrweb.site/api/`;
-
 export const login = async (email: string, password: string) => {
-  const { data } = await apiService.post<ResponseLoginType>(
-    `${baseURL}users/sign-in`,
-    {
-      email,
-      password,
-    }
-  );
+  const { data } = await apiService.post<UserState>(PATH.login, {
+    email,
+    password,
+  });
   return data;
 };
 
@@ -22,7 +19,7 @@ export const createAccount = async (
   username: string,
   password: string
 ) => {
-  const { data } = await apiService.post(`${baseURL}users/sign-up`, {
+  const { data } = await apiService.post(PATH.createAccount, {
     email,
     username,
     password,
@@ -31,12 +28,12 @@ export const createAccount = async (
 };
 
 export const getUser = async () => {
-  const { data } = await apiService.get(`${baseURL}users/me`);
+  const { data } = await apiService.get(PATH.getUsersMe);
   return data;
 };
 
 export const updatePersonalData = async (email: string, username: string) => {
-  const { data } = await apiService.patch(`${baseURL}users`, {
+  const { data } = await apiService.patch(PATH.updatePersonalData, {
     email,
     username,
   });
@@ -47,7 +44,7 @@ export const updatePassword = async (
   currentPassword: string,
   newPassword: string
 ) => {
-  const { data } = await apiService.patch(`${baseURL}update-password`, {
+  const { data } = await apiService.patch(PATH.updatePassword, {
     currentPassword,
     newPassword,
   });
@@ -55,30 +52,22 @@ export const updatePassword = async (
 };
 
 export const getProducts = async (token: string) => {
-  const { data } = await apiService.get<ProductType[]>(`${baseURL}products`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const { data } = await apiService.get<ProductType[]>(PATH.products, token);
   return data;
 };
 
-export const getProduct = async (token: string, id: number) => {
-  const products = await getProducts(token);
-  const product = products.find((product) => product.id === id);
-  return product;
-};
-
 export const getCodeSelf = async () => {
-  const { data } = await apiService.get(`${baseURL}code/self`);
+  const { data } = await apiService.get(PATH.getCodeSelf);
   return data;
 };
 
 export const activateCode = async (code: string) => {
-  const { data } = await apiService.post(`${baseURL}code/activate`, { code });
+  const { data } = await apiService.post(PATH.activateCode, { code });
   return data;
 };
 
 export const manageCode = async (codesIds: number[], subscribeId: number) => {
-  const { data } = await apiService.put(`${baseURL}code/manage`, {
+  const { data } = await apiService.put(PATH.manageCode, {
     codesIds,
     subscribeId,
   });
@@ -86,9 +75,7 @@ export const manageCode = async (codesIds: number[], subscribeId: number) => {
 };
 
 export const getSubscribeSelf = async (token: string) => {
-  const { data } = await apiService.get(`${baseURL}subscribe/self`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const { data } = await apiService.get(PATH.getSubscribeSelf, token);
   return data;
 };
 
@@ -96,7 +83,7 @@ export const changeSubscribe = async (
   productId: number,
   subscribeId: number
 ) => {
-  const { data } = await apiService.post(`${baseURL}subscribe/change-product`, {
+  const { data } = await apiService.post(PATH.changeSubscribe, {
     productId,
     subscribeId,
   });
@@ -104,6 +91,6 @@ export const changeSubscribe = async (
 };
 
 export const buySubscribe = async (priceId: number) => {
-  const { data } = await apiService.post(`${baseURL}payments/buy`, { priceId });
+  const { data } = await apiService.post(PATH.buySubscribe, { priceId });
   return data;
 };

@@ -2,49 +2,54 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
+import { ErrorApi } from "@/api";
 import { getProducts } from "@/api/slice";
+import { ERROR_MESSAGE_API } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { PricingCard } from "@/components";
-import { Layout } from "@/components";
-import { useAppSelector } from "@/redux/hooks";
-import { getToken } from "@/redux/token";
+import { IsAuth, PricingCard, Layout } from "@/components";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setPricingCardsStore } from "@/redux/pricingCard";
+import { getToken } from "@/redux/user";
 import { PricingCardType } from "@/types";
+import { getProductPrice } from "@/utils/logic-functions";
 
 export default function Home() {
   const [pricingCards, setPricingCards] = useState<PricingCardType[]>([]);
   const router = useRouter();
-  const toren = useAppSelector(getToken);
+  const token = useAppSelector(getToken);
+  const dispatch = useAppDispatch();
   const hasPricingCards = !!pricingCards;
-
-  if (toren === "") {
-    router.push("/login");
-  }
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const products = await getProducts(toren);
-        const prcd = products.map((product) => {
-          return {
-            id: product.id,
-            name: product.name,
-            sitesCount: product.sitesCount,
-            price: product.prices
-              .reduce(
-                (accumulator, currentValue) =>
-                  accumulator + Number(currentValue.price),
-                0
-              )
-              .toString(),
-          };
-        });
-        setPricingCards(prcd);
-      } catch (error) {}
+        if (token) {
+          const products = await getProducts(token);
+          const pricingCards = products.map((product) => {
+            return {
+              id: product.id,
+              name: product.name,
+              sitesCount: product.sitesCount,
+              price: getProductPrice(product.prices),
+            };
+          });
+
+          dispatch(setPricingCardsStore(pricingCards));
+          setPricingCards(pricingCards);
+        }
+      } catch (err) {
+        const error = err as ErrorApi;
+
+        if (error) {
+          toast(ERROR_MESSAGE_API.somethingWrong);
+        }
+      }
     }
     fetchProducts();
-  }, [toren]);
+  }, [token, dispatch]);
 
   const handleClickButton = (id: number) => {
     router.push(`checkout/products/${id}`);
@@ -56,37 +61,39 @@ export default function Home() {
         <title>Home</title>
       </Head>
       <Layout>
-        <Main>
-          <Title>Get started with Gscore today!</Title>
+        <IsAuth>
+          <Main>
+            <Title>Get started with Gscore today!</Title>
 
-          {hasPricingCards && (
-            <WrapPricingCard horizontal hideScrollbars={false}>
-              {pricingCards.map((card) => {
-                return (
-                  <PricingCard
-                    key={card.id}
-                    id={card.id}
-                    name={card.name}
-                    sitesCount={card.sitesCount}
-                    price={card.price}
-                    onClickButton={handleClickButton}
-                  />
-                );
-              })}
-            </WrapPricingCard>
-          )}
+            {hasPricingCards && (
+              <WrapPricingCard horizontal hideScrollbars={false}>
+                {pricingCards.map((card) => {
+                  return (
+                    <PricingCard
+                      key={card.id}
+                      id={card.id}
+                      name={card.name}
+                      sitesCount={card.sitesCount}
+                      price={card.price}
+                      onClickButton={handleClickButton}
+                    />
+                  );
+                })}
+              </WrapPricingCard>
+            )}
 
-          <Question>
-            <p>Have more than 10 sites?</p>
-            <StyledLink
-              href="https://www.purrweb.com/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Contact us
-            </StyledLink>
-          </Question>
-        </Main>
+            <Question>
+              <p>Have more than 10 sites?</p>
+              <StyledLink
+                href="https://www.purrweb.com/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Contact us
+              </StyledLink>
+            </Question>
+          </Main>
+        </IsAuth>
       </Layout>
     </>
   );

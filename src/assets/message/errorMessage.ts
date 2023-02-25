@@ -5,3 +5,8 @@ export const ERROR_MESSAGE = {
   email: "Email isn't valid",
   usernameMaxLength: "Name is too length, max 25 characters",
 };
+
+export const ERROR_MESSAGE_API = {
+  wrongtEmailPassword: "incorrect email or password. Check it, then try again",
+  somethingWrong: "Something went wrong((Please try again later",
+};

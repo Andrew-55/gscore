@@ -1,6 +1,8 @@
 import React, { FC } from "react";
+import { ToastContainer } from "react-toastify";
 import styled from "styled-components";
 
+import "react-toastify/dist/ReactToastify.css";
 import { Footer } from "../Footer";
 import { Header } from "../Header";
 
@@ -14,6 +16,7 @@ export const Layout: FC<Props> = ({ children }) => {
       <Header />
       <Content>{children}</Content>
       <Footer />
+      <ToastContainer position="bottom-right" />
     </Root>
   );
 };

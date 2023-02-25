@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
 
-import { Checkout, Layout, LayoutComeIn } from "@/components";
+import { Layout, LayoutComeIn } from "@/components";
 
 export default function CheckoutPage() {
   return (
@@ -10,9 +10,7 @@ export default function CheckoutPage() {
         <title>Checkout</title>
       </Head>
       <Layout>
-        <LayoutComeIn>
-          <Checkout />
-        </LayoutComeIn>
+        <LayoutComeIn>{}</LayoutComeIn>
       </Layout>
     </>
   );

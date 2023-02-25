@@ -1,5 +1,6 @@
+import { User } from "@/types/types";
+
 export interface UserState {
-  id: string;
-  username: string;
-  email: string;
+  user: User;
+  token: string;
 }

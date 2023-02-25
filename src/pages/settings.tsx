@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import { TYPOGRAPHY } from "@/assets/styles";
-import { ChangePasswordForm, PersonalInfoForm } from "@/components";
+import { ChangePasswordForm, IsAuth, PersonalInfoForm } from "@/components";
 import { Layout } from "@/components";
 import { ChangePasswordFormValues } from "@/components/ChangePasswordForm/ChangePasswordForm";
 import { PersonalInfoFormValues } from "@/components/PersonalInfoForm/PersonalInfoForm";
@@ -42,27 +42,29 @@ export default function Settings() {
         <title>Settings</title>
       </Head>
       <Layout>
-        <Main>
-          <Title>Settings</Title>
-          <TabsLine
-            tabs={tabs}
-            activeIndex={activeIndex}
-            onClickTab={handleClickTab}
-          />
-          <WrapForm>
-            {tabs[activeIndex] === TABS.PERSONAL_INFO && (
-              <PersonalInfoForm
-                username="Alex"
-                email="alex@test.ru"
-                onConfirm={handleChangePersonalInfo}
-              />
-            )}
+        <IsAuth>
+          <Main>
+            <Title>Settings</Title>
+            <TabsLine
+              tabs={tabs}
+              activeIndex={activeIndex}
+              onClickTab={handleClickTab}
+            />
+            <WrapForm>
+              {tabs[activeIndex] === TABS.PERSONAL_INFO && (
+                <PersonalInfoForm
+                  username="Alex"
+                  email="alex@test.ru"
+                  onConfirm={handleChangePersonalInfo}
+                />
+              )}
 
-            {tabs[activeIndex] === TABS.CHANGE_PASSWORD && (
-              <ChangePasswordForm onConfirm={handleChangePassword} />
-            )}
-          </WrapForm>
-        </Main>
+              {tabs[activeIndex] === TABS.CHANGE_PASSWORD && (
+                <ChangePasswordForm onConfirm={handleChangePassword} />
+              )}
+            </WrapForm>
+          </Main>
+        </IsAuth>
       </Layout>
     </>
   );
