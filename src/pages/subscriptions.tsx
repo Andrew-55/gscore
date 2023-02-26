@@ -7,12 +7,13 @@ import styled from "styled-components";
 import { getSubscribeSelf } from "@/api/slice";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
+import { withAuth } from "@/hoc/withAuth";
 import { useAppSelector } from "@/redux/hooks";
-import { getToken } from "@/redux/token";
+import { getToken } from "@/redux/user";
 import { SubscriptionType } from "@/types";
 import { Button } from "@/ui";
 
-export default function Subscriptions() {
+export default withAuth(function Subscriptions() {
   const [isUpdateOn, setIsUpdateOn] = useState(false);
   const [isCodesVisible, setIsCodesVisible] = useState(false);
   const [subscriptions, setSubscriptions] = useState<SubscriptionType[]>();
@@ -20,7 +21,7 @@ export default function Subscriptions() {
   const nodeRef = React.useRef(null);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
-  const toren = useAppSelector(getToken);
+  const token = useAppSelector(getToken);
 
   const hasCards = subscriptions && subscriptions.length > 0;
 
@@ -33,22 +34,18 @@ export default function Subscriptions() {
     setCurrentSubscribeId(id);
   };
 
-  if (toren === "") {
-    router.push("/login");
-  }
-
   useEffect(() => {
     async function fetchSubscriptions() {
       try {
         setIsLoading(true);
-        const subscriptions = await getSubscribeSelf(toren);
+        const subscriptions = await getSubscribeSelf(token);
         setSubscriptions(subscriptions);
         setCurrentSubscribeId(subscriptions[0].id);
         setIsLoading(false);
       } catch (error) {}
     }
     fetchSubscriptions();
-  }, [toren]);
+  }, [token]);
 
   return (
     <>
@@ -101,7 +98,7 @@ export default function Subscriptions() {
       </Layout>
     </>
   );
-}
+});
 
 const Main = styled.div`
   padding: 32px 86px 120px 86px;

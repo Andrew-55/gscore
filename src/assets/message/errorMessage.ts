@@ -4,4 +4,7 @@ export const ERROR_MESSAGE = {
   passwordNotDifferent: "The password must be different from the existing one",
   email: "Email isn't valid",
   usernameMaxLength: "Name is too length, max 25 characters",
+  wrongtEmailPassword: "incorrect email or password. Check it, then try again",
+  somethingWrong: "Something went wrong((Please try again later",
+  needLogin: "You need to log in",
 };

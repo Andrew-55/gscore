@@ -2,15 +2,16 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { login } from "@/api";
+import { ErrorApi, login } from "@/api";
+import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, LayoutComeIn } from "@/components";
 import { LoginForm, LoginFormValues } from "@/components";
 import { useAppDispatch } from "@/redux/hooks";
-import { setToken } from "@/redux/token";
-import { setUser } from "@/redux/user";
+import { setUserState } from "@/redux/user";
 
 export default function Login() {
   const dispatch = useAppDispatch();
@@ -18,12 +19,16 @@ export default function Login() {
 
   const handleLogin = async ({ email, password }: LoginFormValues) => {
     try {
-      const { user, token } = await login(email, password);
-      dispatch(setUser(user));
-      dispatch(setToken(token));
-      router.push("/");
-    } catch (error) {
-      console.warn("Errors )))");
+      const userInfo = await login(email, password);
+      if (userInfo) {
+        dispatch(setUserState(userInfo));
+        router.push("/");
+      }
+    } catch (err) {
+      const error = err as ErrorApi;
+      if (error.response?.status === 400 || error.response?.status === 404) {
+        toast(ERROR_MESSAGE.wrongtEmailPassword);
+      }
     }
   };
 

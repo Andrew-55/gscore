@@ -1,7 +1,6 @@
 export type {
   PriceType,
   ProductType,
-  ResponseLoginType,
   PricingCardType,
   CheckoutItemType,
   UserType,

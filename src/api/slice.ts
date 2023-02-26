@@ -1,22 +1,18 @@
-import { ProductType, ResponseLoginType } from "@/types";
+import { UserState } from "@/redux/user";
 import { ResponseBuyType, SubscriptionType, UserType } from "@/types";
+import { ProductType } from "@/types";
 import { CodeType } from "@/types/types";
 
 import { ApiService } from "./api";
+import { PATH } from "./constants";
 
 const apiService = new ApiService();
 
-const baseURL = `https://internship.purrweb.site/api/`;
-
 export const login = async (email: string, password: string) => {
-  const { data } = await apiService.post<ResponseLoginType>(
-    `${baseURL}users/sign-in`,
-    {
-      email,
-      password,
-    },
-    { headers: { "Content-Type": "application/json" } }
-  );
+  const { data } = await apiService.post<UserState>(PATH.login, {
+    email,
+    password,
+  });
   return data;
 };
 
@@ -25,26 +21,17 @@ export const createAccount = async (
   username: string,
   password: string
 ) => {
-  const { data } = await apiService.post<ResponseLoginType>(
-    `${baseURL}users/sign-up`,
-    {
-      email,
-      username,
-      password,
-    },
-    { headers: { "Content-Type": "application/json" } }
-  );
+  const { data } = await apiService.post<UserType>(PATH.createAccount, {
+    email,
+    username,
+    password,
+  });
   return data;
 };
 
 export const getUser = async (token: string) => {
-  const { data } = await apiService.get<UserType>(`${baseURL}users/me`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
-  return data;
+  const user = await apiService.get<UserType>(PATH.getUsersMe, token);
+  return user;
 };
 
 export const updatePersonalData = async (
@@ -53,17 +40,12 @@ export const updatePersonalData = async (
   username: string
 ) => {
   const { data } = await apiService.patch<UserType>(
-    `${baseURL}users`,
+    PATH.updatePersonalData,
     {
       email,
       username,
     },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
+    token
   );
   return data;
 };
@@ -74,125 +56,69 @@ export const updatePassword = async (
   newPassword: string
 ) => {
   const { data } = await apiService.patch<UserType>(
-    `${baseURL}users/update-password`,
+    PATH.updatePassword,
     {
       currentPassword,
       newPassword,
     },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
+    token
   );
   return data;
 };
 
 export const getProducts = async (token: string) => {
-  const { data } = await apiService.get<ProductType[]>(`${baseURL}products`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
+  const { data } = await apiService.get<ProductType[]>(PATH.products, token);
   return data;
-};
-
-export const getProduct = async (token: string, id: number) => {
-  const products = await getProducts(token);
-  const product = products.find((product) => product.id === id);
-  return product;
 };
 
 export const getCodeSelf = async (token: string) => {
-  const { data } = await apiService.get<CodeType[]>(`${baseURL}code/self`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
+  const { data } = await apiService.get<CodeType[]>(PATH.getCodeSelf, token);
   return data;
 };
 
-export const activateCode = async (
-  token: string,
-  code: string,
-  origin: string
-) => {
-  const { data } = await apiService.post<CodeType>(
-    `${baseURL}code/activate`,
-    {
-      code,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": `${origin}`,
-        Origin: `${origin}`,
-      },
-    }
-  );
+export const activateCode = async (token: string, code: string) => {
+  const { data } = await apiService.post(PATH.activateCode, { code }, token);
   return data;
 };
 
 export const manageCode = async (
-  token: string,
   codesIds: number[],
-  subscribeId: number
+  subscribeId: number,
+  token: string
 ) => {
   const { data } = await apiService.put(
-    `${baseURL}code/manage`,
+    PATH.manageCode,
     {
       codesIds,
       subscribeId,
     },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+    token
   );
   return data;
 };
 
 export const getSubscribeSelf = async (token: string) => {
-  const { data } = await apiService.get<SubscriptionType[]>(
-    `${baseURL}subscribe/self`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const { data } = await apiService.get(PATH.getSubscribeSelf, token);
   return data;
 };
 
 export const changeSubscribe = async (
   productId: number,
-  subscribeId: number
+  subscribeId: number,
+  token: string
 ) => {
-  const { data } = await apiService.post(`${baseURL}subscribe/change-product`, {
-    productId,
-    subscribeId,
-  });
+  const { data } = await apiService.post(
+    PATH.changeSubscribe,
+    {
+      productId,
+      subscribeId,
+    },
+    token
+  );
   return data;
 };
 
-export const buySubscribe = async (token: string, priceId: number) => {
-  const { data } = await apiService.post<ResponseBuyType>(
-    `${baseURL}payments/buy`,
-    {
-      priceId,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
+export const buySubscribe = async (priceId: number, token: string) => {
+  const { data } = await apiService.post(PATH.buySubscribe, { priceId }, token);
   return data;
 };

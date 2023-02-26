@@ -2,54 +2,64 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
+import { ErrorApi } from "@/api";
 import { getProducts } from "@/api/slice";
+import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { PricingCard } from "@/components";
-import { Layout } from "@/components";
-import { useAppSelector } from "@/redux/hooks";
-import { getToken } from "@/redux/token";
-import { PricingCardType } from "@/types";
+import { PricingCard, Layout } from "@/components";
+import { withAuth } from "@/hoc/withAuth";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {
+  getPricingCards,
+  setCurrentCardId,
+  setPricingCardsToStore,
+} from "@/redux/pricingCard";
+import { getToken } from "@/redux/user";
+import { getProductPrice } from "@/utils/functions";
 
-export default function Home() {
-  const [pricingCards, setPricingCards] = useState<PricingCardType[]>([]);
+export default withAuth(function Home() {
   const [isLoading, setIsLoading] = useState(true);
+  const [hasPricingCards, sethasPricingCards] = useState(false);
   const router = useRouter();
-  const toren = useAppSelector(getToken);
-  const hasPricingCards = !!pricingCards;
-
-  if (toren === "") {
-    router.push("/login");
-  }
+  const token = useAppSelector(getToken);
+  const dispatch = useAppDispatch();
+  const pricingCards = useAppSelector(getPricingCards());
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        setIsLoading(true);
-        const products = await getProducts(toren);
-        const prcd = products.map((product) => {
-          return {
-            id: product.id,
-            name: product.name,
-            sitesCount: product.sitesCount,
-            price: product.prices
-              .reduce(
-                (accumulator, currentValue) =>
-                  accumulator + Number(currentValue.price),
-                0
-              )
-              .toString(),
-          };
-        });
-        setPricingCards(prcd);
-        setIsLoading(false);
-      } catch (error) {}
+        if (token) {
+          setIsLoading(true);
+          const products = await getProducts(token);
+          const pricingCards = products.map((product) => {
+            return {
+              id: product.id,
+              name: product.name,
+              sitesCount: product.sitesCount,
+              price: getProductPrice(product.prices),
+            };
+          });
+
+          setIsLoading(false);
+          dispatch(setPricingCardsToStore(pricingCards));
+        }
+      } catch (err) {
+        const error = err as ErrorApi;
+
+        if (error) {
+          toast(ERROR_MESSAGE.somethingWrong);
+        }
+      }
     }
     fetchProducts();
-  }, [toren]);
+    sethasPricingCards(true);
+  }, [token, dispatch]);
 
   const handleClickButton = (id: number) => {
+    dispatch(setCurrentCardId(id));
     router.push(`checkout/products/${id}`);
   };
 
@@ -97,7 +107,7 @@ export default function Home() {
       </Layout>
     </>
   );
-}
+});
 
 const Main = styled.main`
   padding: 16px 86px;

@@ -11,10 +11,13 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import { tokenReducer } from "@/redux/token";
+import { pricingCardsReducers } from "@/redux/pricingCard";
 import { userReducer } from "@/redux/user";
 
-const rootReducer = combineReducers({ user: userReducer, token: tokenReducer });
+const rootReducer = combineReducers({
+  user: userReducer,
+  pricingCards: pricingCardsReducers,
+});
 
 const persistConfig = {
   key: "root",

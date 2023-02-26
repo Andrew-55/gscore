@@ -9,9 +9,9 @@ import { ChangePasswordForm, PersonalInfoForm } from "@/components";
 import { Layout } from "@/components";
 import { ChangePasswordFormValues } from "@/components/ChangePasswordForm/ChangePasswordForm";
 import { PersonalInfoFormValues } from "@/components/PersonalInfoForm/PersonalInfoForm";
+import { withAuth } from "@/hoc/withAuth";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getToken } from "@/redux/token";
-import { getUser, setUser } from "@/redux/user";
+import { getUser, updateUser, getToken } from "@/redux/user";
 import { TabsLine } from "@/ui";
 
 enum TABS {
@@ -19,7 +19,7 @@ enum TABS {
   CHANGE_PASSWORD = "Change password",
 }
 
-export default function Settings() {
+export default withAuth(function Settings() {
   const tabs = ["Personal Info", "Change password"];
   const [activeIndex, setActiveIndex] = useState(0);
   const router = useRouter();
@@ -41,7 +41,7 @@ export default function Settings() {
   }: PersonalInfoFormValues) => {
     try {
       const user = await updatePersonalData(token, email, username);
-      dispatch(setUser(user));
+      dispatch(updateUser(user));
     } catch (error) {
       console.warn(error);
     }
@@ -86,7 +86,7 @@ export default function Settings() {
       </Layout>
     </>
   );
-}
+});
 
 const Main = styled.main`
   padding: 32px 86px;
