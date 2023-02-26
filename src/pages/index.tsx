@@ -7,21 +7,25 @@ import styled from "styled-components";
 
 import { ErrorApi } from "@/api";
 import { getProducts } from "@/api/slice";
-import { ERROR_MESSAGE_API } from "@/assets/message";
+import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { IsAuth, PricingCard, Layout } from "@/components";
+import { PricingCard, Layout } from "@/components";
+import { withAuth } from "@/hoc/withAuth";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setPricingCardsStore } from "@/redux/pricingCard";
+import {
+  getPricingCards,
+  setCurrentCardId,
+  setPricingCardsToStore,
+} from "@/redux/pricingCard";
 import { getToken } from "@/redux/user";
-import { PricingCardType } from "@/types";
-import { getProductPrice } from "@/utils/logic-functions";
+import { getProductPrice } from "@/utils/functions";
 
-export default function Home() {
-  const [pricingCards, setPricingCards] = useState<PricingCardType[]>([]);
+export default withAuth(function Home() {
+  const [hasPricingCards, sethasPricingCards] = useState(false);
   const router = useRouter();
   const token = useAppSelector(getToken);
   const dispatch = useAppDispatch();
-  const hasPricingCards = !!pricingCards;
+  const pricingCards = useAppSelector(getPricingCards());
 
   useEffect(() => {
     async function fetchProducts() {
@@ -37,21 +41,22 @@ export default function Home() {
             };
           });
 
-          dispatch(setPricingCardsStore(pricingCards));
-          setPricingCards(pricingCards);
+          dispatch(setPricingCardsToStore(pricingCards));
         }
       } catch (err) {
         const error = err as ErrorApi;
 
         if (error) {
-          toast(ERROR_MESSAGE_API.somethingWrong);
+          toast(ERROR_MESSAGE.somethingWrong);
         }
       }
     }
     fetchProducts();
+    sethasPricingCards(true);
   }, [token, dispatch]);
 
   const handleClickButton = (id: number) => {
+    dispatch(setCurrentCardId(id));
     router.push(`checkout/products/${id}`);
   };
 
@@ -61,43 +66,41 @@ export default function Home() {
         <title>Home</title>
       </Head>
       <Layout>
-        <IsAuth>
-          <Main>
-            <Title>Get started with Gscore today!</Title>
+        <Main>
+          <Title>Get started with Gscore today!</Title>
 
-            {hasPricingCards && (
-              <WrapPricingCard horizontal hideScrollbars={false}>
-                {pricingCards.map((card) => {
-                  return (
-                    <PricingCard
-                      key={card.id}
-                      id={card.id}
-                      name={card.name}
-                      sitesCount={card.sitesCount}
-                      price={card.price}
-                      onClickButton={handleClickButton}
-                    />
-                  );
-                })}
-              </WrapPricingCard>
-            )}
+          {hasPricingCards && (
+            <WrapPricingCard horizontal hideScrollbars={false}>
+              {pricingCards.map((card) => {
+                return (
+                  <PricingCard
+                    key={card.id}
+                    id={card.id}
+                    name={card.name}
+                    sitesCount={card.sitesCount}
+                    price={card.price}
+                    onClickButton={handleClickButton}
+                  />
+                );
+              })}
+            </WrapPricingCard>
+          )}
 
-            <Question>
-              <p>Have more than 10 sites?</p>
-              <StyledLink
-                href="https://www.purrweb.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Contact us
-              </StyledLink>
-            </Question>
-          </Main>
-        </IsAuth>
+          <Question>
+            <p>Have more than 10 sites?</p>
+            <StyledLink
+              href="https://www.purrweb.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Contact us
+            </StyledLink>
+          </Question>
+        </Main>
       </Layout>
     </>
   );
-}
+});
 
 const Main = styled.main`
   padding: 16px 86px;

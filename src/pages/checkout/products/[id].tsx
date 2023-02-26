@@ -1,23 +1,21 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import { Checkout, IsAuth, Layout, LayoutComeIn } from "@/components";
+import { Checkout, Layout, LayoutComeIn } from "@/components";
+import { withAuth } from "@/hoc/withAuth";
 import { useAppSelector } from "@/redux/hooks";
-import { getPricingCardById } from "@/redux/pricingCard";
+import { getPricingCurrentCard } from "@/redux/pricingCard";
 import { CheckoutItemType } from "@/types";
 
-export default function CheckoutProduct() {
+export default withAuth(function CheckoutProduct() {
   const [checkoutCard, setCheckoutCard] = useState<CheckoutItemType>();
-  const router = useRouter();
-  const { id } = router.query;
-  const checkoutItem = useAppSelector(getPricingCardById(Number(id)));
+  const checkoutItem = useAppSelector(getPricingCurrentCard());
 
   useEffect(() => {
     if (checkoutItem) {
       setCheckoutCard(checkoutItem);
     }
-  }, [checkoutItem, id]);
+  }, [checkoutItem]);
 
   return (
     <>
@@ -25,18 +23,16 @@ export default function CheckoutProduct() {
         <title>Checkout</title>
       </Head>
       <Layout>
-        <IsAuth>
-          <LayoutComeIn>
-            {checkoutCard && (
-              <Checkout
-                id={checkoutCard.id}
-                name={checkoutCard.name}
-                price={checkoutCard.price}
-              />
-            )}
-          </LayoutComeIn>
-        </IsAuth>
+        <LayoutComeIn>
+          {checkoutCard && (
+            <Checkout
+              id={checkoutCard.id}
+              name={checkoutCard.name}
+              price={checkoutCard.price}
+            />
+          )}
+        </LayoutComeIn>
       </Layout>
     </>
   );
-}
+});

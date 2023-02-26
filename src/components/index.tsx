@@ -29,4 +29,3 @@ export { Code } from "./Code";
 export { SubscriptionsNo } from "./SubscriptionsNo";
 export { Codes } from "./Codes";
 export { Cards } from "./Cards";
-export { IsAuth } from "./IsAuth";

@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import { TYPOGRAPHY } from "@/assets/styles";
-import { ChangePasswordForm, IsAuth, PersonalInfoForm } from "@/components";
+import { ChangePasswordForm, PersonalInfoForm } from "@/components";
 import { Layout } from "@/components";
 import { ChangePasswordFormValues } from "@/components/ChangePasswordForm/ChangePasswordForm";
 import { PersonalInfoFormValues } from "@/components/PersonalInfoForm/PersonalInfoForm";
+import { withAuth } from "@/hoc/withAuth";
 import { TabsLine } from "@/ui";
 
 enum TABS {
@@ -14,7 +15,7 @@ enum TABS {
   CHANGE_PASSWORD = "Change password",
 }
 
-export default function Settings() {
+export default withAuth(function Settings() {
   const tabs = ["Personal Info", "Change password"];
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -42,33 +43,31 @@ export default function Settings() {
         <title>Settings</title>
       </Head>
       <Layout>
-        <IsAuth>
-          <Main>
-            <Title>Settings</Title>
-            <TabsLine
-              tabs={tabs}
-              activeIndex={activeIndex}
-              onClickTab={handleClickTab}
-            />
-            <WrapForm>
-              {tabs[activeIndex] === TABS.PERSONAL_INFO && (
-                <PersonalInfoForm
-                  username="Alex"
-                  email="alex@test.ru"
-                  onConfirm={handleChangePersonalInfo}
-                />
-              )}
+        <Main>
+          <Title>Settings</Title>
+          <TabsLine
+            tabs={tabs}
+            activeIndex={activeIndex}
+            onClickTab={handleClickTab}
+          />
+          <WrapForm>
+            {tabs[activeIndex] === TABS.PERSONAL_INFO && (
+              <PersonalInfoForm
+                username="Alex"
+                email="alex@test.ru"
+                onConfirm={handleChangePersonalInfo}
+              />
+            )}
 
-              {tabs[activeIndex] === TABS.CHANGE_PASSWORD && (
-                <ChangePasswordForm onConfirm={handleChangePassword} />
-              )}
-            </WrapForm>
-          </Main>
-        </IsAuth>
+            {tabs[activeIndex] === TABS.CHANGE_PASSWORD && (
+              <ChangePasswordForm onConfirm={handleChangePassword} />
+            )}
+          </WrapForm>
+        </Main>
       </Layout>
     </>
   );
-}
+});
 
 const Main = styled.main`
   padding: 32px 86px;

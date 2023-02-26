@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
-import { getUser, setUserState } from "@/redux/user";
+import { getUser, logout } from "@/redux/user";
 
 import { HeaderDesktop } from "./components/HeaderDesktop";
 import { HeaderMobile } from "./components/HeaderMobile";
@@ -28,9 +28,7 @@ export const Header = () => {
   }, [isMobileSize]);
 
   const handleClickLogout = () => {
-    dispatch(
-      setUserState({ user: { id: "", username: "", email: "" }, token: "" })
-    );
+    dispatch(logout());
     router.push("/login");
   };
 

@@ -5,14 +5,15 @@ import styled from "styled-components";
 
 import { getSubscribeSelf } from "@/api/slice";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { Layout, SubscriptionsNo, Codes, Cards, IsAuth } from "@/components";
+import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
+import { withAuth } from "@/hoc/withAuth";
 import { useAppSelector } from "@/redux/hooks";
 import { getToken } from "@/redux/user";
 import { Button } from "@/ui";
 
 import { MY_SUBSCRIPTIONS } from "../stoge";
 
-export default function Subscriptions() {
+export default withAuth(function Subscriptions() {
   const [isUpdateOn, setIsUpdateOn] = useState(false);
   const [isCodesVisible, setIsCodesVisible] = useState(false);
   const [currentCard, setCurrentCard] = useState(0);
@@ -33,46 +34,44 @@ export default function Subscriptions() {
         <title>Subscriptions</title>
       </Head>
       <Layout>
-        <IsAuth>
-          <Main>
-            <WrapTitle>
-              <Title>My subscriptions</Title>
+        <Main>
+          <WrapTitle>
+            <Title>My subscriptions</Title>
 
-              {hasCards && (
-                <StyledButtonTitle
-                  text="Upgrade"
-                  variant="primary"
-                  onClick={() => setIsUpdateOn((prev) => !prev)}
-                  isDisabled={!isCodesVisible}
-                />
-              )}
-            </WrapTitle>
-
-            {hasCards ? (
-              <>
-                <Cards onViewCodes={handleViewCodes} />
-
-                <CSSTransition
-                  nodeRef={nodeRef}
-                  in={isCodesVisible}
-                  classNames="burger__menu"
-                  timeout={1000}
-                  unmountOnExit
-                >
-                  <div ref={nodeRef}>
-                    <Codes id={currentCard} isUpdateOn={isUpdateOn} />
-                  </div>
-                </CSSTransition>
-              </>
-            ) : (
-              <SubscriptionsNo />
+            {hasCards && (
+              <StyledButtonTitle
+                text="Upgrade"
+                variant="primary"
+                onClick={() => setIsUpdateOn((prev) => !prev)}
+                isDisabled={!isCodesVisible}
+              />
             )}
-          </Main>
-        </IsAuth>
+          </WrapTitle>
+
+          {hasCards ? (
+            <>
+              <Cards onViewCodes={handleViewCodes} />
+
+              <CSSTransition
+                nodeRef={nodeRef}
+                in={isCodesVisible}
+                classNames="burger__menu"
+                timeout={1000}
+                unmountOnExit
+              >
+                <div ref={nodeRef}>
+                  <Codes id={currentCard} isUpdateOn={isUpdateOn} />
+                </div>
+              </CSSTransition>
+            </>
+          ) : (
+            <SubscriptionsNo />
+          )}
+        </Main>
       </Layout>
     </>
   );
-}
+});
 
 const Main = styled.div`
   padding: 32px 86px 120px 86px;

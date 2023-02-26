@@ -9,7 +9,7 @@ import {
   checkIsEmail,
   checkPasswordLength,
   checkStringIsEmpty,
-} from "@/utils/logic-functions";
+} from "@/utils/functions";
 
 type Props = {
   onConfirm: ({ username, email, password }: CreateAccountFormValues) => void;

@@ -1,8 +1,9 @@
 import { UserState } from "@/redux/user";
 import { ProductType } from "@/types";
+import { User } from "@/types/types";
 
 import { ApiService } from "./api";
-import { PATH } from "./constatns";
+import { PATH } from "./constants";
 
 const apiService = new ApiService();
 
@@ -27,9 +28,9 @@ export const createAccount = async (
   return data;
 };
 
-export const getUser = async () => {
-  const { data } = await apiService.get(PATH.getUsersMe);
-  return data;
+export const getUser = async (token: string) => {
+  const user = await apiService.get<User>(PATH.getUsersMe, token);
+  return user;
 };
 
 export const updatePersonalData = async (email: string, username: string) => {
@@ -56,8 +57,8 @@ export const getProducts = async (token: string) => {
   return data;
 };
 
-export const getCodeSelf = async () => {
-  const { data } = await apiService.get(PATH.getCodeSelf);
+export const getCodeSelf = async (token: string) => {
+  const { data } = await apiService.get(PATH.getCodeSelf, token);
   return data;
 };
 
