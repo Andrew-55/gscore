@@ -1,40 +1,29 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
 import { ErrorApi } from "@/api";
 import { getProducts } from "@/api";
+import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { PricingCard, Layout } from "@/components";
+import { withAuth } from "@/hoc/withAuth";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   getPricingCards,
   setCurrentCardId,
   setPricingCardsToStore,
 } from "@/redux/pricingCard";
-import { ProductType } from "@/redux/pricingCard";
 import { getProductPrice } from "@/utils/functions";
 
-interface Props {
-  productsMock: ProductType[];
-}
-
-const Home: FC<Props> = ({ productsMock }) => {
+const Home = () => {
   const [hasPricingCards, sethasPricingCards] = useState(false);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const pricingCards = useAppSelector(getPricingCards());
-
-  const pricingCardsMock = productsMock.map((product) => {
-    return {
-      id: product.id,
-      name: product.name,
-      sitesCount: product.sitesCount,
-      price: getProductPrice(product.prices),
-    };
-  });
 
   useEffect(() => {
     async function fetchProducts() {
@@ -53,9 +42,9 @@ const Home: FC<Props> = ({ productsMock }) => {
         sethasPricingCards(true);
       } catch (err) {
         const error = err as ErrorApi;
-
-        if (error) {
-          console.warn(error.message);
+        if (error.response?.status === 401) {
+          router.push("/login");
+          toast(ERROR_MESSAGE.needLogin);
         }
       }
     }
@@ -76,24 +65,9 @@ const Home: FC<Props> = ({ productsMock }) => {
         <Main>
           <Title>Get started with Gscore today!</Title>
 
-          {hasPricingCards ? (
+          {hasPricingCards && (
             <WrapPricingCard horizontal hideScrollbars={false}>
               {pricingCards.map((card) => {
-                return (
-                  <PricingCard
-                    key={card.id}
-                    id={card.id}
-                    name={card.name}
-                    sitesCount={card.sitesCount}
-                    price={card.price}
-                    onClickButton={handleClickButton}
-                  />
-                );
-              })}
-            </WrapPricingCard>
-          ) : (
-            <WrapPricingCard horizontal hideScrollbars={false}>
-              {pricingCardsMock.map((card) => {
                 return (
                   <PricingCard
                     key={card.id}
@@ -124,55 +98,7 @@ const Home: FC<Props> = ({ productsMock }) => {
   );
 };
 
-export default Home;
-
-export async function getStaticProps() {
-  const productsMock = [
-    {
-      id: 1,
-      sitesCount: 1,
-      name: "One cite",
-      prices: [
-        {
-          id: 1,
-          isActive: true,
-          productId: 1,
-          price: "46",
-        },
-      ],
-    },
-    {
-      id: 2,
-      sitesCount: 3,
-      name: "Three cites",
-      prices: [
-        {
-          id: 2,
-          isActive: true,
-          productId: 2,
-          price: "85",
-        },
-      ],
-    },
-    {
-      id: 3,
-      sitesCount: 7,
-      name: "Seven sites",
-      prices: [
-        {
-          id: 3,
-          isActive: true,
-          productId: 3,
-          price: "107",
-        },
-      ],
-    },
-  ];
-
-  return {
-    props: { productsMock },
-  };
-}
+export default withAuth(Home);
 
 const Main = styled.main`
   padding: 16px 86px;

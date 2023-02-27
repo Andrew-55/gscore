@@ -5,11 +5,12 @@ import styled from "styled-components";
 
 import { TYPOGRAPHY } from "@/assets/styles";
 import { Layout, LayoutComeIn } from "@/components";
+import { withAuth } from "@/hoc/withAuth";
 import { useAppSelector } from "@/redux/hooks";
 import { getCurrentCartId } from "@/redux/pricingCard";
 import { Button } from "@/ui";
 
-export default function CheckoutPage() {
+function CheckoutPage() {
   const curretnCardId = useAppSelector(getCurrentCartId());
   const router = useRouter();
   const handleClick = () => {
@@ -45,6 +46,8 @@ export default function CheckoutPage() {
     </>
   );
 }
+
+export default withAuth(CheckoutPage);
 
 const Root = styled.div`
   display: flex;
