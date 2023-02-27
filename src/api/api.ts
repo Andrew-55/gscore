@@ -1,35 +1,23 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-import { getStoredState } from "redux-persist";
 
-import { persistConfig, RootState } from "@/redux/store";
+import { store } from "@/redux/store";
 
 export type ErrorApi = AxiosError;
 
 export class ApiService {
   constructor() {
-    this.token = "";
+    this.token = store.getState().user.token;
     this.instance = axios.create({
       baseURL: process.env.NEXT_PUBLIC_BASE_URL,
     });
     this.instance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
-        if (!!this.token) {
+        if (this.token) {
           config.headers.Authorization = `Bearer ${this.token}`;
         }
         return config;
       }
     );
-
-    const getTokenFromStote = async () => {
-      const storePersist = await getStoredState(persistConfig);
-      if (storePersist) {
-        const store = storePersist as RootState;
-        const token = store.user.token;
-        return token;
-      }
-      return "";
-    };
-    getTokenFromStote().then((res) => (this.token = res));
   }
 
   token;
