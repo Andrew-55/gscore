@@ -7,7 +7,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { getPricingCurrentCard } from "@/redux/pricingCard";
 import { CheckoutItemType } from "@/types";
 
-export default withAuth(function CheckoutProduct() {
+function CheckoutProduct() {
   const [checkoutCard, setCheckoutCard] = useState<CheckoutItemType>();
   const checkoutItem = useAppSelector(getPricingCurrentCard());
 
@@ -35,4 +35,6 @@ export default withAuth(function CheckoutProduct() {
       </Layout>
     </>
   );
-});
+}
+
+export default withAuth(CheckoutProduct);

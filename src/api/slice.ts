@@ -28,8 +28,8 @@ export const createAccount = async (
   return data;
 };
 
-export const getUser = async (token: string) => {
-  const user = await apiService.get<User>(PATH.getUsersMe, token);
+export const getUser = async () => {
+  const user = await apiService.get<User>(PATH.getUsersMe);
   return user;
 };
 
@@ -52,13 +52,13 @@ export const updatePassword = async (
   return data;
 };
 
-export const getProducts = async (token: string) => {
-  const { data } = await apiService.get<ProductType[]>(PATH.products, token);
+export const getProducts = async () => {
+  const { data } = await apiService.get<ProductType[]>(PATH.products);
   return data;
 };
 
-export const getCodeSelf = async (token: string) => {
-  const { data } = await apiService.get(PATH.getCodeSelf, token);
+export const getCodeSelf = async () => {
+  const { data } = await apiService.get(PATH.getCodeSelf);
   return data;
 };
 
@@ -75,8 +75,8 @@ export const manageCode = async (codesIds: number[], subscribeId: number) => {
   return data;
 };
 
-export const getSubscribeSelf = async (token: string) => {
-  const { data } = await apiService.get(PATH.getSubscribeSelf, token);
+export const getSubscribeSelf = async () => {
+  const { data } = await apiService.get(PATH.getSubscribeSelf);
   return data;
 };
 

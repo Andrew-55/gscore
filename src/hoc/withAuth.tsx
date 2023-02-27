@@ -23,7 +23,7 @@ export const withAuth = (Component: React.ComponentType) => {
 
       async function fetchUser() {
         try {
-          const user = await getUser(token);
+          const user = await getUser();
           if (user) {
             setIsAuth(true);
           }

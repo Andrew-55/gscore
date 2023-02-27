@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
   pricingCards: pricingCardsReducers,
 });
 
-const persistConfig = {
+export const persistConfig = {
   key: "root",
   storage,
 };

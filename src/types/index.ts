@@ -1,7 +1,7 @@
 export type {
   PriceType,
   ProductType,
-  UserState,
+  User,
   PricingCardType,
   CheckoutItemType,
 } from "./types";

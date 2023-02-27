@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { UserState } from "@/types";
+import { UserState } from "./types";
 
 const initialState: UserState = {
   user: {
@@ -19,9 +19,8 @@ export const userSlice = createSlice({
       state.user = payload.user;
       state.token = payload.token;
     },
-    logout(state) {
-      state.user = { id: "", username: "", email: "" };
-      state.token = "";
+    logout() {
+      return initialState;
     },
   },
 });

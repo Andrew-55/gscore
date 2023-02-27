@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import styled, { css } from "styled-components";
 
@@ -27,12 +28,9 @@ export const Footer = () => {
               Cookies
             </StyledLink>{" "}
             |{" "}
-            <StyledLink
-              href="https://en.wikipedia.org/wiki/Privacy_policy"
-              target={"_blank"}
-            >
+            <StyledLinkNext href="/privacy-policy">
               Privacy Policy
-            </StyledLink>
+            </StyledLinkNext>
           </StyledSpan>
         </ParagraphBottom>
         <SocialMedia>
@@ -157,7 +155,7 @@ const SocialMediaLink = styled.a`
   }
 `;
 
-const StyledLink = styled.a`
+const StyleLink = css`
   border-bottom: 1px solid ${COLORS.color_100};
 
   &:hover,
@@ -171,4 +169,12 @@ const StyledLink = styled.a`
     color: ${COLORS.red_400};
     border-bottom: 1px solid ${COLORS.red_400};
   }
+`;
+
+const StyledLinkNext = styled(Link)`
+  ${StyleLink};
+`;
+
+const StyledLink = styled.a`
+  ${StyleLink};
 `;

@@ -13,7 +13,7 @@ import { Button } from "@/ui";
 
 import { MY_SUBSCRIPTIONS } from "../stoge";
 
-export default withAuth(function Subscriptions() {
+function Subscriptions() {
   const [isUpdateOn, setIsUpdateOn] = useState(false);
   const [isCodesVisible, setIsCodesVisible] = useState(false);
   const [currentCard, setCurrentCard] = useState(0);
@@ -71,7 +71,9 @@ export default withAuth(function Subscriptions() {
       </Layout>
     </>
   );
-});
+}
+
+export default withAuth(Subscriptions);
 
 const Main = styled.div`
   padding: 32px 86px 120px 86px;

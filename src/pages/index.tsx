@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { toast } from "react-toastify";
 import styled from "styled-components";
@@ -10,7 +10,6 @@ import { getProducts } from "@/api/slice";
 import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { PricingCard, Layout } from "@/components";
-import { withAuth } from "@/hoc/withAuth";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   getPricingCards,
@@ -18,20 +17,34 @@ import {
   setPricingCardsToStore,
 } from "@/redux/pricingCard";
 import { getToken } from "@/redux/user";
+import { ProductType } from "@/types";
 import { getProductPrice } from "@/utils/functions";
 
-export default withAuth(function Home() {
+interface Props {
+  productsMock: ProductType[];
+}
+
+const Home: FC<Props> = ({ productsMock }) => {
   const [hasPricingCards, sethasPricingCards] = useState(false);
   const router = useRouter();
   const token = useAppSelector(getToken);
   const dispatch = useAppDispatch();
   const pricingCards = useAppSelector(getPricingCards());
 
+  const pricingCardsMock = productsMock.map((product) => {
+    return {
+      id: product.id,
+      name: product.name,
+      sitesCount: product.sitesCount,
+      price: getProductPrice(product.prices),
+    };
+  });
+
   useEffect(() => {
     async function fetchProducts() {
       try {
         if (token) {
-          const products = await getProducts(token);
+          const products = await getProducts();
           const pricingCards = products.map((product) => {
             return {
               id: product.id,
@@ -42,6 +55,7 @@ export default withAuth(function Home() {
           });
 
           dispatch(setPricingCardsToStore(pricingCards));
+          sethasPricingCards(true);
         }
       } catch (err) {
         const error = err as ErrorApi;
@@ -52,7 +66,6 @@ export default withAuth(function Home() {
       }
     }
     fetchProducts();
-    sethasPricingCards(true);
   }, [token, dispatch]);
 
   const handleClickButton = (id: number) => {
@@ -69,9 +82,24 @@ export default withAuth(function Home() {
         <Main>
           <Title>Get started with Gscore today!</Title>
 
-          {hasPricingCards && (
+          {hasPricingCards ? (
             <WrapPricingCard horizontal hideScrollbars={false}>
               {pricingCards.map((card) => {
+                return (
+                  <PricingCard
+                    key={card.id}
+                    id={card.id}
+                    name={card.name}
+                    sitesCount={card.sitesCount}
+                    price={card.price}
+                    onClickButton={handleClickButton}
+                  />
+                );
+              })}
+            </WrapPricingCard>
+          ) : (
+            <WrapPricingCard horizontal hideScrollbars={false}>
+              {pricingCardsMock.map((card) => {
                 return (
                   <PricingCard
                     key={card.id}
@@ -100,7 +128,57 @@ export default withAuth(function Home() {
       </Layout>
     </>
   );
-});
+};
+
+export default Home;
+
+export async function getStaticProps() {
+  const productsMock = [
+    {
+      id: 1,
+      sitesCount: 1,
+      name: "One cite",
+      prices: [
+        {
+          id: 1,
+          isActive: true,
+          productId: 1,
+          price: "46",
+        },
+      ],
+    },
+    {
+      id: 2,
+      sitesCount: 3,
+      name: "Three cites",
+      prices: [
+        {
+          id: 2,
+          isActive: true,
+          productId: 2,
+          price: "85",
+        },
+      ],
+    },
+    {
+      id: 3,
+      sitesCount: 7,
+      name: "Seven sites",
+      prices: [
+        {
+          id: 3,
+          isActive: true,
+          productId: 3,
+          price: "107",
+        },
+      ],
+    },
+  ];
+
+  return {
+    props: { productsMock }, // will be passed to the page component as props
+  };
+}
 
 const Main = styled.main`
   padding: 16px 86px;
