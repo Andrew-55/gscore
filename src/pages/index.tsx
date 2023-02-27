@@ -2,12 +2,10 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
-import { toast } from "react-toastify";
 import styled from "styled-components";
 
 import { ErrorApi } from "@/api";
 import { getProducts } from "@/api";
-import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { PricingCard, Layout } from "@/components";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -17,7 +15,6 @@ import {
   setPricingCardsToStore,
 } from "@/redux/pricingCard";
 import { ProductType } from "@/redux/pricingCard";
-import { getToken } from "@/redux/user";
 import { getProductPrice } from "@/utils/functions";
 
 interface Props {
@@ -29,7 +26,6 @@ const Home: FC<Props> = ({ productsMock }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const pricingCards = useAppSelector(getPricingCards());
-  const token = useAppSelector(getToken);
 
   const pricingCardsMock = productsMock.map((product) => {
     return {
@@ -58,16 +54,13 @@ const Home: FC<Props> = ({ productsMock }) => {
       } catch (err) {
         const error = err as ErrorApi;
 
-        if (error.response?.status === 401) {
-          router.push("/login");
-          toast(ERROR_MESSAGE.needLogin);
+        if (error) {
+          console.warn(error.message);
         }
       }
     }
-    if (token) {
-      fetchProducts();
-    }
-  }, [dispatch, token, router]);
+    fetchProducts();
+  }, [dispatch, router]);
 
   const handleClickButton = (id: number) => {
     dispatch(setCurrentCardId(id));
