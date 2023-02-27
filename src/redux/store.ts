@@ -11,12 +11,14 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
+import { codesReducers } from "@/redux/codes";
 import { pricingCardsReducers } from "@/redux/pricingCard";
 import { userReducer } from "@/redux/user";
 
 const rootReducer = combineReducers({
   user: userReducer,
   pricingCards: pricingCardsReducers,
+  codes: codesReducers,
 });
 
 const persistConfig = {

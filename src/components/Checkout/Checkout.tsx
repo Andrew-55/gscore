@@ -1,28 +1,29 @@
-import { useRouter } from "next/router";
 import React, { FC } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
+import { ErrorApi } from "@/api";
 import { buySubscribe } from "@/api/slice";
+import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgShoppingBasket } from "@/assets/svg";
 import { useAppSelector } from "@/redux/hooks";
-import { getToken } from "@/redux/token";
+import { getToken } from "@/redux/user";
 import { CheckoutItemType } from "@/types";
 import { Button } from "@/ui";
 
 export const Checkout: FC<CheckoutItemType> = ({ id, name, price }) => {
-  const toren = useAppSelector(getToken);
-  const router = useRouter();
-
-  if (toren === "") {
-    router.push("/login");
-  }
+  const token = useAppSelector(getToken);
 
   const handleClick = () => {
     try {
-      buySubscribe(toren, id);
-    } catch (error) {
-      console.warn(error);
+      buySubscribe(id, token);
+    } catch (err) {
+      const error = err as ErrorApi;
+
+      if (error) {
+        toast(ERROR_MESSAGE.somethingWrong);
+      }
     }
   };
 

@@ -1,12 +1,14 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
+import { ErrorApi } from "@/api";
 import { updatePassword, updatePersonalData } from "@/api/slice";
+import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
-import { ChangePasswordForm, PersonalInfoForm } from "@/components";
-import { Layout } from "@/components";
+import { ChangePasswordForm, PersonalInfoForm, Layout } from "@/components";
 import { ChangePasswordFormValues } from "@/components/ChangePasswordForm/ChangePasswordForm";
 import { PersonalInfoFormValues } from "@/components/PersonalInfoForm/PersonalInfoForm";
 import { withAuth } from "@/hoc/withAuth";
@@ -42,8 +44,12 @@ export default withAuth(function Settings() {
     try {
       const user = await updatePersonalData(token, email, username);
       dispatch(updateUser(user));
-    } catch (error) {
-      console.warn(error);
+    } catch (err) {
+      const error = err as ErrorApi;
+
+      if (error) {
+        toast(ERROR_MESSAGE.somethingWrong);
+      }
     }
   };
 
@@ -53,7 +59,12 @@ export default withAuth(function Settings() {
   }: ChangePasswordFormValues) => {
     try {
       updatePassword(token, currentPassword, newPassword);
-    } catch (error) {}
+    } catch (err) {
+      const error = err as ErrorApi;
+      if (error.response?.status === 400) {
+        toast(ERROR_MESSAGE.wrongtPassword);
+      }
+    }
   };
 
   return (

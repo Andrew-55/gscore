@@ -76,8 +76,16 @@ export const getCodeSelf = async (token: string) => {
   return data;
 };
 
-export const activateCode = async (token: string, code: string) => {
-  const { data } = await apiService.post(PATH.activateCode, { code }, token);
+export const activateCode = async (
+  token: string,
+  code: string,
+  domain: string
+) => {
+  const { data } = await apiService.post<CodeType>(
+    PATH.activateCode,
+    { code },
+    token
+  );
   return data;
 };
 
@@ -86,7 +94,7 @@ export const manageCode = async (
   subscribeId: number,
   token: string
 ) => {
-  const { data } = await apiService.put(
+  const { data } = await apiService.put<CodeType[]>(
     PATH.manageCode,
     {
       codesIds,
@@ -98,7 +106,10 @@ export const manageCode = async (
 };
 
 export const getSubscribeSelf = async (token: string) => {
-  const { data } = await apiService.get(PATH.getSubscribeSelf, token);
+  const { data } = await apiService.get<SubscriptionType[]>(
+    PATH.getSubscribeSelf,
+    token
+  );
   return data;
 };
 
@@ -119,6 +130,10 @@ export const changeSubscribe = async (
 };
 
 export const buySubscribe = async (priceId: number, token: string) => {
-  const { data } = await apiService.post(PATH.buySubscribe, { priceId }, token);
+  const { data } = await apiService.post<ResponseBuyType>(
+    PATH.buySubscribe,
+    { priceId },
+    token
+  );
   return data;
 };

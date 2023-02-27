@@ -1,10 +1,12 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
+import { ErrorApi } from "@/api";
 import { getSubscribeSelf } from "@/api/slice";
+import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
 import { withAuth } from "@/hoc/withAuth";
@@ -19,7 +21,6 @@ export default withAuth(function Subscriptions() {
   const [subscriptions, setSubscriptions] = useState<SubscriptionType[]>();
   const [currentSubscribeId, setCurrentSubscribeId] = useState<number>();
   const nodeRef = React.useRef(null);
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const token = useAppSelector(getToken);
 
@@ -42,7 +43,13 @@ export default withAuth(function Subscriptions() {
         setSubscriptions(subscriptions);
         setCurrentSubscribeId(subscriptions[0].id);
         setIsLoading(false);
-      } catch (error) {}
+      } catch (err) {
+        setIsLoading(false);
+        const error = err as ErrorApi;
+        if (error) {
+          toast(ERROR_MESSAGE.somethingWrong);
+        }
+      }
     }
     fetchSubscriptions();
   }, [token]);

@@ -8,7 +8,7 @@ export const PATH = {
   getCodeSelf: "code/self",
   activateCode: "code/activate",
   manageCode: "code/manage",
-  getSubscribeSelf: "getSubscribeSelf",
+  getSubscribeSelf: "subscribe/self",
   changeSubscribe: "subscribe/change-product",
   buySubscribe: "payments/buy",
 };

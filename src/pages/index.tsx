@@ -47,6 +47,7 @@ export default withAuth(function Home() {
           dispatch(setPricingCardsToStore(pricingCards));
         }
       } catch (err) {
+        setIsLoading(false);
         const error = err as ErrorApi;
 
         if (error) {

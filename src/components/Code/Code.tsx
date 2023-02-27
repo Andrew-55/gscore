@@ -1,11 +1,14 @@
 import React, { FC, useState } from "react";
 import { UseFormRegister } from "react-hook-form";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
+import { ErrorApi } from "@/api";
 import { activateCode } from "@/api/slice";
+import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { useAppSelector } from "@/redux/hooks";
-import { getToken } from "@/redux/token";
+import { getToken } from "@/redux/user";
 import { Button, Checkbox, InputLabel, Status } from "@/ui";
 
 interface Props {
@@ -43,7 +46,12 @@ export const Code: FC<Props> = ({
           setDomain(origin);
         }
         setStatusCode(status);
-      } catch (error) {}
+      } catch (err) {
+        const error = err as ErrorApi;
+        if (error.response?.status === 409) {
+          toast(ERROR_MESSAGE.codeAlreadyActivated);
+        }
+      }
     }
   };
 
