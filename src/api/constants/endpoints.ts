@@ -1,4 +1,4 @@
-export const PATH = {
+export const ENDPOINTS = {
   login: "users/sign-in",
   createAccount: "users/sign-up",
   getUsersMe: "users/me",

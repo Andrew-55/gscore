@@ -3,8 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { ErrorApi } from "@/api";
-import { getCodeSelf, manageCode } from "@/api/slice";
+import { ErrorApi, getCodeSelf, manageCode } from "@/api";
 import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
 import { Code } from "@/components";

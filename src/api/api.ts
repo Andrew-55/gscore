@@ -1,37 +1,43 @@
-import axios, { AxiosError } from "axios";
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  InternalAxiosRequestConfig,
+} from "axios";
+
+import { store } from "@/redux/store";
 
 export type ErrorApi = AxiosError;
 
 export class ApiService {
-  instance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-  });
+  instance: AxiosInstance;
 
-  get<T>(url: string, token?: string) {
-    if (token) {
-      this.instance.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    }
-    return this.instance.get<T>(url);
+  constructor() {
+    this.instance = axios.create({
+      baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+    });
+    this.instance.interceptors.request.use(
+      (config: InternalAxiosRequestConfig) => {
+        const token = store.getState().user.token;
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      }
+    );
   }
 
-  post<T>(url: string, config: any, token?: string) {
-    if (token) {
-      this.instance.defaults.headers.post["Authorization"] = `Bearer ${token}`;
-    }
+  get<T>(url: string) {
+    return this.instance.get<T>(url);
+  }
+  post<T>(url: string, config: any) {
     return this.instance.post<T>(url, config);
   }
 
-  patch<T>(url: string, config: any, token?: string) {
-    if (token) {
-      this.instance.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
-    }
+  patch<T>(url: string, config: any) {
     return this.instance.patch<T>(url, config);
   }
 
-  put<T>(url: string, config: any, token?: string) {
-    if (token) {
-      this.instance.defaults.headers.put["Authorization"] = `Bearer ${token}`;
-    }
+  put<T>(url: string, config: any) {
     return this.instance.put<T>(url, config);
   }
 }

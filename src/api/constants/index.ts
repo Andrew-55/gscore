@@ -1,1 +1,1 @@
-export { PATH } from "./path";
+export { ENDPOINTS } from "./endpoints";

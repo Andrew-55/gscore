@@ -3,21 +3,22 @@ import { toast } from "react-toastify";
 import styled from "styled-components";
 
 import { ErrorApi } from "@/api";
-import { buySubscribe } from "@/api/slice";
+import { buySubscribe } from "@/api";
 import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgShoppingBasket } from "@/assets/svg";
-import { useAppSelector } from "@/redux/hooks";
-import { getToken } from "@/redux/user";
-import { CheckoutItemType } from "@/types";
 import { Button } from "@/ui";
 
-export const Checkout: FC<CheckoutItemType> = ({ id, name, price }) => {
-  const token = useAppSelector(getToken);
+export type CheckoutItemType = {
+  id: number;
+  name: string;
+  price: string;
+};
 
+export const Checkout: FC<CheckoutItemType> = ({ id, name, price }) => {
   const handleClick = () => {
     try {
-      buySubscribe(id, token);
+      buySubscribe(id);
     } catch (err) {
       const error = err as ErrorApi;
 

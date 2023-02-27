@@ -3,8 +3,7 @@ import { UseFormRegister } from "react-hook-form";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { ErrorApi } from "@/api";
-import { activateCode } from "@/api/slice";
+import { ErrorApi, activateCode } from "@/api";
 import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { useAppSelector } from "@/redux/hooks";

@@ -5,17 +5,29 @@ import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
 import { ErrorApi } from "@/api";
-import { getSubscribeSelf } from "@/api/slice";
+import { getSubscribeSelf } from "@/api";
 import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
 import { withAuth } from "@/hoc/withAuth";
+import { CodeType } from "@/redux/codes";
 import { useAppSelector } from "@/redux/hooks";
+import { ProductType } from "@/redux/pricingCard";
 import { getToken } from "@/redux/user";
-import { SubscriptionType } from "@/types";
 import { Button } from "@/ui";
 
-export default withAuth(function Subscriptions() {
+export type SubscriptionType = {
+  id: number;
+  userId: number;
+  productId: number;
+  currentPeriodStart: string;
+  currentPeriodEnd: string;
+  status: string;
+  product: ProductType;
+  codes: CodeType[];
+};
+
+function Subscriptions() {
   const [isUpdateOn, setIsUpdateOn] = useState(false);
   const [isCodesVisible, setIsCodesVisible] = useState(false);
   const [subscriptions, setSubscriptions] = useState<SubscriptionType[]>();
@@ -39,7 +51,7 @@ export default withAuth(function Subscriptions() {
     async function fetchSubscriptions() {
       try {
         setIsLoading(true);
-        const subscriptions = await getSubscribeSelf(token);
+        const subscriptions = await getSubscribeSelf();
         setSubscriptions(subscriptions);
         setCurrentSubscribeId(subscriptions[0].id);
         setIsLoading(false);
@@ -105,7 +117,9 @@ export default withAuth(function Subscriptions() {
       </Layout>
     </>
   );
-});
+}
+
+export default withAuth(Subscriptions);
 
 const Main = styled.div`
   padding: 32px 86px 120px 86px;

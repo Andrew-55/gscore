@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import styled from "styled-components";
 
 import { ErrorApi } from "@/api";
-import { getProducts } from "@/api/slice";
+import { getProducts } from "@/api";
 import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { PricingCard, Layout } from "@/components";
@@ -17,47 +17,43 @@ import {
   setCurrentCardId,
   setPricingCardsToStore,
 } from "@/redux/pricingCard";
-import { getToken } from "@/redux/user";
 import { getProductPrice } from "@/utils/functions";
 
-export default withAuth(function Home() {
+const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasPricingCards, sethasPricingCards] = useState(false);
   const router = useRouter();
-  const token = useAppSelector(getToken);
   const dispatch = useAppDispatch();
   const pricingCards = useAppSelector(getPricingCards());
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        if (token) {
-          setIsLoading(true);
-          const products = await getProducts(token);
-          const pricingCards = products.map((product) => {
-            return {
-              id: product.id,
-              name: product.name,
-              sitesCount: product.sitesCount,
-              price: getProductPrice(product.prices),
-            };
-          });
+        setIsLoading(true);
+        const products = await getProducts();
+        const pricingCards = products.map((product) => {
+          return {
+            id: product.id,
+            name: product.name,
+            sitesCount: product.sitesCount,
+            price: getProductPrice(product.prices),
+          };
+        });
 
-          setIsLoading(false);
-          dispatch(setPricingCardsToStore(pricingCards));
-        }
+        dispatch(setPricingCardsToStore(pricingCards));
+        sethasPricingCards(true);
+        setIsLoading(false);
       } catch (err) {
         setIsLoading(false);
         const error = err as ErrorApi;
-
-        if (error) {
-          toast(ERROR_MESSAGE.somethingWrong);
+        if (error.response?.status === 401) {
+          router.push("/login");
+          toast(ERROR_MESSAGE.needLogin);
         }
       }
     }
     fetchProducts();
-    sethasPricingCards(true);
-  }, [token, dispatch]);
+  }, [dispatch, router]);
 
   const handleClickButton = (id: number) => {
     dispatch(setCurrentCardId(id));
@@ -108,7 +104,9 @@ export default withAuth(function Home() {
       </Layout>
     </>
   );
-});
+};
+
+export default withAuth(Home);
 
 const Main = styled.main`
   padding: 16px 86px;

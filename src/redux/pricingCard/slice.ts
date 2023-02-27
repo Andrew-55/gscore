@@ -26,9 +26,8 @@ export const pricingCardsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(logout, (state) => {
-      state.cards = [];
-      state.currentCardId = undefined;
+    builder.addCase(logout, () => {
+      return initialState;
     });
   },
 });

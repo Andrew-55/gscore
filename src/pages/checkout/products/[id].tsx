@@ -1,13 +1,12 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 
-import { Checkout, Layout, LayoutComeIn } from "@/components";
+import { Checkout, Layout, LayoutComeIn, CheckoutItemType } from "@/components";
 import { withAuth } from "@/hoc/withAuth";
 import { useAppSelector } from "@/redux/hooks";
 import { getPricingCurrentCard } from "@/redux/pricingCard";
-import { CheckoutItemType } from "@/types";
 
-export default withAuth(function CheckoutProduct() {
+function CheckoutProduct() {
   const [checkoutCard, setCheckoutCard] = useState<CheckoutItemType>();
   const checkoutItem = useAppSelector(getPricingCurrentCard());
 
@@ -35,4 +34,6 @@ export default withAuth(function CheckoutProduct() {
       </Layout>
     </>
   );
-});
+}
+
+export default withAuth(CheckoutProduct);

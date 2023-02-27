@@ -21,7 +21,7 @@ enum TABS {
   CHANGE_PASSWORD = "Change password",
 }
 
-export default withAuth(function Settings() {
+function Settings() {
   const tabs = ["Personal Info", "Change password"];
   const [activeIndex, setActiveIndex] = useState(0);
   const router = useRouter();
@@ -97,7 +97,9 @@ export default withAuth(function Settings() {
       </Layout>
     </>
   );
-});
+}
+
+export default withAuth(Settings);
 
 const Main = styled.main`
   padding: 32px 86px;

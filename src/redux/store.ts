@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
   codes: codesReducers,
 });
 
-const persistConfig = {
+export const persistConfig = {
   key: "root",
   storage,
 };
