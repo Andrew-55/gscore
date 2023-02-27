@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
 import { Button, Input } from "@/ui";
-import { checkIsEmail, checkStringIsEmpty } from "@/utils/logic-functions";
+import { checkIsEmail, checkStringIsEmpty } from "@/utils/functions";
 
 type Props = {
   username: string;

@@ -3,17 +3,22 @@ import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
+import { getSubscribeSelf } from "@/api";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
+import { withAuth } from "@/hoc/withAuth";
+import { useAppSelector } from "@/redux/hooks";
+import { getToken } from "@/redux/user";
 import { Button } from "@/ui";
 
 import { MY_SUBSCRIPTIONS } from "../stoge";
 
-export default function Subscriptions() {
+function Subscriptions() {
   const [isUpdateOn, setIsUpdateOn] = useState(false);
   const [isCodesVisible, setIsCodesVisible] = useState(false);
   const [currentCard, setCurrentCard] = useState(0);
   const nodeRef = React.useRef(null);
+  const token = useAppSelector(getToken);
 
   const countCards = MY_SUBSCRIPTIONS.length;
   const hasCards = countCards > 0;
@@ -67,6 +72,8 @@ export default function Subscriptions() {
     </>
   );
 }
+
+export default withAuth(Subscriptions);
 
 const Main = styled.div`
   padding: 32px 86px 120px 86px;

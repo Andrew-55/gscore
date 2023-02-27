@@ -1,1 +1,1 @@
-export { ERROR_MESSAGE } from "./errorMessage";
+export { ERROR_MESSAGE, ERROR_MESSAGE_API } from "./errorMessage";

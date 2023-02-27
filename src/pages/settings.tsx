@@ -7,6 +7,7 @@ import { ChangePasswordForm, PersonalInfoForm } from "@/components";
 import { Layout } from "@/components";
 import { ChangePasswordFormValues } from "@/components/ChangePasswordForm/ChangePasswordForm";
 import { PersonalInfoFormValues } from "@/components/PersonalInfoForm/PersonalInfoForm";
+import { withAuth } from "@/hoc/withAuth";
 import { TabsLine } from "@/ui";
 
 enum TABS {
@@ -14,7 +15,7 @@ enum TABS {
   CHANGE_PASSWORD = "Change password",
 }
 
-export default function Settings() {
+function Settings() {
   const tabs = ["Personal Info", "Change password"];
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -67,6 +68,8 @@ export default function Settings() {
     </>
   );
 }
+
+export default withAuth(Settings);
 
 const Main = styled.main`
   padding: 32px 86px;

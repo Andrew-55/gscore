@@ -1,72 +1,59 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
+import { ErrorApi } from "@/api";
+import { getProducts } from "@/api";
+import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { PricingCard } from "@/components";
-import { Layout } from "@/components";
+import { PricingCard, Layout } from "@/components";
+import { withAuth } from "@/hoc/withAuth";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {
+  getPricingCards,
+  setCurrentCardId,
+  setPricingCardsToStore,
+} from "@/redux/pricingCard";
+import { getProductPrice } from "@/utils/functions";
 
-export default function Home() {
-  //такой ответ придет с сервера
-  const products = [
-    {
-      id: 1,
-      sitesCount: 1,
-      name: "One cite",
-      prices: [
-        {
-          id: 1,
-          isActive: true,
-          productId: 1,
-          price: "46",
-        },
-      ],
-    },
-    {
-      id: 2,
-      sitesCount: 3,
-      name: "Three cites",
-      prices: [
-        {
-          id: 2,
-          isActive: true,
-          productId: 2,
-          price: "85",
-        },
-      ],
-    },
-    {
-      id: 3,
-      sitesCount: 7,
-      name: "Seven sites",
-      prices: [
-        {
-          id: 3,
-          isActive: true,
-          productId: 3,
-          price: "107",
-        },
-      ],
-    },
-  ];
+const Home = () => {
+  const [hasPricingCards, sethasPricingCards] = useState(false);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const pricingCards = useAppSelector(getPricingCards());
 
-  const pricingCards = products.map((product) => {
-    return {
-      id: product.id,
-      name: product.name,
-      sitesCount: product.sitesCount,
-      price: product.prices
-        .reduce(
-          (accumulator, currentValue) =>
-            accumulator + Number(currentValue.price),
-          0
-        )
-        .toString(),
-    };
-  });
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const products = await getProducts();
+        const pricingCards = products.map((product) => {
+          return {
+            id: product.id,
+            name: product.name,
+            sitesCount: product.sitesCount,
+            price: getProductPrice(product.prices),
+          };
+        });
+
+        dispatch(setPricingCardsToStore(pricingCards));
+        sethasPricingCards(true);
+      } catch (err) {
+        const error = err as ErrorApi;
+        if (error.response?.status === 401) {
+          router.push("/login");
+          toast(ERROR_MESSAGE.needLogin);
+        }
+      }
+    }
+    fetchProducts();
+  }, [dispatch, router]);
 
   const handleClickButton = (id: number) => {
-    console.warn(id);
+    dispatch(setCurrentCardId(id));
+    router.push(`checkout/products/${id}`);
   };
 
   return (
@@ -78,20 +65,22 @@ export default function Home() {
         <Main>
           <Title>Get started with Gscore today!</Title>
 
-          <WrapPricingCard horizontal hideScrollbars={false}>
-            {pricingCards.map((card) => {
-              return (
-                <PricingCard
-                  key={card.id}
-                  id={card.id}
-                  name={card.name}
-                  sitesCount={card.sitesCount}
-                  price={card.price}
-                  onClickButton={handleClickButton}
-                />
-              );
-            })}
-          </WrapPricingCard>
+          {hasPricingCards && (
+            <WrapPricingCard horizontal hideScrollbars={false}>
+              {pricingCards.map((card) => {
+                return (
+                  <PricingCard
+                    key={card.id}
+                    id={card.id}
+                    name={card.name}
+                    sitesCount={card.sitesCount}
+                    price={card.price}
+                    onClickButton={handleClickButton}
+                  />
+                );
+              })}
+            </WrapPricingCard>
+          )}
 
           <Question>
             <p>Have more than 10 sites?</p>
@@ -107,7 +96,9 @@ export default function Home() {
       </Layout>
     </>
   );
-}
+};
+
+export default withAuth(Home);
 
 const Main = styled.main`
   padding: 16px 86px;

@@ -12,7 +12,9 @@ interface Props {
 export const Tabs: FC<Props> = ({ tabs }) => {
   const router = useRouter();
 
-  const activeIndex = tabs.findIndex((tab) => tab.url === router.pathname);
+  const activeIndex = tabs.findIndex((tab) =>
+    router.pathname.includes(tab.url)
+  );
 
   return (
     <Root>

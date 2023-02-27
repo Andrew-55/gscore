@@ -13,9 +13,10 @@ import { HeaderDropdownMenu } from "../HeaderDropdownMenu";
 
 interface Props {
   username?: string;
+  onClickLogout: () => void;
 }
 
-export const HeaderDesktop: FC<Props> = ({ username }) => {
+export const HeaderDesktop: FC<Props> = ({ username, onClickLogout }) => {
   const [isDropdownMenuVisible, setIsDropdownMenuVisible] = useState(false);
   const nodeRef = React.useRef(null);
 
@@ -49,7 +50,7 @@ export const HeaderDesktop: FC<Props> = ({ username }) => {
               unmountOnExit
             >
               <WrapHeaderDropdownMenu>
-                <HeaderDropdownMenu />
+                <HeaderDropdownMenu onClickLogout={onClickLogout} />
               </WrapHeaderDropdownMenu>
             </CSSTransition>
           </div>

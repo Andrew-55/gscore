@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { FC, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import styled, { css } from "styled-components";
@@ -18,19 +17,19 @@ import { useOnclickOutside } from "@/utils/hooks";
 interface Props {
   username?: string;
   onClose: () => void;
+  onClickLogout: () => void;
 }
 
-export const MobileBurgerMenu: FC<Props> = ({ username, onClose }) => {
-  const router = useRouter();
+export const MobileBurgerMenu: FC<Props> = ({
+  username,
+  onClose,
+  onClickLogout,
+}) => {
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
   const nodeRef = React.useRef(null);
 
   useOnclickOutside(ref, onClose);
-
-  const handleClickLogout = () => {
-    router.push("/login");
-  };
 
   return (
     <Root ref={ref}>
@@ -63,7 +62,7 @@ export const MobileBurgerMenu: FC<Props> = ({ username, onClose }) => {
             <StyledButtonIconMenu
               text="Logout"
               icon={<SvgLogout />}
-              onClick={handleClickLogout}
+              onClick={onClickLogout}
             />
           </SettingsContent>
         </CSSTransition>
