@@ -1,14 +1,13 @@
-import { UserState } from "@/redux/user";
-import { ProductType } from "@/types";
-import { User } from "@/types/types";
+import { ProductType } from "@/redux/pricingCard";
+import { UserState, UserType } from "@/redux/user";
 
 import { ApiService } from "./api";
-import { PATH } from "./constants";
+import { ENDPOINTS } from "./constants";
 
 const apiService = new ApiService();
 
 export const login = async (email: string, password: string) => {
-  const { data } = await apiService.post<UserState>(PATH.login, {
+  const { data } = await apiService.post<UserState>(ENDPOINTS.login, {
     email,
     password,
   });
@@ -20,7 +19,7 @@ export const createAccount = async (
   username: string,
   password: string
 ) => {
-  const { data } = await apiService.post(PATH.createAccount, {
+  const { data } = await apiService.post(ENDPOINTS.createAccount, {
     email,
     username,
     password,
@@ -29,15 +28,18 @@ export const createAccount = async (
 };
 
 export const getUser = async () => {
-  const user = await apiService.get<User>(PATH.getUsersMe);
+  const user = await apiService.get<UserType>(ENDPOINTS.getUsersMe);
   return user;
 };
 
 export const updatePersonalData = async (email: string, username: string) => {
-  const { data } = await apiService.patch(PATH.updatePersonalData, {
-    email,
-    username,
-  });
+  const { data } = await apiService.patch<UserType>(
+    ENDPOINTS.updatePersonalData,
+    {
+      email,
+      username,
+    }
+  );
   return data;
 };
 
@@ -45,7 +47,7 @@ export const updatePassword = async (
   currentPassword: string,
   newPassword: string
 ) => {
-  const { data } = await apiService.patch(PATH.updatePassword, {
+  const { data } = await apiService.patch<UserType>(ENDPOINTS.updatePassword, {
     currentPassword,
     newPassword,
   });
@@ -53,22 +55,22 @@ export const updatePassword = async (
 };
 
 export const getProducts = async () => {
-  const { data } = await apiService.get<ProductType[]>(PATH.products);
+  const { data } = await apiService.get<ProductType[]>(ENDPOINTS.products);
   return data;
 };
 
 export const getCodeSelf = async () => {
-  const { data } = await apiService.get(PATH.getCodeSelf);
+  const { data } = await apiService.get(ENDPOINTS.getCodeSelf);
   return data;
 };
 
 export const activateCode = async (code: string) => {
-  const { data } = await apiService.post(PATH.activateCode, { code });
+  const { data } = await apiService.post(ENDPOINTS.activateCode, { code });
   return data;
 };
 
 export const manageCode = async (codesIds: number[], subscribeId: number) => {
-  const { data } = await apiService.put(PATH.manageCode, {
+  const { data } = await apiService.put(ENDPOINTS.manageCode, {
     codesIds,
     subscribeId,
   });
@@ -76,7 +78,7 @@ export const manageCode = async (codesIds: number[], subscribeId: number) => {
 };
 
 export const getSubscribeSelf = async () => {
-  const { data } = await apiService.get(PATH.getSubscribeSelf);
+  const { data } = await apiService.get(ENDPOINTS.getSubscribeSelf);
   return data;
 };
 
@@ -84,7 +86,7 @@ export const changeSubscribe = async (
   productId: number,
   subscribeId: number
 ) => {
-  const { data } = await apiService.post(PATH.changeSubscribe, {
+  const { data } = await apiService.post(ENDPOINTS.changeSubscribe, {
     productId,
     subscribeId,
   });
@@ -92,6 +94,6 @@ export const changeSubscribe = async (
 };
 
 export const buySubscribe = async (priceId: number) => {
-  const { data } = await apiService.post(PATH.buySubscribe, { priceId });
+  const { data } = await apiService.post(ENDPOINTS.buySubscribe, { priceId });
   return data;
 };

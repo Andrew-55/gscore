@@ -1,6 +1,10 @@
-import { User } from "@/types/types";
+export type UserType = {
+  id: string;
+  username: string;
+  email: string;
+};
 
 export interface UserState {
-  user: User;
+  user: UserType;
   token: string;
 }

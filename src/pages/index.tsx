@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import styled from "styled-components";
 
 import { ErrorApi } from "@/api";
-import { getProducts } from "@/api/slice";
+import { getProducts } from "@/api";
 import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { PricingCard, Layout } from "@/components";
@@ -16,8 +16,8 @@ import {
   setCurrentCardId,
   setPricingCardsToStore,
 } from "@/redux/pricingCard";
+import { ProductType } from "@/redux/pricingCard";
 import { getToken } from "@/redux/user";
-import { ProductType } from "@/types";
 import { getProductPrice } from "@/utils/functions";
 
 interface Props {
@@ -27,9 +27,9 @@ interface Props {
 const Home: FC<Props> = ({ productsMock }) => {
   const [hasPricingCards, sethasPricingCards] = useState(false);
   const router = useRouter();
-  const token = useAppSelector(getToken);
   const dispatch = useAppDispatch();
   const pricingCards = useAppSelector(getPricingCards());
+  const token = useAppSelector(getToken);
 
   const pricingCardsMock = productsMock.map((product) => {
     return {
@@ -43,30 +43,31 @@ const Home: FC<Props> = ({ productsMock }) => {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        if (token) {
-          const products = await getProducts();
-          const pricingCards = products.map((product) => {
-            return {
-              id: product.id,
-              name: product.name,
-              sitesCount: product.sitesCount,
-              price: getProductPrice(product.prices),
-            };
-          });
+        const products = await getProducts();
+        const pricingCards = products.map((product) => {
+          return {
+            id: product.id,
+            name: product.name,
+            sitesCount: product.sitesCount,
+            price: getProductPrice(product.prices),
+          };
+        });
 
-          dispatch(setPricingCardsToStore(pricingCards));
-          sethasPricingCards(true);
-        }
+        dispatch(setPricingCardsToStore(pricingCards));
+        sethasPricingCards(true);
       } catch (err) {
         const error = err as ErrorApi;
 
-        if (error) {
-          toast(ERROR_MESSAGE.somethingWrong);
+        if (error.response?.status === 401) {
+          router.push("/login");
+          toast(ERROR_MESSAGE.needLogin);
         }
       }
     }
-    fetchProducts();
-  }, [token, dispatch]);
+    if (token) {
+      fetchProducts();
+    }
+  }, [dispatch, token, router]);
 
   const handleClickButton = (id: number) => {
     dispatch(setCurrentCardId(id));
@@ -176,7 +177,7 @@ export async function getStaticProps() {
   ];
 
   return {
-    props: { productsMock }, // will be passed to the page component as props
+    props: { productsMock },
   };
 }
 

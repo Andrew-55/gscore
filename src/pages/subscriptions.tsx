@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
-import { getSubscribeSelf } from "@/api/slice";
+import { getSubscribeSelf } from "@/api";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
 import { withAuth } from "@/hoc/withAuth";

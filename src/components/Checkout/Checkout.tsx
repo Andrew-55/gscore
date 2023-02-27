@@ -3,8 +3,13 @@ import styled from "styled-components";
 
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgShoppingBasket } from "@/assets/svg";
-import { CheckoutItemType } from "@/types";
 import { Button } from "@/ui";
+
+export type CheckoutItemType = {
+  id: number;
+  name: string;
+  price: string;
+};
 
 export const Checkout: FC<CheckoutItemType> = ({ id, name, price }) => {
   return (

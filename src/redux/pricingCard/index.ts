@@ -6,4 +6,9 @@ export {
   getPricingCurrentCard,
 } from "./selectors";
 export { setPricingCardsToStore, setCurrentCardId } from "./slice";
-export type { PricingCardStore } from "./types";
+export type {
+  PricingCardStore,
+  PricingCardType,
+  PriceType,
+  ProductType,
+} from "./types";
