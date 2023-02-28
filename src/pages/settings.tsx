@@ -4,16 +4,19 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { ErrorApi } from "@/api";
-import { updatePassword, updatePersonalData } from "@/api/slice";
+import { updatePassword, updatePersonalData, ErrorApi } from "@/api";
 import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
-import { ChangePasswordForm, PersonalInfoForm, Layout } from "@/components";
-import { ChangePasswordFormValues } from "@/components/ChangePasswordForm/ChangePasswordForm";
-import { PersonalInfoFormValues } from "@/components/PersonalInfoForm/PersonalInfoForm";
+import {
+  ChangePasswordForm,
+  PersonalInfoForm,
+  Layout,
+  PersonalInfoFormValues,
+  ChangePasswordFormValues,
+} from "@/components";
 import { withAuth } from "@/hoc/withAuth";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getUser, updateUser, getToken } from "@/redux/user";
+import { getUser, logout, updateUser } from "@/redux/user";
 import { TabsLine } from "@/ui";
 
 enum TABS {
@@ -25,13 +28,8 @@ function Settings() {
   const tabs = ["Personal Info", "Change password"];
   const [activeIndex, setActiveIndex] = useState(0);
   const router = useRouter();
-  const token = useAppSelector(getToken);
   const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
-
-  if (token === "") {
-    router.push("/login");
-  }
 
   const handleClickTab = (index: number) => {
     setActiveIndex(index);
@@ -42,12 +40,17 @@ function Settings() {
     email,
   }: PersonalInfoFormValues) => {
     try {
-      const user = await updatePersonalData(token, email, username);
+      const user = await updatePersonalData(email, username);
       dispatch(updateUser(user));
     } catch (err) {
       const error = err as ErrorApi;
 
-      if (error) {
+      if (error.response?.status === 401) {
+        router.push("/login");
+        dispatch(logout());
+      }
+
+      if (error.response?.status !== 401) {
         toast(ERROR_MESSAGE.somethingWrong);
       }
     }
@@ -58,11 +61,17 @@ function Settings() {
     newPassword,
   }: ChangePasswordFormValues) => {
     try {
-      updatePassword(token, currentPassword, newPassword);
+      updatePassword(currentPassword, newPassword);
     } catch (err) {
       const error = err as ErrorApi;
+
       if (error.response?.status === 400) {
         toast(ERROR_MESSAGE.wrongtPassword);
+      }
+
+      if (error.response?.status === 401) {
+        router.push("/login");
+        dispatch(logout());
       }
     }
   };

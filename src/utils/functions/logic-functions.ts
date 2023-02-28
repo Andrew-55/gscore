@@ -1,4 +1,4 @@
-import { PriceType } from "@/types";
+import { PriceType } from "@/redux/pricingCard";
 
 export const getProductPrice = (prices: PriceType[]) => {
   return prices

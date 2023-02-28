@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { ErrorApi } from "@/api";
 import { getProducts } from "@/api";
 import { ERROR_MESSAGE } from "@/assets/message";
+import { SkeletonPricingCard } from "@/assets/skeletons/SkeletonPricingCard";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { PricingCard, Layout } from "@/components";
 import { withAuth } from "@/hoc/withAuth";
@@ -70,7 +71,11 @@ const Home = () => {
           <Title>Get started with Gscore today!</Title>
 
           {isLoading ? (
-            <div>` LOADING.....`</div>
+            <WrapPricingCard horizontal hideScrollbars={false}>
+              <StyledSkeletonPricingCard />
+              <StyledSkeletonPricingCard />
+              <StyledSkeletonPricingCard />
+            </WrapPricingCard>
           ) : (
             hasPricingCards && (
               <WrapPricingCard horizontal hideScrollbars={false}>
@@ -175,5 +180,13 @@ const StyledLink = styled.a`
   &:hover,
   &:focus {
     color: ${COLORS.red_400};
+  }
+`;
+
+const StyledSkeletonPricingCard = styled(SkeletonPricingCard)`
+  flex: 0 0 auto;
+  @media (max-width: 992px) {
+    width: 330px;
+    height: 480px;
   }
 `;

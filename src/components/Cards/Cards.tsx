@@ -4,8 +4,9 @@ import styled, { css } from "styled-components";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgArrowRight } from "@/assets/svg";
 import { Card } from "@/components";
-import { SubscriptionType } from "@/types";
+import { SubscriptionType } from "@/pages/subscriptions";
 import { ButtonIcon } from "@/ui";
+import { getProductPrice } from "@/utils/functions";
 import { useSwitchComponent } from "@/utils/hooks";
 
 interface Props {
@@ -60,13 +61,7 @@ export const Cards: FC<Props> = ({
             name={subscription.product.name}
             status={subscription.status}
             currentPeriodEnd={subscription.currentPeriodEnd}
-            price={subscription.product.prices
-              .reduce(
-                (accumulator, currentValue) =>
-                  accumulator + Number(currentValue.price),
-                0
-              )
-              .toString()}
+            price={getProductPrice(subscription.product.prices)}
             isDisabled={index !== currentCard}
             onViewCodes={onViewCodes}
           />

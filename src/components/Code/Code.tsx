@@ -6,8 +6,6 @@ import styled from "styled-components";
 import { ErrorApi, activateCode } from "@/api";
 import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { useAppSelector } from "@/redux/hooks";
-import { getToken } from "@/redux/user";
 import { Button, Checkbox, InputLabel, Status } from "@/ui";
 
 interface Props {
@@ -31,7 +29,6 @@ export const Code: FC<Props> = ({
 }) => {
   const [domain, setDomain] = useState(origin);
   const [statusCode, setStatusCode] = useState(status);
-  const token = useAppSelector(getToken);
 
   const handleOnChangeDomain = (value: string) => {
     setDomain(value);
@@ -40,7 +37,7 @@ export const Code: FC<Props> = ({
   const handleClickActivate = async () => {
     if (domain) {
       try {
-        const { origin, status } = await activateCode(token, code, domain);
+        const { origin, status } = await activateCode(code, domain);
         if (origin) {
           setDomain(origin);
         }
@@ -74,6 +71,7 @@ export const Code: FC<Props> = ({
           onChange={(event) => handleOnChangeDomain(event.target.value)}
         />
       </Wrap>
+
       {statusCode === "INACTIVE" && (
         <StyledButton
           text="Activate"

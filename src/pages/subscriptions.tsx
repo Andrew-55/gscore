@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { CSSTransition } from "react-transition-group";
@@ -7,13 +8,14 @@ import styled from "styled-components";
 import { ErrorApi } from "@/api";
 import { getSubscribeSelf } from "@/api";
 import { ERROR_MESSAGE } from "@/assets/message";
+import { SkeletonCard } from "@/assets/skeletons/SkeletonCard";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
 import { withAuth } from "@/hoc/withAuth";
 import { CodeType } from "@/redux/codes";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch } from "@/redux/hooks";
 import { ProductType } from "@/redux/pricingCard";
-import { getToken } from "@/redux/user";
+import { logout } from "@/redux/user";
 import { Button } from "@/ui";
 
 export type SubscriptionType = {
@@ -32,9 +34,11 @@ function Subscriptions() {
   const [isCodesVisible, setIsCodesVisible] = useState(false);
   const [subscriptions, setSubscriptions] = useState<SubscriptionType[]>();
   const [currentSubscribeId, setCurrentSubscribeId] = useState<number>();
-  const nodeRef = React.useRef(null);
   const [isLoading, setIsLoading] = useState(true);
-  const token = useAppSelector(getToken);
+  const dispatch = useAppDispatch();
+
+  const router = useRouter();
+  const nodeRef = React.useRef(null);
 
   const hasCards = subscriptions && subscriptions.length > 0;
 
@@ -58,13 +62,20 @@ function Subscriptions() {
       } catch (err) {
         setIsLoading(false);
         const error = err as ErrorApi;
-        if (error) {
+
+        if (error.response?.status === 401) {
+          router.push("/login");
+          dispatch(logout());
+        }
+
+        if (error.response?.status !== 401) {
           toast(ERROR_MESSAGE.somethingWrong);
         }
       }
     }
+
     fetchSubscriptions();
-  }, [token]);
+  }, [router, dispatch]);
 
   return (
     <>
@@ -109,7 +120,11 @@ function Subscriptions() {
               )}
             </>
           ) : isLoading ? (
-            <div>` LOADING.....`</div>
+            <WrapSkeleton>
+              <StyledSkeletonCard />
+              <StyledSkeletonCard />
+              <StyledSkeletonCard />
+            </WrapSkeleton>
           ) : (
             <SubscriptionsNo />
           )}
@@ -170,5 +185,24 @@ const StyledButtonTitle = styled(Button)`
       color: ${COLORS.red_400};
       background-color: ${COLORS.btn_border_primary};
     }
+  }
+`;
+
+const WrapSkeleton = styled.div`
+  display: flex;
+  column-gap: 28px;
+  margin-right: -86px;
+  margin-bottom: 32px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+  }
+`;
+
+const StyledSkeletonCard = styled(SkeletonCard)`
+  flex: 0 0 auto;
+  @media (max-width: 768px) {
+    width: 318px;
+    height: 269px;
   }
 `;

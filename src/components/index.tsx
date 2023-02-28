@@ -30,3 +30,5 @@ export { SubscriptionsNo } from "./SubscriptionsNo";
 export { Codes } from "./Codes";
 export { Cards } from "./Cards";
 export type { CheckoutItemType } from "./Checkout";
+export type { PersonalInfoFormValues } from "./PersonalInfoForm";
+export type { ChangePasswordFormValues } from "./ChangePasswordForm";

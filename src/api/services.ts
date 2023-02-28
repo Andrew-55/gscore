@@ -66,7 +66,7 @@ export const getCodeSelf = async () => {
   return data;
 };
 
-export const activateCode = async (code: string) => {
+export const activateCode = async (code: string, domain: string) => {
   const { data } = await apiService.post<CodeType>(ENDPOINTS.activateCode, {
     code,
   });

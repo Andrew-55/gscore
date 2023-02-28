@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { FC, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -9,7 +10,7 @@ import { TYPOGRAPHY } from "@/assets/styles";
 import { Code } from "@/components";
 import { getCodesByIdSubscribe, setCodesToStore } from "@/redux/codes";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getToken } from "@/redux/user";
+import { logout } from "@/redux/user";
 import { Button } from "@/ui";
 
 interface Props {
@@ -23,9 +24,9 @@ export type CodesFormValues = {
 
 export const Codes: FC<Props> = ({ id, isUpdateOn }) => {
   const [isChangeCodes, setIsChangeCodes] = useState(false);
-  const token = useAppSelector(getToken);
   const dispatch = useAppDispatch();
   const codesSubscribe = useAppSelector(getCodesByIdSubscribe(id));
+  const router = useRouter();
 
   const { register, handleSubmit } = useForm({
     defaultValues: { codeIds: [""] },
@@ -34,19 +35,24 @@ export const Codes: FC<Props> = ({ id, isUpdateOn }) => {
   useEffect(() => {
     async function fetchCodes() {
       try {
-        const codes = await getCodeSelf(token);
+        const codes = await getCodeSelf();
         dispatch(setCodesToStore(codes));
         setIsChangeCodes(false);
       } catch (err) {
         const error = err as ErrorApi;
 
-        if (error) {
+        if (error.response?.status === 401) {
+          router.push("/login");
+          dispatch(logout());
+        }
+
+        if (error.response?.status !== 401) {
           toast(ERROR_MESSAGE.somethingWrong);
         }
       }
     }
     fetchCodes();
-  }, [token, dispatch, isChangeCodes]);
+  }, [dispatch, isChangeCodes, router]);
 
   const onSubmit: SubmitHandler<CodesFormValues> = async ({
     codeIds,
@@ -55,7 +61,7 @@ export const Codes: FC<Props> = ({ id, isUpdateOn }) => {
       const codesIds = codeIds.map((id) => Number(id));
 
       try {
-        const codes = await manageCode(codesIds, id, token);
+        const codes = await manageCode(codesIds, id);
         if (codes) {
           setIsChangeCodes(true);
         }
@@ -63,6 +69,11 @@ export const Codes: FC<Props> = ({ id, isUpdateOn }) => {
         const error = err as ErrorApi;
         if (error.response?.status === 400) {
           toast(ERROR_MESSAGE.numberNotMatchAvailable);
+        }
+        if (error.response?.status === 401) {
+          router.push("/login");
+          dispatch(logout());
+          toast(ERROR_MESSAGE.needLogin);
         }
         if (error.response?.status === 404 || error.response?.status === 409) {
           toast(ERROR_MESSAGE.somethingWrong);
