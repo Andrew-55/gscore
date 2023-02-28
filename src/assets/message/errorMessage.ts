@@ -11,4 +11,5 @@ export const ERROR_MESSAGE = {
   codeAlreadyActivated: "Code has already been activated",
   numberNotMatchAvailable:
     "The number of specified codes does not match the available number",
+  emailBusy: "The email use to another account",
 };

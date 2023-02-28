@@ -1,3 +1,5 @@
+import { config } from "process";
+
 import { SubscriptionType } from "@/pages/subscriptions";
 import { CodeType } from "@/redux/codes";
 import { ProductBuyType, ProductType } from "@/redux/pricingCard";
@@ -17,8 +19,8 @@ export const login = async (email: string, password: string) => {
 };
 
 export const createAccount = async (
-  email: string,
   username: string,
+  email: string,
   password: string
 ) => {
   const { data } = await apiService.post<UserState>(ENDPOINTS.createAccount, {

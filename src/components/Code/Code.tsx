@@ -44,6 +44,7 @@ export const Code: FC<Props> = ({
         setStatusCode(status);
       } catch (err) {
         const error = err as ErrorApi;
+
         if (error.response?.status === 409) {
           toast(ERROR_MESSAGE.codeAlreadyActivated);
         }
@@ -76,6 +77,7 @@ export const Code: FC<Props> = ({
         <StyledButton
           text="Activate"
           variant="secondary"
+          type="button"
           onClick={handleClickActivate}
         />
       )}

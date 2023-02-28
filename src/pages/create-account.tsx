@@ -2,15 +2,16 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { createAccount } from "@/api/slice";
+import { createAccount, ErrorApi } from "@/api";
+import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, LayoutComeIn } from "@/components";
 import { CreateAccountForm, CreateAccountFormValues } from "@/components";
 import { useAppDispatch } from "@/redux/hooks";
-import { setToken } from "@/redux/token";
-import { setUser } from "@/redux/user";
+import { setUserState } from "@/redux/user";
 
 export default function CreateAccount() {
   const dispatch = useAppDispatch();
@@ -22,12 +23,21 @@ export default function CreateAccount() {
     password,
   }: CreateAccountFormValues) => {
     try {
-      const { user, token } = await createAccount(username, email, password);
-      dispatch(setUser(user));
-      dispatch(setToken(token));
-      router.push("/");
-    } catch (error) {
-      console.warn("Errors )))");
+      const userInfo = await createAccount(username, email, password);
+      if (userInfo) {
+        dispatch(setUserState(userInfo));
+        router.push("/");
+      }
+    } catch (err) {
+      const error = err as ErrorApi;
+
+      if (error.response?.status === 409) {
+        toast(ERROR_MESSAGE.emailBusy);
+      }
+
+      if (error.response?.status !== 409) {
+        toast(ERROR_MESSAGE.somethingWrong);
+      }
     }
   };
 
