@@ -27,6 +27,7 @@ export const Checkout: FC<CheckoutItemType> = ({
 }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const hasSubscribeId = typeof subscribeId === "number";
 
   const handlePurchase = async () => {
     try {
@@ -44,7 +45,7 @@ export const Checkout: FC<CheckoutItemType> = ({
   };
 
   const handleUpgrade = async () => {
-    if (subscribeId) {
+    if (hasSubscribeId) {
       try {
         const data = await changeSubscribe(id, subscribeId);
         if (data) {
@@ -60,6 +61,7 @@ export const Checkout: FC<CheckoutItemType> = ({
       }
     }
   };
+
   return (
     <Root>
       <Title>Checkout</Title>
@@ -81,7 +83,8 @@ export const Checkout: FC<CheckoutItemType> = ({
         <span>Total:</span>
         <span>${price}</span>
       </Total>
-      {!!subscribeId ? (
+
+      {hasSubscribeId ? (
         <StyledButton
           text="Upgrade"
           variant="primary"

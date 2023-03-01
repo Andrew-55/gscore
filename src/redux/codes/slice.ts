@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { CodeType } from "@/types";
-
-import { CodeTypeStore } from "./types";
+import { CodeTypeStore, CodeType } from "./types";
 import { logout } from "../user";
 
 const initialState: CodeTypeStore = {

@@ -54,6 +54,7 @@ export const Codes = () => {
         }
       }
     }
+
     fetchCodes();
   }, [dispatch, isChangeCodes, router, hasCodesHold]);
 

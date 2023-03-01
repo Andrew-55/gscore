@@ -21,10 +21,12 @@ export const userSlice = createSlice({
       state.user.username = username;
       state.user.email = email;
     },
+
     setUserState(state, { payload }: PayloadAction<UserState>) {
       state.user = payload.user;
       state.token = payload.token;
     },
+
     logout() {
       return initialState;
     },
