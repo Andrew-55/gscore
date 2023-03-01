@@ -20,14 +20,7 @@ export const Footer = () => {
         <ParagraphBottom>
           Copyright © {new Date().getFullYear()} GScore | All Rights Reserved{" "}
           <StyledSpan>
-            |{" "}
-            <StyledLink
-              href="https://ru.wikipedia.org/wiki/Cookie"
-              target={"_blank"}
-            >
-              Cookies
-            </StyledLink>{" "}
-            |{" "}
+            | <StyledLinkNext href="/cookies">Cookies</StyledLinkNext> |{" "}
             <StyledLinkNext href="/privacy-policy">
               Privacy Policy
             </StyledLinkNext>
