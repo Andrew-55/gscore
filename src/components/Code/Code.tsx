@@ -35,19 +35,17 @@ export const Code: FC<Props> = ({
   };
 
   const handleClickActivate = async () => {
-    if (domain) {
-      try {
-        const { origin, status } = await activateCode(code, domain);
-        if (origin) {
-          setDomain(origin);
-        }
-        setStatusCode(status);
-      } catch (err) {
-        const error = err as ErrorApi;
+    try {
+      const { origin, status } = await activateCode(code, domain);
+      if (origin) {
+        setDomain(origin);
+      }
+      setStatusCode(status);
+    } catch (err) {
+      const error = err as ErrorApi;
 
-        if (error.response?.status === 409) {
-          toast(ERROR_MESSAGE.codeAlreadyActivated);
-        }
+      if (error.response?.status === 409) {
+        toast(ERROR_MESSAGE.codeAlreadyActivated);
       }
     }
   };

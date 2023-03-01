@@ -13,4 +13,4 @@ export {
   changeSubscribe,
   buySubscribe,
 } from "./services";
-export type { ErrorApi } from "./api";
+export type { ErrorApi, ErrorApiData } from "./api";

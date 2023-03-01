@@ -1,5 +1,3 @@
-import { CodeType } from "@/types";
-
 export type CodeType = {
   id: number;
   code: string;

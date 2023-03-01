@@ -1,24 +1,39 @@
+import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { ErrorApi } from "@/api";
+import { changeSubscribe, ErrorApi } from "@/api";
 import { buySubscribe } from "@/api";
 import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgShoppingBasket } from "@/assets/svg";
+import { useAppDispatch } from "@/redux/hooks";
+import { removeUpgradeSubscriptionId } from "@/redux/subscriptions";
 import { Button } from "@/ui";
 
 export type CheckoutItemType = {
   id: number;
   name: string;
   price: string;
+  subscribeId?: number | undefined;
 };
 
-export const Checkout: FC<CheckoutItemType> = ({ id, name, price }) => {
-  const handleClick = () => {
+export const Checkout: FC<CheckoutItemType> = ({
+  id,
+  name,
+  price,
+  subscribeId,
+}) => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const handlePurchase = async () => {
     try {
-      buySubscribe(id);
+      const data = await buySubscribe(id);
+      if (data) {
+        router.push("/subscriptions");
+      }
     } catch (err) {
       const error = err as ErrorApi;
 
@@ -28,6 +43,23 @@ export const Checkout: FC<CheckoutItemType> = ({ id, name, price }) => {
     }
   };
 
+  const handleUpgrade = async () => {
+    if (subscribeId) {
+      try {
+        const data = await changeSubscribe(id, subscribeId);
+        if (data) {
+          dispatch(removeUpgradeSubscriptionId());
+          router.push("/subscriptions");
+        }
+      } catch (err) {
+        const error = err as ErrorApi;
+
+        if (error.response?.status == 409) {
+          toast(ERROR_MESSAGE.sameProduct);
+        }
+      }
+    }
+  };
   return (
     <Root>
       <Title>Checkout</Title>
@@ -49,7 +81,19 @@ export const Checkout: FC<CheckoutItemType> = ({ id, name, price }) => {
         <span>Total:</span>
         <span>${price}</span>
       </Total>
-      <StyledButton text="Purchase" variant="primary" onClick={handleClick} />
+      {!!subscribeId ? (
+        <StyledButton
+          text="Upgrade"
+          variant="primary"
+          onClick={handleUpgrade}
+        />
+      ) : (
+        <StyledButton
+          text="Purchase"
+          variant="primary"
+          onClick={handlePurchase}
+        />
+      )}
     </Root>
   );
 };

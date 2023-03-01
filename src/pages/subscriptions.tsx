@@ -12,52 +12,56 @@ import { SkeletonCard } from "@/assets/skeletons/SkeletonCard";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
 import { withAuth } from "@/hoc/withAuth";
-import { CodeType } from "@/redux/codes";
-import { useAppDispatch } from "@/redux/hooks";
-import { ProductType } from "@/redux/pricingCard";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {
+  getSubscriptions,
+  setCurrentSubscriptionId,
+  setSubscriptions,
+  setUpgradeSubscriptionId,
+} from "@/redux/subscriptions";
+import { getCurrentSubscriptionId } from "@/redux/subscriptions";
 import { logout } from "@/redux/user";
 import { Button } from "@/ui";
 
-export type SubscriptionType = {
-  id: number;
-  userId: number;
-  productId: number;
-  currentPeriodStart: string;
-  currentPeriodEnd: string;
-  status: string;
-  product: ProductType;
-  codes: CodeType[];
-};
-
 function Subscriptions() {
-  const [isUpdateOn, setIsUpdateOn] = useState(false);
   const [isCodesVisible, setIsCodesVisible] = useState(false);
-  const [subscriptions, setSubscriptions] = useState<SubscriptionType[]>();
-  const [currentSubscribeId, setCurrentSubscribeId] = useState<number>();
+  const [hasCards, setHasCards] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
+
+  const subscriptions = Object.values(useAppSelector(getSubscriptions()));
+  const currentSubscribeId = useAppSelector(getCurrentSubscriptionId());
 
   const router = useRouter();
   const nodeRef = React.useRef(null);
 
-  const hasCards = subscriptions && subscriptions.length > 0;
-
   const handleViewCodes = () => {
-    setCurrentSubscribeId(currentSubscribeId);
     setIsCodesVisible((prev) => !prev);
   };
 
   const handleChangeSubscribe = (id: number) => {
-    setCurrentSubscribeId(id);
+    dispatch(setCurrentSubscriptionId(id));
   };
+
+  const handleUpgradeSubscribe = () => {
+    if (currentSubscribeId) {
+      dispatch(setUpgradeSubscriptionId(currentSubscribeId));
+      router.push("/");
+    }
+  };
+
+  useEffect(() => {
+    if (subscriptions && subscriptions.length > 0) {
+      setHasCards(true);
+    }
+  }, [subscriptions]);
 
   useEffect(() => {
     async function fetchSubscriptions() {
       try {
         setIsLoading(true);
         const subscriptions = await getSubscribeSelf();
-        setSubscriptions(subscriptions);
-        setCurrentSubscribeId(subscriptions[0].id);
+        dispatch(setSubscriptions(subscriptions));
         setIsLoading(false);
       } catch (err) {
         setIsLoading(false);
@@ -91,13 +95,13 @@ function Subscriptions() {
               <StyledButtonTitle
                 text="Upgrade"
                 variant="primary"
-                onClick={() => setIsUpdateOn((prev) => !prev)}
-                isDisabled={!isCodesVisible}
+                onClick={handleUpgradeSubscribe}
+                isDisabled={!currentSubscribeId}
               />
             )}
           </WrapTitle>
 
-          {hasCards ? (
+          {subscriptions ? (
             <>
               <Cards
                 onViewCodes={handleViewCodes}
@@ -105,19 +109,17 @@ function Subscriptions() {
                 onChangeSubscribe={handleChangeSubscribe}
               />
 
-              {currentSubscribeId && (
-                <CSSTransition
-                  nodeRef={nodeRef}
-                  in={isCodesVisible}
-                  classNames="burger__menu"
-                  timeout={1000}
-                  unmountOnExit
-                >
-                  <div ref={nodeRef}>
-                    <Codes id={currentSubscribeId} isUpdateOn={isUpdateOn} />
-                  </div>
-                </CSSTransition>
-              )}
+              <CSSTransition
+                nodeRef={nodeRef}
+                in={isCodesVisible}
+                classNames="burger__menu"
+                timeout={1000}
+                unmountOnExit
+              >
+                <div ref={nodeRef}>
+                  <Codes />
+                </div>
+              </CSSTransition>
             </>
           ) : isLoading ? (
             <WrapSkeleton>

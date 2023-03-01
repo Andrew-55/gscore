@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgArrowRight } from "@/assets/svg";
 import { Card } from "@/components";
-import { SubscriptionType } from "@/pages/subscriptions";
+import { SubscriptionType } from "@/redux/subscriptions";
 import { ButtonIcon } from "@/ui";
 import { getProductPrice } from "@/utils/functions";
 import { useSwitchComponent } from "@/utils/hooks";

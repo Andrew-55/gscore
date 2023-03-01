@@ -1,31 +1,34 @@
 import { useRouter } from "next/router";
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { ErrorApi, getCodeSelf, manageCode } from "@/api";
+import { ErrorApi, ErrorApiData, getCodeSelf, manageCode } from "@/api";
 import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
 import { Code } from "@/components";
 import { getCodesByIdSubscribe, setCodesToStore } from "@/redux/codes";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { getCurrentSubscriptionId } from "@/redux/subscriptions";
 import { logout } from "@/redux/user";
 import { Button } from "@/ui";
-
-interface Props {
-  id: number;
-  isUpdateOn: boolean;
-}
 
 export type CodesFormValues = {
   codeIds: string[];
 };
 
-export const Codes: FC<Props> = ({ id, isUpdateOn }) => {
+export const Codes = () => {
   const [isChangeCodes, setIsChangeCodes] = useState(false);
+  let currentSubscribeId = useAppSelector(getCurrentSubscriptionId());
+  let codesSubscribe = useAppSelector(
+    getCodesByIdSubscribe(currentSubscribeId)
+  );
+
+  const codesHold = codesSubscribe.filter((code) => code.status === "HOLD");
+  const hasCodesHold = codesHold.length > 0;
+
   const dispatch = useAppDispatch();
-  const codesSubscribe = useAppSelector(getCodesByIdSubscribe(id));
   const router = useRouter();
 
   const { register, handleSubmit } = useForm({
@@ -52,23 +55,25 @@ export const Codes: FC<Props> = ({ id, isUpdateOn }) => {
       }
     }
     fetchCodes();
-  }, [dispatch, isChangeCodes, router]);
+  }, [dispatch, isChangeCodes, router, hasCodesHold]);
 
   const onSubmit: SubmitHandler<CodesFormValues> = async ({
     codeIds,
   }: CodesFormValues) => {
-    if (codeIds.length > 0) {
+    if (codeIds.length > 0 && currentSubscribeId) {
       const codesIds = codeIds.map((id) => Number(id));
 
       try {
-        const codes = await manageCode(codesIds, id);
+        const codes = await manageCode(codesIds, currentSubscribeId);
         if (codes) {
           setIsChangeCodes(true);
         }
       } catch (err) {
         const error = err as ErrorApi;
         if (error.response?.status === 400) {
-          toast(ERROR_MESSAGE.numberNotMatchAvailable);
+          const data = error.response?.data as ErrorApiData;
+
+          toast(data.message || ERROR_MESSAGE.numberNotMatchAvailable);
         }
         if (error.response?.status === 401) {
           router.push("/login");
@@ -93,13 +98,13 @@ export const Codes: FC<Props> = ({ id, isUpdateOn }) => {
               code={code.code}
               status={code.status}
               origin={code.origin || ""}
-              isDisabled={!isUpdateOn}
+              isDisabled={!hasCodesHold}
             />
           </li>
         ))}
       </WrapCode>
 
-      {isUpdateOn && (
+      {hasCodesHold && (
         <>
           <CodesInfo>Select the domains you want to keep</CodesInfo>
           <StyledButton text="Confirm" variant="primary" type="submit" />

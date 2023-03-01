@@ -13,12 +13,14 @@ import storage from "redux-persist/lib/storage";
 
 import { codesReducers } from "@/redux/codes";
 import { pricingCardsReducers } from "@/redux/pricingCard";
+import { subscriptionsReducer } from "@/redux/subscriptions";
 import { userReducer } from "@/redux/user";
 
 const rootReducer = combineReducers({
   user: userReducer,
   pricingCards: pricingCardsReducers,
   codes: codesReducers,
+  subscriptions: subscriptionsReducer,
 });
 
 export const persistConfig = {

@@ -1,8 +1,6 @@
-import { config } from "process";
-
-import { SubscriptionType } from "@/pages/subscriptions";
 import { CodeType } from "@/redux/codes";
 import { ProductBuyType, ProductType } from "@/redux/pricingCard";
+import { SubscriptionType } from "@/redux/subscriptions";
 import { UserState, UserType } from "@/redux/user";
 
 import { ApiService } from "./api";
@@ -68,7 +66,7 @@ export const getCodeSelf = async () => {
   return data;
 };
 
-export const activateCode = async (code: string, domain: string) => {
+export const activateCode = async (code: string, domain?: string) => {
   const { data } = await apiService.post<CodeType>(ENDPOINTS.activateCode, {
     code,
   });

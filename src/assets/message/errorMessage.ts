@@ -12,4 +12,5 @@ export const ERROR_MESSAGE = {
   numberNotMatchAvailable:
     "The number of specified codes does not match the available number",
   emailBusy: "The email use to another account",
+  sameProduct: "Subscription already uses this product",
 };
