@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import ContentLoader, { IContentLoaderProps } from "react-content-loader";
 
-export const SkeletonPricingCard: FC<IContentLoaderProps> = (
+export const PricingCardSkeleton: FC<IContentLoaderProps> = (
   props: IContentLoaderProps
 ) => (
   <ContentLoader

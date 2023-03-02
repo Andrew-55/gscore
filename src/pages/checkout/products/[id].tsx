@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { Checkout, Layout, CheckoutItemType } from "@/components";
-import { withAuth } from "@/hoc/withAuth";
+import { withAuth } from "@/hocs/withAuth";
 import {
   getPricingCurrentCard,
   getUpgradeSubcriptionId,

@@ -43,6 +43,8 @@ export const Checkout: FC<CheckoutItemType> = ({
       if (error) {
         toast(ERROR_MESSAGE.somethingWrong);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -56,11 +58,12 @@ export const Checkout: FC<CheckoutItemType> = ({
           router.push("/subscriptions");
         }
       } catch (err) {
-        setIsLoading(false);
         const error = err as ErrorApi;
         if (error.response?.status == 409) {
           toast(ERROR_MESSAGE.sameProduct);
         }
+      } finally {
+        setIsLoading(false);
       }
     }
   };

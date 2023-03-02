@@ -11,13 +11,13 @@ import { useSwitchComponent } from "@/utils/hooks";
 
 interface Props {
   subscriptions: SubscriptionType[];
-  onViewCodes: () => void;
+  onClickViewCodes: () => void;
   onChangeSubscribe: (id: number) => void;
 }
 
 export const Cards: FC<Props> = ({
   subscriptions,
-  onViewCodes,
+  onClickViewCodes,
   onChangeSubscribe,
 }) => {
   const [currentCard, setCurrentCard] = useState(0);
@@ -63,7 +63,7 @@ export const Cards: FC<Props> = ({
             currentPeriodEnd={subscription.currentPeriodEnd}
             price={getProductPrice(subscription.product.prices)}
             isDisabled={index !== currentCard}
-            onViewCodes={onViewCodes}
+            onClickViewCodes={onClickViewCodes}
           />
         ))}
       </WrapCard>

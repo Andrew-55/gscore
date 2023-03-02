@@ -8,6 +8,7 @@ import { Button, Input } from "@/ui";
 import { checkPasswordLength } from "@/utils/functions";
 
 type Props = {
+  isLoading: boolean;
   onConfirm: ({
     currentPassword,
     newPassword,
@@ -19,7 +20,7 @@ export type ChangePasswordFormValues = {
   newPassword: string;
 };
 
-export const ChangePasswordForm: FC<Props> = ({ onConfirm }) => {
+export const ChangePasswordForm: FC<Props> = ({ onConfirm, isLoading }) => {
   const {
     register,
     handleSubmit,
@@ -83,7 +84,13 @@ export const ChangePasswordForm: FC<Props> = ({ onConfirm }) => {
           isSuccess={isValid}
         />
       </WrapInput>
-      <StyledButton text="Save" type="submit" variant="primary" />
+      <StyledButton
+        text="Save"
+        type="submit"
+        variant="primary"
+        isLoading={isLoading}
+        isDisabled={isLoading}
+      />
     </Form>
   );
 };

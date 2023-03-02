@@ -12,7 +12,7 @@ interface Props {
   status: string;
   currentPeriodEnd: string;
   isDisabled?: boolean;
-  onViewCodes: (id: number) => void;
+  onClickViewCodes: () => void;
 }
 
 export const Card: FC<Props> = ({
@@ -22,7 +22,7 @@ export const Card: FC<Props> = ({
   price,
   currentPeriodEnd,
   isDisabled,
-  onViewCodes,
+  onClickViewCodes,
 }) => {
   return (
     <Root $isDisabled={isDisabled}>
@@ -43,7 +43,7 @@ export const Card: FC<Props> = ({
           text="View"
           variant="secondary"
           isDisabled={isDisabled}
-          onClick={() => onViewCodes(id)}
+          onClick={onClickViewCodes}
         />
       </Content>
     </Root>

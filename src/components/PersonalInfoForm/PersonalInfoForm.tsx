@@ -10,6 +10,7 @@ import { checkIsEmail, checkStringIsEmpty } from "@/utils/functions";
 type Props = {
   username: string;
   email: string;
+  isLoading: boolean;
   onConfirm: ({ username, email }: PersonalInfoFormValues) => void;
 };
 
@@ -18,7 +19,12 @@ export type PersonalInfoFormValues = {
   email: string;
 };
 
-export const PersonalInfoForm: FC<Props> = ({ username, email, onConfirm }) => {
+export const PersonalInfoForm: FC<Props> = ({
+  username,
+  email,
+  isLoading,
+  onConfirm,
+}) => {
   const {
     register,
     handleSubmit,
@@ -79,7 +85,13 @@ export const PersonalInfoForm: FC<Props> = ({ username, email, onConfirm }) => {
           isSuccess={isValid}
         />
       </WrapInput>
-      <StyledButton text="Save" type="submit" variant="primary" />
+      <StyledButton
+        text="Save"
+        type="submit"
+        variant="primary"
+        isLoading={isLoading}
+        isDisabled={isLoading}
+      />
     </Form>
   );
 };

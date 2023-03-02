@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { updatePassword, updatePersonalData, ErrorApi } from "@/services";
 import { TYPOGRAPHY } from "@/assets/styles";
 import {
   ChangePasswordForm,
@@ -14,10 +13,11 @@ import {
   ChangePasswordFormValues,
 } from "@/components";
 import { ERROR_MESSAGE } from "@/constants";
-import { withAuth } from "@/hoc/withAuth";
 import { getUser, logout, updateUser } from "@/redux/ducks";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { updatePassword, updatePersonalData, ErrorApi } from "@/services";
 import { TabsLine } from "@/ui";
+import { withAuth } from "@/utils/hocs/withAuth";
 
 enum TABS {
   PERSONAL_INFO = "Personal Info",
@@ -27,6 +27,7 @@ enum TABS {
 function Settings() {
   const tabs = ["Personal Info", "Change password"];
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
@@ -40,6 +41,7 @@ function Settings() {
     email,
   }: PersonalInfoFormValues) => {
     try {
+      setIsLoading(true);
       const user = await updatePersonalData(email, username);
       dispatch(updateUser(user));
     } catch (err) {
@@ -53,6 +55,8 @@ function Settings() {
       if (error.response?.status !== 401) {
         toast(ERROR_MESSAGE.somethingWrong);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -61,6 +65,7 @@ function Settings() {
     newPassword,
   }: ChangePasswordFormValues) => {
     try {
+      setIsLoading(true);
       updatePassword(currentPassword, newPassword);
     } catch (err) {
       const error = err as ErrorApi;
@@ -73,6 +78,8 @@ function Settings() {
         router.push("/login");
         dispatch(logout());
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -95,11 +102,15 @@ function Settings() {
                 username={user.username}
                 email={user.email}
                 onConfirm={handleChangePersonalInfo}
+                isLoading={isLoading}
               />
             )}
 
             {tabs[activeIndex] === TABS.CHANGE_PASSWORD && (
-              <ChangePasswordForm onConfirm={handleChangePassword} />
+              <ChangePasswordForm
+                onConfirm={handleChangePassword}
+                isLoading={isLoading}
+              />
             )}
           </WrapForm>
         </Main>

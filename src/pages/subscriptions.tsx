@@ -5,11 +5,10 @@ import { toast } from "react-toastify";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
-import { SkeletonCard } from "@/assets/skeletons/SkeletonCard";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
+import { CardSkeleton } from "@/components";
 import { ERROR_MESSAGE } from "@/constants";
-import { withAuth } from "@/hoc/withAuth";
 import {
   getSubscriptions,
   setCurrentSubscriptionId,
@@ -21,22 +20,22 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { ErrorApi, getSubscribeSelf } from "@/services";
 import { Button } from "@/ui";
+import { withAuth } from "@/utils/hocs/withAuth";
 
 function Subscriptions() {
   const [isCodesVisible, setIsCodesVisible] = useState(false);
   const [hasCards, setHasCards] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
-
-  const subscriptions = Object.values(useAppSelector(getSubscriptions())).sort(
-    (a, b) => (a.id > b.id ? 1 : -1)
-  );
   const currentSubscribeId = useAppSelector(getCurrentSubscriptionId());
+
+  const subscriptions = Object.values(useAppSelector(getSubscriptions()));
+  subscriptions.sort((a, b) => (a.id > b.id ? 1 : -1));
 
   const router = useRouter();
   const nodeRef = React.useRef(null);
 
-  const handleViewCodes = () => {
+  const handleClickViewCodes = () => {
     setIsCodesVisible((prev) => !prev);
   };
 
@@ -62,9 +61,7 @@ function Subscriptions() {
       try {
         const subscriptions = await getSubscribeSelf();
         dispatch(setSubscriptions(subscriptions));
-        setIsLoading(false);
       } catch (err) {
-        setIsLoading(false);
         const error = err as ErrorApi;
 
         if (error.response?.status === 401) {
@@ -75,6 +72,8 @@ function Subscriptions() {
         if (error.response?.status !== 401) {
           toast(ERROR_MESSAGE.somethingWrong);
         }
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -103,14 +102,14 @@ function Subscriptions() {
 
           {isLoading ? (
             <WrapSkeleton>
-              {[1, 2, 3].map((_, index) => (
+              {Array.from(Array(3)).map((_, index) => (
                 <StyledSkeletonCard key={index} />
               ))}
             </WrapSkeleton>
           ) : subscriptions ? (
             <>
               <Cards
-                onViewCodes={handleViewCodes}
+                onClickViewCodes={handleClickViewCodes}
                 subscriptions={subscriptions}
                 onChangeSubscribe={handleChangeSubscribe}
               />
@@ -201,7 +200,7 @@ const WrapSkeleton = styled.div`
   }
 `;
 
-const StyledSkeletonCard = styled(SkeletonCard)`
+const StyledSkeletonCard = styled(CardSkeleton)`
   flex: 0 0 auto;
   @media (max-width: 768px) {
     width: 318px;

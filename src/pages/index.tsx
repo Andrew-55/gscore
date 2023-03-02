@@ -5,11 +5,9 @@ import ScrollContainer from "react-indiana-drag-scroll";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { SkeletonPricingCard } from "@/assets/skeletons/SkeletonPricingCard";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { PricingCard, Layout } from "@/components";
+import { PricingCard, Layout, PricingCardSkeleton } from "@/components";
 import { ERROR_MESSAGE } from "@/constants";
-import { withAuth } from "@/hoc/withAuth";
 import {
   getPricingCards,
   getProductIdUpgradeSubcription,
@@ -19,6 +17,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getProducts, ErrorApi } from "@/services";
 import { getProductPrice } from "@/utils/functions";
+import { withAuth } from "@/utils/hocs/withAuth";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -44,14 +43,14 @@ const Home = () => {
 
         dispatch(setPricingCardsToStore(pricingCards));
         sethasPricingCards(true);
-        setIsLoading(false);
       } catch (err) {
-        setIsLoading(false);
         const error = err as ErrorApi;
         if (error.response?.status === 401) {
           router.push("/login");
           toast(ERROR_MESSAGE.needLogin);
         }
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchProducts();
@@ -77,7 +76,7 @@ const Home = () => {
 
           {isLoading ? (
             <WrapPricingCard horizontal hideScrollbars={false}>
-              {[1, 2, 3].map((_, index) => (
+              {Array.from(Array(3)).map((_, index) => (
                 <StyledSkeletonPricingCard key={index} />
               ))}
             </WrapPricingCard>
@@ -188,7 +187,7 @@ const StyledLink = styled.a`
   }
 `;
 
-const StyledSkeletonPricingCard = styled(SkeletonPricingCard)`
+const StyledSkeletonPricingCard = styled(PricingCardSkeleton)`
   flex: 0 0 auto;
   @media (max-width: 992px) {
     width: 330px;

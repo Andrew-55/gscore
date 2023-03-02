@@ -27,7 +27,8 @@ export const Codes = () => {
   let currentSubscribeId = useAppSelector(getCurrentSubscriptionId());
   let codesSubscribe = useAppSelector(
     getCodesByIdSubscribe(currentSubscribeId)
-  ).sort((a, b) => (a.id > b.id ? 1 : -1));
+  );
+  codesSubscribe.sort((a, b) => (a.id > b.id ? 1 : -1));
 
   const codesHold = codesSubscribe.filter((code) => code.status === "HOLD");
   const hasCodesHold = codesHold.length > 0;
@@ -45,12 +46,9 @@ export const Codes = () => {
         setIsLoading(true);
         const codes = await getCodeSelf();
         dispatch(setCodesToStore(codes));
-        setIsLoading(false);
         setIsChangeCodes(false);
       } catch (err) {
         const error = err as ErrorApi;
-
-        setIsLoading(false);
 
         if (error.response?.status === 401) {
           router.push("/login");
@@ -60,6 +58,8 @@ export const Codes = () => {
         if (error.response?.status !== 401) {
           toast(ERROR_MESSAGE.somethingWrong);
         }
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -83,10 +83,8 @@ export const Codes = () => {
           setIsChangeCodes(true);
         }
         reset();
-        setIsLoading(false);
       } catch (err) {
         const error = err as ErrorApi;
-        setIsLoading(false);
 
         if (error.response?.status === 400) {
           const data = error.response?.data as ErrorApiData;
@@ -101,6 +99,8 @@ export const Codes = () => {
         if (error.response?.status === 404 || error.response?.status === 409) {
           toast(ERROR_MESSAGE.somethingWrong);
         }
+      } finally {
+        setIsLoading(false);
       }
     }
   };

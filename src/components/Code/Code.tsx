@@ -27,7 +27,7 @@ export const Code: FC<Props> = ({
   const [domain, setDomain] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleOnChangeDomain = (value: string) => {
+  const handleChangeDomain = (value: string) => {
     setDomain(value);
   };
 
@@ -38,14 +38,14 @@ export const Code: FC<Props> = ({
       if (codeResponce) {
         onActiveCode();
       }
-      setIsLoading(false);
     } catch (err) {
       const error = err as ErrorApi;
-      setIsLoading(false);
 
       if (error.response?.status === 409) {
         toast(ERROR_MESSAGE.codeAlreadyActivated);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -70,7 +70,7 @@ export const Code: FC<Props> = ({
           label="Domain"
           value={domain || ""}
           isDisabled={!!code.origin}
-          onChange={(event) => handleOnChangeDomain(event.target.value)}
+          onChange={(event) => handleChangeDomain(event.target.value)}
         />
       </Wrap>
 
