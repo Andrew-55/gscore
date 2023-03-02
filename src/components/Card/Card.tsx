@@ -50,7 +50,7 @@ export const Card: FC<Props> = ({
   );
 };
 
-const Root = styled.div<{ $isDisabled?: boolean }>`
+const Root = styled.li<{ $isDisabled?: boolean }>`
   flex: 0 0 auto;
   width: 620px;
   background-color: ${COLORS.color_700};

@@ -1,14 +1,15 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 
-import { Checkout, Layout, LayoutComeIn, CheckoutItemType } from "@/components";
+import { Checkout, Layout, CheckoutItemType } from "@/components";
 import { withAuth } from "@/hoc/withAuth";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getPricingCurrentCard } from "@/redux/pricingCard";
 import {
+  getPricingCurrentCard,
   getUpgradeSubcriptionId,
   removeUpgradeSubscriptionId,
-} from "@/redux/subscriptions";
+} from "@/redux/ducks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 function CheckoutProduct() {
   const [checkoutCard, setCheckoutCard] = useState<CheckoutItemType>();
@@ -38,7 +39,7 @@ function CheckoutProduct() {
         <title>Checkout</title>
       </Head>
       <Layout>
-        <LayoutComeIn>
+        <Content>
           {checkoutCard && (
             <Checkout
               id={checkoutCard.id}
@@ -47,10 +48,17 @@ function CheckoutProduct() {
               subscribeId={subscribeId}
             />
           )}
-        </LayoutComeIn>
+        </Content>
       </Layout>
     </>
   );
 }
 
 export default withAuth(CheckoutProduct);
+
+const Content = styled.div`
+  max-width: 652px;
+  padding: 32px 16px;
+  margin-left: auto;
+  margin-right: auto;
+`;

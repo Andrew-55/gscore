@@ -9,27 +9,19 @@ interface Props {
   status: string;
 }
 
-export const THEMES = {
-  ACTIVE: css`
-    color: ${COLORS.gren_300};
-  `,
-  HOLD: css`
-    color: ${COLORS.orange_300};
-  `,
-  INACTIVE: css`
-    color: ${COLORS.red_300};
-  `,
+export const THEMES: Record<string, string> = {
+  ACTIVE: COLORS.gren_300,
+  HOLD: COLORS.orange_300,
+  INACTIVE: COLORS.red_300,
 };
 
 export const Status: FC<Props> = ({ status }) => {
-  const key = (Object.keys(THEMES) as (keyof typeof THEMES)[]).find(
-    (key) => key.toString() === status
-  );
+  const color = THEMES[status];
 
-  return <Root $status={key}>{status.toLowerCase()}</Root>;
+  return <Root $color={color}>{status.toLowerCase()}</Root>;
 };
 
-const Root = styled.span<{ $status?: StatusType }>`
+const Root = styled.span<{ $color?: string }>`
   text-transform: capitalize;
-  ${({ $status }) => $status && THEMES[$status]};
+  color: ${({ $color }) => $color};
 `;

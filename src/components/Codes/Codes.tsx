@@ -4,14 +4,17 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { ErrorApi, ErrorApiData, getCodeSelf, manageCode } from "@/api";
-import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
 import { Code } from "@/components";
-import { getCodesByIdSubscribe, setCodesToStore } from "@/redux/codes";
+import { ERROR_MESSAGE } from "@/constants";
+import {
+  getCodesByIdSubscribe,
+  setCodesToStore,
+  getCurrentSubscriptionId,
+  logout,
+} from "@/redux/ducks";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getCurrentSubscriptionId } from "@/redux/subscriptions";
-import { logout } from "@/redux/user";
+import { ErrorApi, ErrorApiData, getCodeSelf, manageCode } from "@/services";
 import { Button } from "@/ui";
 
 export type CodesFormValues = {
@@ -19,11 +22,12 @@ export type CodesFormValues = {
 };
 
 export const Codes = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [isChangeCodes, setIsChangeCodes] = useState(false);
   let currentSubscribeId = useAppSelector(getCurrentSubscriptionId());
   let codesSubscribe = useAppSelector(
     getCodesByIdSubscribe(currentSubscribeId)
-  );
+  ).sort((a, b) => (a.id > b.id ? 1 : -1));
 
   const codesHold = codesSubscribe.filter((code) => code.status === "HOLD");
   const hasCodesHold = codesHold.length > 0;
@@ -31,18 +35,22 @@ export const Codes = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     defaultValues: { codeIds: [""] },
   });
 
   useEffect(() => {
     async function fetchCodes() {
       try {
+        setIsLoading(true);
         const codes = await getCodeSelf();
         dispatch(setCodesToStore(codes));
+        setIsLoading(false);
         setIsChangeCodes(false);
       } catch (err) {
         const error = err as ErrorApi;
+
+        setIsLoading(false);
 
         if (error.response?.status === 401) {
           router.push("/login");
@@ -56,7 +64,11 @@ export const Codes = () => {
     }
 
     fetchCodes();
-  }, [dispatch, isChangeCodes, router, hasCodesHold]);
+  }, [dispatch, router, isChangeCodes, hasCodesHold]);
+
+  const handleActiveCode = () => {
+    setIsChangeCodes(true);
+  };
 
   const onSubmit: SubmitHandler<CodesFormValues> = async ({
     codeIds,
@@ -65,12 +77,17 @@ export const Codes = () => {
       const codesIds = codeIds.map((id) => Number(id));
 
       try {
+        setIsLoading(true);
         const codes = await manageCode(codesIds, currentSubscribeId);
         if (codes) {
           setIsChangeCodes(true);
         }
+        reset();
+        setIsLoading(false);
       } catch (err) {
         const error = err as ErrorApi;
+        setIsLoading(false);
+
         if (error.response?.status === 400) {
           const data = error.response?.data as ErrorApiData;
 
@@ -95,11 +112,9 @@ export const Codes = () => {
           <li key={code.id}>
             <Code
               register={register}
-              id={code.id}
-              code={code.code}
-              status={code.status}
-              origin={code.origin || ""}
+              code={code}
               isDisabled={!hasCodesHold}
+              onActiveCode={handleActiveCode}
             />
           </li>
         ))}
@@ -108,7 +123,12 @@ export const Codes = () => {
       {hasCodesHold && (
         <>
           <CodesInfo>Select the domains you want to keep</CodesInfo>
-          <StyledButton text="Confirm" variant="primary" type="submit" />
+          <StyledButton
+            text="Confirm"
+            variant="primary"
+            type="submit"
+            isLoading={isLoading}
+          />
         </>
       )}
     </Root>

@@ -3,32 +3,29 @@ import { UseFormRegister } from "react-hook-form";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { ErrorApi, activateCode } from "@/api";
-import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
+import { ERROR_MESSAGE } from "@/constants";
+import { CodeType } from "@/redux/ducks";
+import { ErrorApi, activateCode } from "@/services";
 import { Button, Checkbox, InputLabel, Status } from "@/ui";
 
 interface Props {
-  id: number;
-  status: string;
-  code: string;
-  origin?: string;
+  code: CodeType;
   isDisabled?: boolean;
+  onActiveCode: () => void;
   register: UseFormRegister<{
     codeIds: string[];
   }>;
 }
 
 export const Code: FC<Props> = ({
-  id,
-  status,
   code,
   isDisabled,
-  origin,
   register,
+  onActiveCode,
 }) => {
-  const [domain, setDomain] = useState(origin);
-  const [statusCode, setStatusCode] = useState(status);
+  const [domain, setDomain] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleOnChangeDomain = (value: string) => {
     setDomain(value);
@@ -36,13 +33,15 @@ export const Code: FC<Props> = ({
 
   const handleClickActivate = async () => {
     try {
-      const { origin, status } = await activateCode(code, domain);
-      if (origin) {
-        setDomain(origin);
+      setIsLoading(true);
+      const codeResponce = await activateCode(code.code);
+      if (codeResponce) {
+        onActiveCode();
       }
-      setStatusCode(status);
+      setIsLoading(false);
     } catch (err) {
       const error = err as ErrorApi;
+      setIsLoading(false);
 
       if (error.response?.status === 409) {
         toast(ERROR_MESSAGE.codeAlreadyActivated);
@@ -53,36 +52,42 @@ export const Code: FC<Props> = ({
   return (
     <Root>
       <WrapCheckbox>
-        <Checkbox value={id} isDisabled={isDisabled} {...register("codeIds")} />
+        <Checkbox
+          value={code.id}
+          isDisabled={isDisabled}
+          {...register("codeIds")}
+        />
       </WrapCheckbox>
       <Wrap>
         <LicenseCode
           label="License code"
-          value={code}
+          value={code.code}
           isDisabled={isDisabled}
           readOnly
           isCopy
         />
         <Domain
           label="Domain"
-          value={domain}
-          isDisabled={!!origin}
+          value={domain || ""}
+          isDisabled={!!code.origin}
           onChange={(event) => handleOnChangeDomain(event.target.value)}
         />
       </Wrap>
 
-      {statusCode === "INACTIVE" && (
+      {code.status === "INACTIVE" && (
         <StyledButton
           text="Activate"
           variant="secondary"
           type="button"
           onClick={handleClickActivate}
+          isLoading={isLoading}
+          isDisabled={isLoading}
         />
       )}
       <StatusInfo>
         <StatusInfoTitle>Status</StatusInfoTitle>
         <WrapStatus>
-          <Status status={statusCode} />
+          <Status status={code.status} />
         </WrapStatus>
       </StatusInfo>
     </Root>

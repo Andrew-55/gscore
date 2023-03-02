@@ -2,8 +2,8 @@ import React, { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
 
-import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
+import { ERROR_MESSAGE } from "@/constants";
 import { Button, Input } from "@/ui";
 import { checkIsEmail } from "@/utils/functions";
 
@@ -23,7 +23,7 @@ export const LoginForm: FC<Props> = ({ onConfirm }) => {
     formState: { errors, isValid },
     reset,
   } = useForm({
-    mode: "onBlur",
+    mode: "onSubmit",
     defaultValues: {
       email: "",
       password: "",
@@ -50,6 +50,7 @@ export const LoginForm: FC<Props> = ({ onConfirm }) => {
         <Input
           placeholder="Email"
           type="email"
+          autoComplete="username"
           {...register("email", {
             required: ERROR_MESSAGE.required,
             validate: checkIsEmail,
@@ -57,10 +58,12 @@ export const LoginForm: FC<Props> = ({ onConfirm }) => {
           isError={!!errors.email}
           errorMessage={errors.email?.message}
           isSuccess={isValid}
+          autoFocus
         />
         <Input
           placeholder="Password"
           type="password"
+          autoComplete="current-password"
           {...register("password", {
             required: ERROR_MESSAGE.required,
           })}

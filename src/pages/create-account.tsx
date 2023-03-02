@@ -5,15 +5,20 @@ import React from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { createAccount, ErrorApi } from "@/api";
-import { ERROR_MESSAGE } from "@/assets/message";
+import { createAccount, ErrorApi } from "@/services";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { Layout, LayoutComeIn } from "@/components";
+import { Layout } from "@/components";
 import { CreateAccountForm, CreateAccountFormValues } from "@/components";
+import { ERROR_MESSAGE } from "@/constants";
+import { setUserState } from "@/redux/ducks";
 import { useAppDispatch } from "@/redux/hooks";
-import { setUserState } from "@/redux/user";
+import { Tabs } from "@/ui";
 
 export default function CreateAccount() {
+  const tabs = [
+    { title: "Create account", url: "/create-account" },
+    { title: "Log in", url: "/login" },
+  ];
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -47,15 +52,16 @@ export default function CreateAccount() {
         <title>Create Account</title>
       </Head>
       <Layout>
-        <LayoutComeIn>
-          <>
-            <CreateAccountForm onConfirm={handleCreateAccount} />
-            <Qustion>
-              Have an account?
-              <StyledLink href="/login">Go to the next step</StyledLink>
-            </Qustion>
-          </>
-        </LayoutComeIn>
+        <Content>
+          <WrapTabs>
+            <Tabs tabs={tabs} />
+          </WrapTabs>
+          <CreateAccountForm onConfirm={handleCreateAccount} />
+          <Qustion>
+            Have an account?
+            <StyledLink href="/login">Go to the next step</StyledLink>
+          </Qustion>
+        </Content>
       </Layout>
     </>
   );
@@ -78,5 +84,22 @@ const StyledLink = styled(Link)`
 
   &:active {
     color: ${COLORS.red_400};
+  }
+`;
+
+const Content = styled.div`
+  max-width: 652px;
+  padding: 32px 16px;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+const WrapTabs = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 64px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 32px;
   }
 `;

@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import React, { useLayoutEffect, useState } from "react";
 
+import { getToken } from "@/redux/ducks";
 import { useAppSelector } from "@/redux/hooks";
-import { getToken } from "@/redux/user";
 
 export const withAuth = (Component: React.ComponentType) => {
   const Wrapper = () => {

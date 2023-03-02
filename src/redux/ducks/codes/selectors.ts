@@ -1,4 +1,4 @@
-import { RootState } from "../store";
+import { RootState } from "@/redux/store";
 
 export const getCodes = () => (state: RootState) => {
   return Object.values(state.codes.codes);

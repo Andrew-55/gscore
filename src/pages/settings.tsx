@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { updatePassword, updatePersonalData, ErrorApi } from "@/api";
-import { ERROR_MESSAGE } from "@/assets/message";
+import { updatePassword, updatePersonalData, ErrorApi } from "@/services";
 import { TYPOGRAPHY } from "@/assets/styles";
 import {
   ChangePasswordForm,
@@ -14,9 +13,10 @@ import {
   PersonalInfoFormValues,
   ChangePasswordFormValues,
 } from "@/components";
+import { ERROR_MESSAGE } from "@/constants";
 import { withAuth } from "@/hoc/withAuth";
+import { getUser, logout, updateUser } from "@/redux/ducks";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getUser, logout, updateUser } from "@/redux/user";
 import { TabsLine } from "@/ui";
 
 enum TABS {

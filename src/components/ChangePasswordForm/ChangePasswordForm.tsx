@@ -2,8 +2,8 @@ import React, { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
 
-import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
+import { ERROR_MESSAGE } from "@/constants";
 import { Button, Input } from "@/ui";
 import { checkPasswordLength } from "@/utils/functions";
 
@@ -27,7 +27,7 @@ export const ChangePasswordForm: FC<Props> = ({ onConfirm }) => {
     formState: { errors, isValid },
     reset,
   } = useForm({
-    mode: "onBlur",
+    mode: "onSubmit",
     defaultValues: {
       currentPassword: "",
       newPassword: "",
@@ -50,10 +50,12 @@ export const ChangePasswordForm: FC<Props> = ({ onConfirm }) => {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Title>Change password</Title>
+      <StyledInput type="text" autoComplete="username" />
       <WrapInput>
         <Input
           placeholder="Current Password"
           type="password"
+          autoComplete="current-password"
           {...register("currentPassword", {
             required: ERROR_MESSAGE.required,
             validate: checkPasswordLength,
@@ -66,6 +68,7 @@ export const ChangePasswordForm: FC<Props> = ({ onConfirm }) => {
         <Input
           placeholder="New Password"
           type="password"
+          autoComplete="new-password"
           {...register("newPassword", {
             required: ERROR_MESSAGE.required,
             validate: (value: string) => {
@@ -109,4 +112,8 @@ const StyledButton = styled(Button)`
   @media (max-width: 480px) {
     max-width: 100%;
   }
+`;
+
+const StyledInput = styled.input`
+  display: none;
 `;

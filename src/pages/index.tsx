@@ -5,19 +5,19 @@ import ScrollContainer from "react-indiana-drag-scroll";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { ErrorApi } from "@/api";
-import { getProducts } from "@/api";
-import { ERROR_MESSAGE } from "@/assets/message";
 import { SkeletonPricingCard } from "@/assets/skeletons/SkeletonPricingCard";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { PricingCard, Layout } from "@/components";
+import { ERROR_MESSAGE } from "@/constants";
 import { withAuth } from "@/hoc/withAuth";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   getPricingCards,
+  getProductIdUpgradeSubcription,
   setCurrentCardId,
   setPricingCardsToStore,
-} from "@/redux/pricingCard";
+} from "@/redux/ducks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { getProducts, ErrorApi } from "@/services";
 import { getProductPrice } from "@/utils/functions";
 
 const Home = () => {
@@ -26,6 +26,7 @@ const Home = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const pricingCards = useAppSelector(getPricingCards());
+  const upgradeProductId = useAppSelector(getProductIdUpgradeSubcription);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -57,8 +58,12 @@ const Home = () => {
   }, [dispatch, router]);
 
   const handleClickButton = (id: number) => {
-    dispatch(setCurrentCardId(id));
-    router.push(`checkout/products/${id}`);
+    if (id === upgradeProductId) {
+      toast(ERROR_MESSAGE.sameProduct);
+    } else {
+      dispatch(setCurrentCardId(id));
+      router.push(`checkout/products/${id}`);
+    }
   };
 
   return (
@@ -72,9 +77,9 @@ const Home = () => {
 
           {isLoading ? (
             <WrapPricingCard horizontal hideScrollbars={false}>
-              <StyledSkeletonPricingCard />
-              <StyledSkeletonPricingCard />
-              <StyledSkeletonPricingCard />
+              {[1, 2, 3].map((_, index) => (
+                <StyledSkeletonPricingCard key={index} />
+              ))}
             </WrapPricingCard>
           ) : (
             hasPricingCards && (
@@ -138,7 +143,7 @@ const Title = styled.h1`
 const WrapPricingCard = styled(ScrollContainer)`
   display: flex;
   flex-wrap: nowrap;
-  justify-content: space-between;
+  justify-content: center;
   column-gap: 20px;
   margin-bottom: 32px;
   padding-top: 50px;

@@ -1,15 +1,14 @@
 import { useRouter } from "next/router";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { changeSubscribe, ErrorApi } from "@/api";
-import { buySubscribe } from "@/api";
-import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgShoppingBasket } from "@/assets/svg";
+import { ERROR_MESSAGE } from "@/constants";
+import { removeUpgradeSubscriptionId } from "@/redux/ducks";
 import { useAppDispatch } from "@/redux/hooks";
-import { removeUpgradeSubscriptionId } from "@/redux/subscriptions";
+import { changeSubscribe, ErrorApi, buySubscribe } from "@/services";
 import { Button } from "@/ui";
 
 export type CheckoutItemType = {
@@ -25,19 +24,22 @@ export const Checkout: FC<CheckoutItemType> = ({
   price,
   subscribeId,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const hasSubscribeId = typeof subscribeId === "number";
 
   const handlePurchase = async () => {
     try {
+      setIsLoading(true);
       const data = await buySubscribe(id);
       if (data) {
+        setIsLoading(false);
         router.push("/subscriptions");
       }
     } catch (err) {
+      setIsLoading(false);
       const error = err as ErrorApi;
-
       if (error) {
         toast(ERROR_MESSAGE.somethingWrong);
       }
@@ -47,14 +49,15 @@ export const Checkout: FC<CheckoutItemType> = ({
   const handleUpgrade = async () => {
     if (hasSubscribeId) {
       try {
+        setIsLoading(true);
         const data = await changeSubscribe(id, subscribeId);
         if (data) {
           dispatch(removeUpgradeSubscriptionId());
           router.push("/subscriptions");
         }
       } catch (err) {
+        setIsLoading(false);
         const error = err as ErrorApi;
-
         if (error.response?.status == 409) {
           toast(ERROR_MESSAGE.sameProduct);
         }
@@ -63,7 +66,7 @@ export const Checkout: FC<CheckoutItemType> = ({
   };
 
   return (
-    <Root>
+    <div>
       <Title>Checkout</Title>
       <Package>
         <PackageHeader>
@@ -89,19 +92,21 @@ export const Checkout: FC<CheckoutItemType> = ({
           text="Upgrade"
           variant="primary"
           onClick={handleUpgrade}
+          isLoading={isLoading}
+          isDisabled={isLoading}
         />
       ) : (
         <StyledButton
           text="Purchase"
           variant="primary"
           onClick={handlePurchase}
+          isLoading={isLoading}
+          isDisabled={isLoading}
         />
       )}
-    </Root>
+    </div>
   );
 };
-
-const Root = styled.div``;
 
 const Title = styled.h3`
   ${TYPOGRAPHY.THICCCBOI_Bold_44px};

@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
+import { getUser, logout } from "@/redux/ducks";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
-import { getUser, logout } from "@/redux/user";
 
 import { HeaderDesktop } from "./components/HeaderDesktop";
 import { HeaderMobile } from "./components/HeaderMobile";

@@ -1,10 +1,14 @@
-import { CodeType } from "@/redux/codes";
-import { ProductBuyType, ProductType } from "@/redux/pricingCard";
-import { SubscriptionType } from "@/redux/subscriptions";
-import { UserState, UserType } from "@/redux/user";
+import { ENDPOINTS } from "@/constants";
+import {
+  CodeType,
+  ProductBuyType,
+  ProductType,
+  SubscriptionType,
+  UserState,
+  UserType,
+} from "@/redux/ducks";
 
-import { ApiService } from "./api";
-import { ENDPOINTS } from "./constants";
+import { ApiService } from "./apiService";
 
 const apiService = new ApiService();
 

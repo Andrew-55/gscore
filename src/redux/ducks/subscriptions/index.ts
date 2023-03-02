@@ -10,4 +10,5 @@ export {
   getUpgradeSubcriptionId,
   getSubscriptions,
   getCurrentSubscriptionId,
+  getProductIdUpgradeSubcription,
 } from "./selectors";

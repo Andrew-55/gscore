@@ -5,22 +5,21 @@ import { toast } from "react-toastify";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
-import { ErrorApi } from "@/api";
-import { getSubscribeSelf } from "@/api";
-import { ERROR_MESSAGE } from "@/assets/message";
 import { SkeletonCard } from "@/assets/skeletons/SkeletonCard";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
+import { ERROR_MESSAGE } from "@/constants";
 import { withAuth } from "@/hoc/withAuth";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   getSubscriptions,
   setCurrentSubscriptionId,
   setSubscriptions,
   setUpgradeSubscriptionId,
-} from "@/redux/subscriptions";
-import { getCurrentSubscriptionId } from "@/redux/subscriptions";
-import { logout } from "@/redux/user";
+  getCurrentSubscriptionId,
+  logout,
+} from "@/redux/ducks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { ErrorApi, getSubscribeSelf } from "@/services";
 import { Button } from "@/ui";
 
 function Subscriptions() {
@@ -29,7 +28,9 @@ function Subscriptions() {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
 
-  const subscriptions = Object.values(useAppSelector(getSubscriptions()));
+  const subscriptions = Object.values(useAppSelector(getSubscriptions())).sort(
+    (a, b) => (a.id > b.id ? 1 : -1)
+  );
   const currentSubscribeId = useAppSelector(getCurrentSubscriptionId());
 
   const router = useRouter();
@@ -59,7 +60,6 @@ function Subscriptions() {
   useEffect(() => {
     async function fetchSubscriptions() {
       try {
-        setIsLoading(true);
         const subscriptions = await getSubscribeSelf();
         dispatch(setSubscriptions(subscriptions));
         setIsLoading(false);
@@ -101,7 +101,13 @@ function Subscriptions() {
             )}
           </WrapTitle>
 
-          {subscriptions ? (
+          {isLoading ? (
+            <WrapSkeleton>
+              {[1, 2, 3].map((_, index) => (
+                <StyledSkeletonCard key={index} />
+              ))}
+            </WrapSkeleton>
+          ) : subscriptions ? (
             <>
               <Cards
                 onViewCodes={handleViewCodes}
@@ -113,7 +119,7 @@ function Subscriptions() {
                 nodeRef={nodeRef}
                 in={isCodesVisible}
                 classNames="burger__menu"
-                timeout={1000}
+                timeout={500}
                 unmountOnExit
               >
                 <div ref={nodeRef}>
@@ -121,12 +127,6 @@ function Subscriptions() {
                 </div>
               </CSSTransition>
             </>
-          ) : isLoading ? (
-            <WrapSkeleton>
-              <StyledSkeletonCard />
-              <StyledSkeletonCard />
-              <StyledSkeletonCard />
-            </WrapSkeleton>
           ) : (
             <SubscriptionsNo />
           )}

@@ -1,4 +1,4 @@
-import { RootState } from "../store";
+import { RootState } from "@/redux/store";
 
 export const getCurrentCartId = () => (state: RootState) => {
   return state.pricingCards.currentCardId;
