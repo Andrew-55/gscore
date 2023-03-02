@@ -12,11 +12,12 @@ import {
   setCodesToStore,
   getCurrentSubscriptionId,
   logout,
+  CodeType,
 } from "@/redux/ducks";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { ErrorApi, ErrorApiData, getCodeSelf, manageCode } from "@/services";
 import { Button } from "@/ui";
-import { getCodesSortById } from "@/utils/functions";
+import { getArraySortById } from "@/utils/functions";
 
 export type CodesFormValues = {
   codeIds: string[];
@@ -30,7 +31,7 @@ export const Codes = () => {
     getCodesByIdSubscribe(currentSubscribeId)
   );
 
-  const codesSort = getCodesSortById(codesSubscribe);
+  const codesSort = getArraySortById<CodeType>(codesSubscribe);
 
   const codesHold = codesSort.filter((code) => code.status === "HOLD");
   const hasCodesHold = codesHold.length > 0;
