@@ -1,4 +1,5 @@
-import { PriceType } from "@/redux/ducks";
+import subscriptions from "@/pages/subscriptions";
+import { CodeType, PriceType, SubscriptionType } from "@/redux/ducks";
 
 export const getProductPrice = (prices: PriceType[]) => {
   return prices
@@ -7,4 +8,14 @@ export const getProductPrice = (prices: PriceType[]) => {
       0
     )
     .toString();
+};
+
+export const getCodesSortById = (codes: CodeType[]) => {
+  const copyCodes = [...codes];
+  return copyCodes.sort((a, b) => (a.id > b.id ? 1 : -1));
+};
+
+export const getSubscriptionsSortById = (subscriptions: SubscriptionType[]) => {
+  const copySubscriptions = [...subscriptions];
+  return copySubscriptions.sort((a, b) => (a.id > b.id ? 1 : -1));
 };

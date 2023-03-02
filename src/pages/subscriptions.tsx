@@ -20,6 +20,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { ErrorApi, getSubscribeSelf } from "@/services";
 import { Button } from "@/ui";
+import { getSubscriptionsSortById } from "@/utils/functions";
 import { withAuth } from "@/utils/hocs/withAuth";
 
 function Subscriptions() {
@@ -30,7 +31,7 @@ function Subscriptions() {
   const currentSubscribeId = useAppSelector(getCurrentSubscriptionId());
 
   const subscriptions = Object.values(useAppSelector(getSubscriptions()));
-  subscriptions.sort((a, b) => (a.id > b.id ? 1 : -1));
+  const subscriptionsSort = getSubscriptionsSortById(subscriptions);
 
   const router = useRouter();
   const nodeRef = React.useRef(null);
@@ -110,7 +111,7 @@ function Subscriptions() {
             <>
               <Cards
                 onClickViewCodes={handleClickViewCodes}
-                subscriptions={subscriptions}
+                subscriptions={subscriptionsSort}
                 onChangeSubscribe={handleChangeSubscribe}
               />
 

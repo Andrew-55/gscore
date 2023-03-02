@@ -8,7 +8,7 @@ import { Button, Input } from "@/ui";
 import { checkPasswordLength } from "@/utils/functions";
 
 type Props = {
-  isLoading: boolean;
+  isLoading?: boolean;
   onConfirm: ({
     currentPassword,
     newPassword,

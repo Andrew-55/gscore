@@ -10,7 +10,7 @@ import { checkIsEmail, checkStringIsEmpty } from "@/utils/functions";
 type Props = {
   username: string;
   email: string;
-  isLoading: boolean;
+  isLoading?: boolean;
   onConfirm: ({ username, email }: PersonalInfoFormValues) => void;
 };
 
