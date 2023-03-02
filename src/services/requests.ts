@@ -1,8 +1,14 @@
-import { ProductType } from "@/redux/pricingCard";
-import { UserState, UserType } from "@/redux/user";
+import { ENDPOINTS } from "@/constants";
+import {
+  CodeType,
+  ProductBuyType,
+  ProductType,
+  SubscriptionType,
+  UserState,
+  UserType,
+} from "@/redux/ducks";
 
-import { ApiService } from "./api";
-import { ENDPOINTS } from "./constants";
+import { ApiService } from "./apiService";
 
 const apiService = new ApiService();
 
@@ -15,11 +21,11 @@ export const login = async (email: string, password: string) => {
 };
 
 export const createAccount = async (
-  email: string,
   username: string,
+  email: string,
   password: string
 ) => {
-  const { data } = await apiService.post(ENDPOINTS.createAccount, {
+  const { data } = await apiService.post<UserState>(ENDPOINTS.createAccount, {
     email,
     username,
     password,
@@ -60,17 +66,19 @@ export const getProducts = async () => {
 };
 
 export const getCodeSelf = async () => {
-  const { data } = await apiService.get(ENDPOINTS.getCodeSelf);
+  const { data } = await apiService.get<CodeType[]>(ENDPOINTS.getCodeSelf);
   return data;
 };
 
-export const activateCode = async (code: string) => {
-  const { data } = await apiService.post(ENDPOINTS.activateCode, { code });
+export const activateCode = async (code: string, domain?: string) => {
+  const { data } = await apiService.post<CodeType>(ENDPOINTS.activateCode, {
+    code,
+  });
   return data;
 };
 
 export const manageCode = async (codesIds: number[], subscribeId: number) => {
-  const { data } = await apiService.put(ENDPOINTS.manageCode, {
+  const { data } = await apiService.put<CodeType[]>(ENDPOINTS.manageCode, {
     codesIds,
     subscribeId,
   });
@@ -78,7 +86,9 @@ export const manageCode = async (codesIds: number[], subscribeId: number) => {
 };
 
 export const getSubscribeSelf = async () => {
-  const { data } = await apiService.get(ENDPOINTS.getSubscribeSelf);
+  const { data } = await apiService.get<SubscriptionType[]>(
+    ENDPOINTS.getSubscribeSelf
+  );
   return data;
 };
 
@@ -86,14 +96,20 @@ export const changeSubscribe = async (
   productId: number,
   subscribeId: number
 ) => {
-  const { data } = await apiService.post(ENDPOINTS.changeSubscribe, {
-    productId,
-    subscribeId,
-  });
+  const { data } = await apiService.post<ProductBuyType>(
+    ENDPOINTS.changeSubscribe,
+    {
+      productId,
+      subscribeId,
+    }
+  );
   return data;
 };
 
 export const buySubscribe = async (priceId: number) => {
-  const { data } = await apiService.post(ENDPOINTS.buySubscribe, { priceId });
+  const { data } = await apiService.post<ProductBuyType>(
+    ENDPOINTS.buySubscribe,
+    { priceId }
+  );
   return data;
 };

@@ -8,6 +8,12 @@ import { store } from "@/redux/store";
 
 export type ErrorApi = AxiosError;
 
+export type ErrorApiData = {
+  statusCode: number;
+  message: string;
+  error: string;
+};
+
 export class ApiService {
   instance: AxiosInstance;
 

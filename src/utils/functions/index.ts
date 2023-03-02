@@ -1,6 +1,2 @@
-export { getProductPrice } from "./logic-functions";
-export {
-  checkStringIsEmpty,
-  checkIsEmail,
-  checkPasswordLength,
-} from "./validate-functions";
+export * from "./logic-functions";
+export * from "./validate-functions";

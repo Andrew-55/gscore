@@ -4,28 +4,39 @@ import styled, { css } from "styled-components";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { SvgArrowRight } from "@/assets/svg";
 import { Card } from "@/components";
-import { MY_SUBSCRIPTIONS } from "@/stoge";
+import { SubscriptionType } from "@/redux/ducks";
 import { ButtonIcon } from "@/ui";
+import { getProductPrice } from "@/utils/functions";
 import { useSwitchComponent } from "@/utils/hooks";
 
 interface Props {
-  onViewCodes: (id: number) => void;
+  subscriptions: SubscriptionType[];
+  onClickViewCodes: () => void;
+  onChangeSubscribe: (id: number) => void;
 }
 
-export const Cards: FC<Props> = ({ onViewCodes }) => {
+export const Cards: FC<Props> = ({
+  subscriptions,
+  onClickViewCodes,
+  onChangeSubscribe,
+}) => {
   const [currentCard, setCurrentCard] = useState(0);
   const newRef = React.useRef(null);
 
-  const countCards = MY_SUBSCRIPTIONS.length;
+  const countCards = subscriptions.length;
   const isDisabledButtonLeft = currentCard === 0;
   const isDisabledButtonRigth = currentCard === countCards - 1;
 
   const handleCurrentCardRigth = () => {
-    setCurrentCard(currentCard + 1);
+    const newCurrentCard = currentCard + 1;
+    setCurrentCard(newCurrentCard);
+    onChangeSubscribe(subscriptions[newCurrentCard].id);
   };
 
   const handleCurrentCardLeft = () => {
-    setCurrentCard(currentCard - 1);
+    const newCurrentCard = currentCard - 1;
+    setCurrentCard(newCurrentCard);
+    onChangeSubscribe(subscriptions[newCurrentCard].id);
   };
 
   const handleMove = (isMoveLeft: boolean) => {
@@ -43,21 +54,16 @@ export const Cards: FC<Props> = ({ onViewCodes }) => {
   return (
     <>
       <WrapCard $currentCard={currentCard} ref={newRef}>
-        {MY_SUBSCRIPTIONS.map((subscription, index) => (
+        {subscriptions.map((subscription, index) => (
           <Card
             key={subscription.id}
+            id={subscription.id}
             name={subscription.product.name}
             status={subscription.status}
             currentPeriodEnd={subscription.currentPeriodEnd}
-            price={subscription.product.prices
-              .reduce(
-                (accumulator, currentValue) =>
-                  accumulator + Number(currentValue.price),
-                0
-              )
-              .toString()}
+            price={getProductPrice(subscription.product.prices)}
             isDisabled={index !== currentCard}
-            onClick={() => onViewCodes(currentCard)}
+            onClickViewCodes={onClickViewCodes}
           />
         ))}
       </WrapCard>

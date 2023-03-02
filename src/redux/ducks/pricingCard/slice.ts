@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { PricingCardType } from "@/types";
-
-import { PricingCardStore } from "./types";
+import { PricingCardStore, PricingCardType } from "./types";
 import { logout } from "../user";
 
 const initialState: PricingCardStore = {

@@ -11,4 +11,5 @@ export type {
   PricingCardType,
   PriceType,
   ProductType,
+  ProductBuyType,
 } from "./types";

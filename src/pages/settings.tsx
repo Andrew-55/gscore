@@ -1,14 +1,23 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
 import { TYPOGRAPHY } from "@/assets/styles";
-import { ChangePasswordForm, PersonalInfoForm } from "@/components";
-import { Layout } from "@/components";
-import { ChangePasswordFormValues } from "@/components/ChangePasswordForm/ChangePasswordForm";
-import { PersonalInfoFormValues } from "@/components/PersonalInfoForm/PersonalInfoForm";
-import { withAuth } from "@/hoc/withAuth";
+import {
+  ChangePasswordForm,
+  PersonalInfoForm,
+  Layout,
+  PersonalInfoFormValues,
+  ChangePasswordFormValues,
+} from "@/components";
+import { ERROR_MESSAGE } from "@/constants";
+import { getUser, logout, updateUser } from "@/redux/ducks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { updatePassword, updatePersonalData, ErrorApi } from "@/services";
 import { TabsLine } from "@/ui";
+import { withAuth } from "@/utils/hocs/withAuth";
 
 enum TABS {
   PERSONAL_INFO = "Personal Info",
@@ -18,23 +27,60 @@ enum TABS {
 function Settings() {
   const tabs = ["Personal Info", "Change password"];
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const user = useAppSelector(getUser);
+  const dispatch = useAppDispatch();
 
   const handleClickTab = (index: number) => {
     setActiveIndex(index);
   };
 
-  const handleChangePersonalInfo = ({
+  const handleChangePersonalInfo = async ({
     username,
     email,
   }: PersonalInfoFormValues) => {
-    console.warn(username + email);
+    try {
+      setIsLoading(true);
+      const user = await updatePersonalData(email, username);
+      dispatch(updateUser(user));
+    } catch (err) {
+      const error = err as ErrorApi;
+
+      if (error.response?.status === 401) {
+        router.push("/login");
+        dispatch(logout());
+      }
+
+      if (error.response?.status !== 401) {
+        toast(ERROR_MESSAGE.somethingWrong);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChangePassword = ({
     currentPassword,
     newPassword,
   }: ChangePasswordFormValues) => {
-    console.warn(currentPassword + " " + newPassword);
+    try {
+      setIsLoading(true);
+      updatePassword(currentPassword, newPassword);
+    } catch (err) {
+      const error = err as ErrorApi;
+
+      if (error.response?.status === 400) {
+        toast(ERROR_MESSAGE.wrongtPassword);
+      }
+
+      if (error.response?.status === 401) {
+        router.push("/login");
+        dispatch(logout());
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -53,14 +99,18 @@ function Settings() {
           <WrapForm>
             {tabs[activeIndex] === TABS.PERSONAL_INFO && (
               <PersonalInfoForm
-                username="Alex"
-                email="alex@test.ru"
+                username={user.username}
+                email={user.email}
                 onConfirm={handleChangePersonalInfo}
+                isLoading={isLoading}
               />
             )}
 
             {tabs[activeIndex] === TABS.CHANGE_PASSWORD && (
-              <ChangePasswordForm onConfirm={handleChangePassword} />
+              <ChangePasswordForm
+                onConfirm={handleChangePassword}
+                isLoading={isLoading}
+              />
             )}
           </WrapForm>
         </Main>

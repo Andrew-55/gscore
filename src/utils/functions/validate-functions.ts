@@ -1,6 +1,6 @@
 import * as EmailValidator from "email-validator";
 
-import { ERROR_MESSAGE } from "@/assets/message";
+import { ERROR_MESSAGE } from "@/constants";
 
 export const checkStringIsEmpty = (string: string) => {
   return string.trim().length ? undefined : ERROR_MESSAGE.required;

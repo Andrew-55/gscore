@@ -2,8 +2,8 @@ import React, { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
 
-import { ERROR_MESSAGE } from "@/assets/message";
 import { TYPOGRAPHY } from "@/assets/styles";
+import { ERROR_MESSAGE } from "@/constants";
 import { Button, Input } from "@/ui";
 import {
   checkIsEmail,
@@ -28,7 +28,7 @@ export const CreateAccountForm: FC<Props> = ({ onConfirm }) => {
     formState: { errors, isValid },
     reset,
   } = useForm({
-    mode: "onBlur",
+    mode: "onSubmit",
     defaultValues: {
       username: "",
       email: "",
@@ -60,7 +60,8 @@ export const CreateAccountForm: FC<Props> = ({ onConfirm }) => {
       <WrapInput>
         <Input
           placeholder="Username"
-          type="string"
+          type="text"
+          autoComplete="username"
           {...register("username", {
             required: ERROR_MESSAGE.required,
             validate: checkStringIsEmpty,
@@ -68,10 +69,12 @@ export const CreateAccountForm: FC<Props> = ({ onConfirm }) => {
           isError={!!errors.username}
           errorMessage={errors.username?.message}
           isSuccess={isValid}
+          autoFocus
         />
         <Input
           placeholder="Email"
           type="email"
+          autoComplete="username"
           {...register("email", {
             required: ERROR_MESSAGE.required,
             validate: checkIsEmail,
@@ -83,6 +86,7 @@ export const CreateAccountForm: FC<Props> = ({ onConfirm }) => {
         <Input
           placeholder="Password"
           type="password"
+          autoComplete="new-password"
           {...register("password", {
             required: ERROR_MESSAGE.required,
             validate: checkPasswordLength,

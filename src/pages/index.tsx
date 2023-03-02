@@ -5,29 +5,32 @@ import ScrollContainer from "react-indiana-drag-scroll";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { ErrorApi } from "@/api";
-import { getProducts } from "@/api";
-import { ERROR_MESSAGE } from "@/assets/message";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { PricingCard, Layout } from "@/components";
-import { withAuth } from "@/hoc/withAuth";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { PricingCard, Layout, PricingCardSkeleton } from "@/components";
+import { ERROR_MESSAGE } from "@/constants";
 import {
   getPricingCards,
+  getProductIdUpgradeSubcription,
   setCurrentCardId,
   setPricingCardsToStore,
-} from "@/redux/pricingCard";
+} from "@/redux/ducks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { getProducts, ErrorApi } from "@/services";
 import { getProductPrice } from "@/utils/functions";
+import { withAuth } from "@/utils/hocs/withAuth";
 
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [hasPricingCards, sethasPricingCards] = useState(false);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const pricingCards = useAppSelector(getPricingCards());
+  const upgradeProductId = useAppSelector(getProductIdUpgradeSubcription);
 
   useEffect(() => {
     async function fetchProducts() {
       try {
+        setIsLoading(true);
         const products = await getProducts();
         const pricingCards = products.map((product) => {
           return {
@@ -46,14 +49,20 @@ const Home = () => {
           router.push("/login");
           toast(ERROR_MESSAGE.needLogin);
         }
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchProducts();
   }, [dispatch, router]);
 
   const handleClickButton = (id: number) => {
-    dispatch(setCurrentCardId(id));
-    router.push(`checkout/products/${id}`);
+    if (id === upgradeProductId) {
+      toast(ERROR_MESSAGE.sameProduct);
+    } else {
+      dispatch(setCurrentCardId(id));
+      router.push(`checkout/products/${id}`);
+    }
   };
 
   return (
@@ -65,21 +74,29 @@ const Home = () => {
         <Main>
           <Title>Get started with Gscore today!</Title>
 
-          {hasPricingCards && (
+          {isLoading ? (
             <WrapPricingCard horizontal hideScrollbars={false}>
-              {pricingCards.map((card) => {
-                return (
-                  <PricingCard
-                    key={card.id}
-                    id={card.id}
-                    name={card.name}
-                    sitesCount={card.sitesCount}
-                    price={card.price}
-                    onClickButton={handleClickButton}
-                  />
-                );
-              })}
+              {Array.from(Array(3)).map((_, index) => (
+                <StyledSkeletonPricingCard key={index} />
+              ))}
             </WrapPricingCard>
+          ) : (
+            hasPricingCards && (
+              <WrapPricingCard horizontal hideScrollbars={false}>
+                {pricingCards.map((card) => {
+                  return (
+                    <PricingCard
+                      key={card.id}
+                      id={card.id}
+                      name={card.name}
+                      sitesCount={card.sitesCount}
+                      price={card.price}
+                      onClickButton={handleClickButton}
+                    />
+                  );
+                })}
+              </WrapPricingCard>
+            )
           )}
 
           <Question>
@@ -125,7 +142,7 @@ const Title = styled.h1`
 const WrapPricingCard = styled(ScrollContainer)`
   display: flex;
   flex-wrap: nowrap;
-  justify-content: space-between;
+  justify-content: center;
   column-gap: 20px;
   margin-bottom: 32px;
   padding-top: 50px;
@@ -167,5 +184,13 @@ const StyledLink = styled.a`
   &:hover,
   &:focus {
     color: ${COLORS.red_400};
+  }
+`;
+
+const StyledSkeletonPricingCard = styled(PricingCardSkeleton)`
+  flex: 0 0 auto;
+  @media (max-width: 992px) {
+    width: 330px;
+    height: 480px;
   }
 `;

@@ -1,32 +1,86 @@
 import Head from "next/head";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
-import { getSubscribeSelf } from "@/api";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Layout, SubscriptionsNo, Codes, Cards } from "@/components";
-import { withAuth } from "@/hoc/withAuth";
-import { useAppSelector } from "@/redux/hooks";
-import { getToken } from "@/redux/user";
+import { CardSkeleton } from "@/components";
+import { ERROR_MESSAGE } from "@/constants";
+import {
+  getSubscriptions,
+  setCurrentSubscriptionId,
+  setSubscriptions,
+  setUpgradeSubscriptionId,
+  getCurrentSubscriptionId,
+  logout,
+  SubscriptionType,
+} from "@/redux/ducks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { ErrorApi, getSubscribeSelf } from "@/services";
 import { Button } from "@/ui";
-
-import { MY_SUBSCRIPTIONS } from "../stoge";
+import { getArraySortById } from "@/utils/functions";
+import { withAuth } from "@/utils/hocs/withAuth";
 
 function Subscriptions() {
-  const [isUpdateOn, setIsUpdateOn] = useState(false);
   const [isCodesVisible, setIsCodesVisible] = useState(false);
-  const [currentCard, setCurrentCard] = useState(0);
+  const [hasCards, setHasCards] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const currentSubscribeId = useAppSelector(getCurrentSubscriptionId());
+
+  const subscriptions = Object.values(useAppSelector(getSubscriptions()));
+  const subscriptionsSort = getArraySortById<SubscriptionType>(subscriptions);
+
+  const router = useRouter();
   const nodeRef = React.useRef(null);
-  const token = useAppSelector(getToken);
 
-  const countCards = MY_SUBSCRIPTIONS.length;
-  const hasCards = countCards > 0;
-
-  const handleViewCodes = (currentCard: number) => {
-    setCurrentCard(currentCard);
+  const handleClickViewCodes = () => {
     setIsCodesVisible((prev) => !prev);
   };
+
+  const handleChangeSubscribe = (id: number) => {
+    dispatch(setCurrentSubscriptionId(id));
+  };
+
+  const handleUpgradeSubscribe = () => {
+    if (currentSubscribeId) {
+      dispatch(setUpgradeSubscriptionId(currentSubscribeId));
+      router.push("/");
+    }
+  };
+
+  useEffect(() => {
+    if (subscriptions && subscriptions.length > 0) {
+      setHasCards(true);
+    }
+  }, [subscriptions]);
+
+  useEffect(() => {
+    async function fetchSubscriptions() {
+      try {
+        const subscriptions = await getSubscribeSelf();
+        dispatch(setSubscriptions(subscriptions));
+      } catch (err) {
+        const error = err as ErrorApi;
+
+        if (error.response?.status === 401) {
+          router.push("/login");
+          dispatch(logout());
+        }
+
+        if (error.response?.status !== 401) {
+          toast(ERROR_MESSAGE.somethingWrong);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchSubscriptions();
+  }, [router, dispatch]);
 
   return (
     <>
@@ -42,25 +96,35 @@ function Subscriptions() {
               <StyledButtonTitle
                 text="Upgrade"
                 variant="primary"
-                onClick={() => setIsUpdateOn((prev) => !prev)}
-                isDisabled={!isCodesVisible}
+                onClick={handleUpgradeSubscribe}
+                isDisabled={!currentSubscribeId}
               />
             )}
           </WrapTitle>
 
-          {hasCards ? (
+          {isLoading ? (
+            <WrapSkeleton>
+              {Array.from(Array(3)).map((_, index) => (
+                <StyledSkeletonCard key={index} />
+              ))}
+            </WrapSkeleton>
+          ) : subscriptions ? (
             <>
-              <Cards onViewCodes={handleViewCodes} />
+              <Cards
+                onClickViewCodes={handleClickViewCodes}
+                subscriptions={subscriptionsSort}
+                onChangeSubscribe={handleChangeSubscribe}
+              />
 
               <CSSTransition
                 nodeRef={nodeRef}
                 in={isCodesVisible}
                 classNames="burger__menu"
-                timeout={1000}
+                timeout={500}
                 unmountOnExit
               >
                 <div ref={nodeRef}>
-                  <Codes id={currentCard} isUpdateOn={isUpdateOn} />
+                  <Codes />
                 </div>
               </CSSTransition>
             </>
@@ -124,5 +188,24 @@ const StyledButtonTitle = styled(Button)`
       color: ${COLORS.red_400};
       background-color: ${COLORS.btn_border_primary};
     }
+  }
+`;
+
+const WrapSkeleton = styled.div`
+  display: flex;
+  column-gap: 28px;
+  margin-right: -86px;
+  margin-bottom: 32px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+  }
+`;
+
+const StyledSkeletonCard = styled(CardSkeleton)`
+  flex: 0 0 auto;
+  @media (max-width: 768px) {
+    width: 318px;
+    height: 269px;
   }
 `;

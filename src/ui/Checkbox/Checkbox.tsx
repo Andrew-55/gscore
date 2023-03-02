@@ -9,7 +9,7 @@ interface Props {
   isDisabled?: boolean;
   isChecked?: boolean;
   text?: string;
-  value: string;
+  value: number;
 }
 
 const Checkbox = React.forwardRef<HTMLInputElement, Props>(

@@ -1,14 +1,22 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 
-import { Checkout, Layout, LayoutComeIn, CheckoutItemType } from "@/components";
-import { withAuth } from "@/hoc/withAuth";
-import { useAppSelector } from "@/redux/hooks";
-import { getPricingCurrentCard } from "@/redux/pricingCard";
+import { Checkout, Layout, CheckoutItemType } from "@/components";
+import { withAuth } from "@/hocs/withAuth";
+import {
+  getPricingCurrentCard,
+  getUpgradeSubcriptionId,
+  removeUpgradeSubscriptionId,
+} from "@/redux/ducks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 function CheckoutProduct() {
   const [checkoutCard, setCheckoutCard] = useState<CheckoutItemType>();
+  const [subscribeId, setSubscribeId] = useState<number>();
   const checkoutItem = useAppSelector(getPricingCurrentCard());
+  const upgradeSubcriptionsId = useAppSelector(getUpgradeSubcriptionId());
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (checkoutItem) {
@@ -16,24 +24,41 @@ function CheckoutProduct() {
     }
   }, [checkoutItem]);
 
+  useEffect(() => {
+    if (upgradeSubcriptionsId) {
+      setSubscribeId(upgradeSubcriptionsId);
+    }
+    return () => {
+      dispatch(removeUpgradeSubscriptionId());
+    };
+  }, [upgradeSubcriptionsId, dispatch]);
+
   return (
     <>
       <Head>
         <title>Checkout</title>
       </Head>
       <Layout>
-        <LayoutComeIn>
+        <Content>
           {checkoutCard && (
             <Checkout
               id={checkoutCard.id}
               name={checkoutCard.name}
               price={checkoutCard.price}
+              subscribeId={subscribeId}
             />
           )}
-        </LayoutComeIn>
+        </Content>
       </Layout>
     </>
   );
 }
 
 export default withAuth(CheckoutProduct);
+
+const Content = styled.div`
+  max-width: 652px;
+  padding: 32px 16px;
+  margin-left: auto;
+  margin-right: auto;
+`;

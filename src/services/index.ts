@@ -1,4 +1,4 @@
-export { ApiService } from "./api";
+export { ApiService } from "./apiService";
 export {
   login,
   createAccount,
@@ -12,5 +12,5 @@ export {
   getSubscribeSelf,
   changeSubscribe,
   buySubscribe,
-} from "./services";
-export type { ErrorApi } from "./api";
+} from "./requests";
+export type { ErrorApi, ErrorApiData } from "./apiService";

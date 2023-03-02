@@ -6,21 +6,23 @@ import { COLORS, TYPOGRAPHY } from "@/assets/styles";
 import { Button, Status } from "@/ui";
 
 interface Props {
+  id: number;
   name: string;
   price: string;
   status: string;
   currentPeriodEnd: string;
   isDisabled?: boolean;
-  onClick: () => void;
+  onClickViewCodes: () => void;
 }
 
 export const Card: FC<Props> = ({
+  id,
   name,
   status,
   price,
   currentPeriodEnd,
   isDisabled,
-  onClick,
+  onClickViewCodes,
 }) => {
   return (
     <Root $isDisabled={isDisabled}>
@@ -41,14 +43,14 @@ export const Card: FC<Props> = ({
           text="View"
           variant="secondary"
           isDisabled={isDisabled}
-          onClick={onClick}
+          onClick={onClickViewCodes}
         />
       </Content>
     </Root>
   );
 };
 
-const Root = styled.div<{ $isDisabled?: boolean }>`
+const Root = styled.li<{ $isDisabled?: boolean }>`
   flex: 0 0 auto;
   width: 620px;
   background-color: ${COLORS.color_700};

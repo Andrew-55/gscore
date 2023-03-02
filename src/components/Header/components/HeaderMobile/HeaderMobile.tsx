@@ -37,7 +37,7 @@ export const HeaderMobile: FC<Props> = ({ username, onClickLogout }) => {
         nodeRef={shadowRef}
         in={isMobileBurgerMenuVisible}
         classNames="mobile__shadow"
-        timeout={2000}
+        timeout={500}
         unmountOnExit
       >
         <Shadow ref={shadowRef} />
@@ -47,7 +47,7 @@ export const HeaderMobile: FC<Props> = ({ username, onClickLogout }) => {
         nodeRef={menuRef}
         in={isMobileBurgerMenuVisible}
         classNames="mobile__burger"
-        timeout={2000}
+        timeout={500}
         unmountOnExit
       >
         <WrapMobileBurgerMenu ref={menuRef}>

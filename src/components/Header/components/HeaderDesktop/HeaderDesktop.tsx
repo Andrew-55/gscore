@@ -19,8 +19,9 @@ interface Props {
 export const HeaderDesktop: FC<Props> = ({ username, onClickLogout }) => {
   const [isDropdownMenuVisible, setIsDropdownMenuVisible] = useState(false);
   const nodeRef = React.useRef(null);
+  const blockRef = React.useRef(null);
 
-  useOnclickOutside(nodeRef, () => setIsDropdownMenuVisible(false));
+  useOnclickOutside(blockRef, () => setIsDropdownMenuVisible(false));
 
   return (
     <Root>
@@ -30,9 +31,10 @@ export const HeaderDesktop: FC<Props> = ({ username, onClickLogout }) => {
         <WrapUser>
           <StyledLink href="/subscriptions">My subscriptions</StyledLink>
 
-          <div ref={nodeRef}>
+          <div ref={blockRef}>
             <ButtonIcon
               text={username}
+              className="header__button"
               icon={
                 <StyledSvgChevron
                   $isUp={isDropdownMenuVisible}
@@ -49,7 +51,7 @@ export const HeaderDesktop: FC<Props> = ({ username, onClickLogout }) => {
               timeout={500}
               unmountOnExit
             >
-              <WrapHeaderDropdownMenu>
+              <WrapHeaderDropdownMenu ref={nodeRef}>
                 <HeaderDropdownMenu onClickLogout={onClickLogout} />
               </WrapHeaderDropdownMenu>
             </CSSTransition>

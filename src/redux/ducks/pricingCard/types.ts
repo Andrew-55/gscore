@@ -23,3 +23,12 @@ export type ProductType = {
   name: string;
   prices: PriceType[];
 };
+
+export type ProductBuyType = {
+  id: number;
+  userId: number;
+  productId: number;
+  currentPeriodStart: number;
+  currentPeriodEnd: number;
+  status: string;
+};

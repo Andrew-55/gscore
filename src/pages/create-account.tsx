@@ -1,19 +1,49 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
+import { createAccount, ErrorApi } from "@/services";
 import { COLORS, TYPOGRAPHY } from "@/assets/styles";
-import { Layout, LayoutComeIn } from "@/components";
+import { Layout } from "@/components";
 import { CreateAccountForm, CreateAccountFormValues } from "@/components";
+import { ERROR_MESSAGE } from "@/constants";
+import { setUserState } from "@/redux/ducks";
+import { useAppDispatch } from "@/redux/hooks";
+import { Tabs } from "@/ui";
 
 export default function CreateAccount() {
-  const handleCreateAccount = ({
+  const tabs = [
+    { title: "Create account", url: "/create-account" },
+    { title: "Log in", url: "/login" },
+  ];
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const handleCreateAccount = async ({
     username,
     email,
     password,
   }: CreateAccountFormValues) => {
-    console.warn(username + " " + email + " " + password);
+    try {
+      const userInfo = await createAccount(username, email, password);
+      if (userInfo) {
+        dispatch(setUserState(userInfo));
+        router.push("/");
+      }
+    } catch (err) {
+      const error = err as ErrorApi;
+
+      if (error.response?.status === 409) {
+        toast(ERROR_MESSAGE.emailBusy);
+      }
+
+      if (error.response?.status !== 409) {
+        toast(ERROR_MESSAGE.somethingWrong);
+      }
+    }
   };
 
   return (
@@ -22,15 +52,16 @@ export default function CreateAccount() {
         <title>Create Account</title>
       </Head>
       <Layout>
-        <LayoutComeIn>
-          <>
-            <CreateAccountForm onConfirm={handleCreateAccount} />
-            <Qustion>
-              Have an account?
-              <StyledLink href="/login">Go to the next step</StyledLink>
-            </Qustion>
-          </>
-        </LayoutComeIn>
+        <Content>
+          <WrapTabs>
+            <Tabs tabs={tabs} />
+          </WrapTabs>
+          <CreateAccountForm onConfirm={handleCreateAccount} />
+          <Qustion>
+            Have an account?
+            <StyledLink href="/login">Go to the next step</StyledLink>
+          </Qustion>
+        </Content>
       </Layout>
     </>
   );
@@ -53,5 +84,22 @@ const StyledLink = styled(Link)`
 
   &:active {
     color: ${COLORS.red_400};
+  }
+`;
+
+const Content = styled.div`
+  max-width: 652px;
+  padding: 32px 16px;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+const WrapTabs = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 64px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 32px;
   }
 `;
